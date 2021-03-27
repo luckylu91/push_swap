@@ -1,39 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   ft_strindex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 17:29:35 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 15:49:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 15:50:47 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "libft.h"
 
-void	swap(t_list **alst)
+int	ft_strindex(const char *s, int c)
 {
-	t_list *tmp;
+	char *strchr_result;
 
-	if (!*alst || !(*alst)->next)
-		return ;
-	tmp = (*alst)->next;
-	(*alst)->next = (*alst)->next->next;
-	tmp->next = *alst;
-	*alst = tmp;
-}
-
-int	swap_ab(t_list **a, t_list **b, int op_code)
-{
-	if (op_code == 0)
-		swap(a);
-	else if (op_code == 1)
-		swap(b);
-	else
-	{
-		swap(a);
-		swap(b);
-	}
-	return (1);
+	strchr_result = ft_strchr(s, c);
+	if (!strchr_result)
+		return (-1);
+	return ((int)(strchr_result - s));
 }

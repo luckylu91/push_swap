@@ -1,44 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args_to_list.c                                     :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:30:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 16:59:24 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 17:29:23 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-static int	add_back_int(t_list **alst, int k)
+void	push(t_list **alst1, t_list **alst2)
 {
-	int *k_ptr;
+	t_list *first1_next;
 
-	k_ptr = malloc(sizeof(int));
-	if (!k_ptr)
-		return (-1);
-	*k_ptr = k;
-	if (!ft_lstadd_back_content(alst, k_ptr))
-	{
-		free(k_ptr);
-		return (-1);
-	}
-	return (1);
+	if (!*alst1)
+		return ;
+	first1_next = (*alst1)->next;
+	(*alst1)->next = *alst2;
+	*alst2 = *alst1;
+	*alst1 = first1_next;
 }
 
-int	args_to_list(t_list **a, int argc, char **argv)
+int	push_ab(t_list **a, t_list **b, int op_code)
 {
-	int i;
-
-	i = 1;
-	while (i < argc)
-	{
-		if (!ft_all_in(argv[i], "0123456789")
-			|| add_back_int(a, ft_atoi(argv[i])) == -1)
-			return (error_free(a, NULL));
-		i++;
-	}
+	if (op_code == 0)
+		push(b, a);
+	else
+		push(a, b);
 	return (1);
 }

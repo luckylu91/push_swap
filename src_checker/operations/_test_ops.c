@@ -29,14 +29,11 @@ static int	add_back_int(t_list **alst, int k)
 	return (1);
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	t_list *lst = NULL;
 
-	add_back_int(&lst, 0);
-	add_back_int(&lst, 1);
-	add_back_int(&lst, 2);
-	add_back_int(&lst, 3);
+	args_to_list(&lst, argc, argv);
 	print_int_lst(lst);
 	swap(&lst);
 	print_int_lst(lst);

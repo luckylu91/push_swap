@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:14:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 13:54:11 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/03/27 17:31:23 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,33 +24,35 @@ static int starts_with(char *str, char *prefix)
 	return (ft_strncmp(prefix, str, len_prefix) == 0);
 }
 
-static int correct_cmd(char *str)
+static int op_code(char *op_name, char *prefix, char *suffixes)
 {
+	size_t	len_prefix;
 
+	len_prefix = ft_strlen(prefix);
+	if (starts_with(op_name, prefix))
+	{
+		if (ft_strlen(op_name) != len_prefix + 1)
+			return (-1);
+		return (ft_strindex(suffixes, op_name[len_prefix]));
+	}
+	return (-1);
 }
 
-int	parse_operation(t_list **a, t_list **b, char *op)
+int	parse_operation(t_list **a, t_list **b, char *op_name)
 {
-	if (starts_with(op, "p"))
-	{
-		if (!(ft_strlen(op) == 2 && ft_all_in(op + 1, "ab")))
-			return (-1);
-	}
-	if (starts_with(op, "s"))
-	{
-		if (!(ft_strlen(op) == 2 && ft_all_in(op + 1, "abs")))
-			return (-1);
-	}
-	if (starts_with(op, "rr"))
-	{
-		if (!(ft_strlen(op) == 3 && ft_all_in(op + 1, "abr")))
-			return (-1);
-	}
-	if (starts_with(op, "r"))
-	{
-		if (!(ft_strlen(op) == 2 && ft_all_in(op + 1, "abr")))
-			return (-1);
-	}
-	return (0);
+	int	ret;
 
+	ret = op_code(op_name, "p", "ab");
+	if (ret >= 0)
+		return (push_ab(a, b, ret));
+	ret = op_code(op_name, "s", "abs");
+	if (ret >= 0)
+		return (swap_ab(a, b, ret));
+	ret = op_code(op_name, "r", "abr");
+	if (ret >= 0)
+		return (rotate_ab(a, b, ret));
+	ret = op_code(op_name, "rr", "abr");
+	if (ret >= 0)
+		return (rotate_reverse_ab(a, b, ret));
+	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 03:09:03 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 03:33:20 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/03/27 17:30:01 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,18 @@ void	rotate_reverse(t_list **alst)
 	*alst = last;
 	last->next = first;
 	last_prev->next = NULL;
+}
+
+int	rotate_reverse_ab(t_list **a, t_list **b, int op_code)
+{
+	if (op_code == 0)
+		rotate_reverse(a);
+	else if (op_code == 1)
+		rotate_reverse(b);
+	else
+	{
+		rotate_reverse(a);
+		rotate_reverse(b);
+	}
+	return (1);
 }

@@ -1,0 +1,1 @@
+src_checker/args_to_list.c src_checker/errors.c src_checker/free.c src_checker/repeating_numbers.c src_checker/operations/parse_operation.c src_checker/operations/push.c src_checker/operations/rotate.c src_checker/operations/rotate_reverse.c src_checker/operations/swap.c
