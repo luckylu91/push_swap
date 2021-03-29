@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapping.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 13:03:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/28 13:57:00 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/03/29 17:15:31 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	mapto_1_n(int *array, int n, t_bijection *input_bij_1_n)
 	}
 	ft_memcpy(array_copy, array, n * sizeof(int));
 	bubble_sort(array_copy, n);
-	if (repetitions_sorted(array, n))
+	if (repetitions_sorted(array_copy, n))
 	{
 		free(array_copy);
 		ft_putstr_fd("Error\n", STDERR_FILENO);

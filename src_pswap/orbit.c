@@ -3,20 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   orbit.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 14:01:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/28 14:21:55 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/03/29 17:05:14 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-int orbit_of(int *array, int n, int start, t_list **orbit_lst)
+int orbit_of(int *array, int start, t_list **orbit_lst)
 {
 	int next;
 
 	*orbit_lst = NULL;
+	if (ft_lstdupint_back(orbit_lst, start) == -1)
+	{
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		return (-1);
+	}
 	next = array[start];
 	while (next != start)
 	{

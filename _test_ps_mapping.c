@@ -1,4 +1,5 @@
 #include "pswap.h"
+#include <stdio.h>
 
 void print_int(void *iptr, void *sep)
 {
@@ -24,13 +25,13 @@ void print_array(int *array, int n, char *sep)
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-void print_orbit(int start, t_list *orbit)
+void print_orbit(t_list *orbit)
 {
-	ft_putstr_fd("( ", STDOUT_FILENO);
-	ft_putnbr_fd(start, STDOUT_FILENO);
-	ft_putstr_fd(" ", STDOUT_FILENO);
-	ft_lstiter_arg(orbit, " ", print_int);
-	ft_putstr_fd(" )", STDOUT_FILENO);
+	char *str;
+
+	str = orbit_str(orbit);
+	printf("%s\n", str);
+	free(str);
 }
 
 int main(int argc, char **argv)
@@ -46,13 +47,15 @@ int main(int argc, char **argv)
 		array[i] = ft_atoi(argv[i + 1]);
 		i++;
 	}
-	mapto_1_n(array, n, &bij);
+	if (mapto_1_n(array, n, &bij) == -1)
+		return (-1);
 	ft_putstr_fd("array: ", STDOUT_FILENO);
 	print_array(array, n, ", ");
 	ft_putstr_fd("bij.values: ", STDOUT_FILENO);
 	print_array(bij.values, n, ", ");
 
 	t_list *orbit;
-	orbit_of(array, n, 0, &orbit);
-	print_orbit(0, orbit);
+	orbit_of(array, 0, &orbit);
+	print_orbit(orbit);
+	printf("length of orbit : %d\n", ft_lstsize(orbit));
 }
