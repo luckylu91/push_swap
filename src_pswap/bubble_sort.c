@@ -1,31 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   orbit.c                                            :+:      :+:    :+:   */
+/*   bubble_sort.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/28 14:01:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/31 08:39:29 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/31 08:09:27 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/31 08:10:07 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-int orbit_of(t_permut *permut, int start, t_list **orbit_lst)
+static void swap_int(int *a, int *b)
 {
-	int next;
+	int tmp;
 
-	*orbit_lst = NULL;
-	next = permut->array[start];
-	while (next != start)
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+void bubble_sort(int *array, int n)
+{
+	int swap_happened;
+	int i;
+	int j;
+
+	j = 0;
+	swap_happened = 1;
+	while (j < n - 1 && swap_happened)
 	{
-		if (ft_lstdupint_back(orbit_lst, next) == -1)
+		swap_happened = 0;
+		i = 0;
+		while (i < n - 1 - j)
 		{
-			ft_lstclear(orbit_lst, free);
-			return (-1);
+			if (array[i] > array[i + 1])
+			{
+				swap_int(array + i, array + i + 1);
+				swap_happened = 1;
+			}
+			i++;
 		}
-		next = permut->array[next];
+		j++;
 	}
-	return (1);
 }

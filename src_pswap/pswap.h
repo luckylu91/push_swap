@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 12:59:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/28 14:22:05 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/03/31 08:40:56 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,18 @@
 #include "libft.h"
 #include <unistd.h>
 
-typedef struct	s_bijection
+typedef struct	s_permut
 {
 	int	n;
-	int	*values;
-}				t_bijection;
+	int	*array;
+	int	*bijection;
+}				t_permut;
 
-int	mapto_1_n(int *array, int n, t_bijection *input_bij_1_n);
-int orbit_of(int *array, int n, int start, t_list **orbit_lst);
+t_permut	*create_permut(int n);
+void	destroy_permut(t_permut *permut);
+void	copy_array(int *array, int n, int *array_copy);
+void	bubble_sort(int *array, int n);
+t_permut	*map_to_permut(int *array, int n); // no error printing
+int	orbit_of(t_permut *permut, int start, t_list **orbit_lst);
 
 #endif

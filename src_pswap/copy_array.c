@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   orbit.c                                            :+:      :+:    :+:   */
+/*   copy_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/28 14:01:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/31 08:39:29 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/31 08:10:45 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/31 08:33:56 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-int orbit_of(t_permut *permut, int start, t_list **orbit_lst)
+void	copy_array(int *array, int n, int *array_copy)
 {
-	int next;
-
-	*orbit_lst = NULL;
-	next = permut->array[start];
-	while (next != start)
-	{
-		if (ft_lstdupint_back(orbit_lst, next) == -1)
-		{
-			ft_lstclear(orbit_lst, free);
-			return (-1);
-		}
-		next = permut->array[next];
-	}
-	return (1);
+	ft_memcpy(array_copy, array, n * sizeof(int));
 }

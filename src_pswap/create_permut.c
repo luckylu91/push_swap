@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   orbit.c                                            :+:      :+:    :+:   */
+/*   create_permut.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/28 14:01:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/31 08:39:29 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/31 08:24:36 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/31 08:29:38 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-int orbit_of(t_permut *permut, int start, t_list **orbit_lst)
+t_permut	*create_permut(int n)
 {
-	int next;
+	t_permut *permut;
 
-	*orbit_lst = NULL;
-	next = permut->array[start];
-	while (next != start)
+	permut = ft_calloc(1, sizeof(t_permut));
+	if (!permut)
+		return (NULL);
+	permut->n = n;
+	permut->array = malloc(n * sizeof(int));
+	permut->bijection = malloc(n * sizeof(int));
+	if (!permut->array || !permut->bijection)
 	{
-		if (ft_lstdupint_back(orbit_lst, next) == -1)
-		{
-			ft_lstclear(orbit_lst, free);
-			return (-1);
-		}
-		next = permut->array[next];
+		destroy_permut(permut);
+		return (NULL);
 	}
-	return (1);
+	return (permut);
 }

@@ -36,7 +36,7 @@ void print_orbit(int start, t_list *orbit)
 int main(int argc, char **argv)
 {
 	int n = argc - 1;
-	t_bijection bij;
+	t_permut *permut;
 	int *array = ft_calloc(n, sizeof(int));
 	int i;
 
@@ -46,13 +46,22 @@ int main(int argc, char **argv)
 		array[i] = ft_atoi(argv[i + 1]);
 		i++;
 	}
-	mapto_1_n(array, n, &bij);
+	permut = map_to_permut(array, n);
+	if (!permut)
+	{
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		return (-1);
+	}
 	ft_putstr_fd("array: ", STDOUT_FILENO);
 	print_array(array, n, ", ");
 	ft_putstr_fd("bij.values: ", STDOUT_FILENO);
-	print_array(bij.values, n, ", ");
+	print_array(permut->bijection, n, ", ");
 
 	t_list *orbit;
-	orbit_of(array, n, 0, &orbit);
+	if (orbit_of(permut, 0, &orbit) == -1)
+	{
+		ft_putstr_fd("Error\n", STDERR_FILENO);
+		return (-1);
+	}
 	print_orbit(0, orbit);
 }
