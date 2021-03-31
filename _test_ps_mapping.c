@@ -1,4 +1,5 @@
 #include "pswap.h"
+#include <stdio.h>
 
 void print_int(void *iptr, void *sep)
 {
@@ -24,13 +25,13 @@ void print_array(int *array, int n, char *sep)
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-void print_orbit(int start, t_list *orbit)
+void print_orbit(t_list *orbit)
 {
-	ft_putstr_fd("( ", STDOUT_FILENO);
-	ft_putnbr_fd(start, STDOUT_FILENO);
-	ft_putstr_fd(" ", STDOUT_FILENO);
-	ft_lstiter_arg(orbit, " ", print_int);
-	ft_putstr_fd(" )", STDOUT_FILENO);
+	char *str;
+
+	str = orbit_str(orbit);
+	printf("%s\n", str);
+	free(str);
 }
 
 int main(int argc, char **argv)
@@ -63,5 +64,6 @@ int main(int argc, char **argv)
 		ft_putstr_fd("Error\n", STDERR_FILENO);
 		return (-1);
 	}
-	print_orbit(0, orbit);
+	print_orbit(orbit);
+	printf("length of orbit : %d\n", ft_lstsize(orbit));
 }

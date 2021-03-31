@@ -12,8 +12,6 @@ CHK_OBJS = $(CHK_SRCS:%.c=%.o)
 PS_SRCS = $(addprefix src_pswap/, bubble_sort.c copy_array.c create_permut.c destroy_permut.c mapping.c orbit.c)
 PS_OBJS = $(PS_SRCS:%.c=%.o)
 
-
-
 all:	libft checker
 
 %.o:	%.c
@@ -40,6 +38,7 @@ srcs:
 clean:
 	make -C $(LIBFT_DIR) clean
 	rm -f $(CHK_OBJS)
+	rm -f $(PS_OBJS)
 
 fclean:	clean
 	make -C $(LIBFT_DIR) fclean
