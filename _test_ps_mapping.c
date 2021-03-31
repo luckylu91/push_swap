@@ -25,15 +25,6 @@ void print_array(int *array, int n, char *sep)
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-void print_orbit(t_list *orbit)
-{
-	char *str;
-
-	str = orbit_str(orbit);
-	printf("%s\n", str);
-	free(str);
-}
-
 int main(int argc, char **argv)
 {
 	int n = argc - 1;
@@ -65,5 +56,7 @@ int main(int argc, char **argv)
 		return (-1);
 	}
 	print_orbit(orbit);
+	printf("\n");
 	printf("length of orbit : %d\n", ft_lstsize(orbit));
+	print_orbits(permut);
 }

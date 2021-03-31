@@ -9,7 +9,7 @@ IFLAGS = -I$(LIBFT_DIR) -I$(CHK_SRCDIR) -I$(PS_SRCDIR)
 CHK_SRCS = $(addprefix $(CHK_SRCDIR)/, args_to_list.c errors.c free.c repeating_numbers.c)
 CHK_SRCS += $(addprefix $(CHK_SRCDIR)/operations/, parse_operation.c push.c rotate.c rotate_reverse.c swap.c)
 CHK_OBJS = $(CHK_SRCS:%.c=%.o)
-PS_SRCS = $(addprefix src_pswap/, bubble_sort.c copy_array.c create_permut.c destroy_permut.c mapping.c orbit.c orbit_str.c)
+PS_SRCS = $(addprefix src_pswap/, bubble_sort.c copy_array.c create_permut.c destroy_permut.c mapping.c orbit.c orbit_str.c print_orbit.c)
 PS_OBJS = $(PS_SRCS:%.c=%.o)
 
 all:	libft checker
