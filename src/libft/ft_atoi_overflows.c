@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_atoi_overflows.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:24:08 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:14:20 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/01 14:16:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:28:53 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "libft.h"
+#include "limits.h"
 
-int	error(void)
+int			ft_atoi_overflows(const char *str)
 {
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	return (-1);
-}
+	long	res;
+	long	sgn;
 
-int	error_free(t_stacks *stacks)
-{
-	free_stacks(stacks);
-	return (error());
+	res = 0;
+	sgn = 1;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+	{
+		sgn = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		res = res * 10 + (*str - '0');
+		if (sgn * res > (long)INT_MAX || sgn * res < (long)INT_MIN)
+			return (1);
+		str++;
+	}
+	return (0);
 }

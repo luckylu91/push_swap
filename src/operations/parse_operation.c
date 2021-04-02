@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_operation.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 11:14:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 17:31:23 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/01 15:32:31 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,21 @@ static int op_code(char *op_name, char *prefix, char *suffixes)
 	return (-1);
 }
 
-int	parse_operation(t_list **a, t_list **b, char *op_name)
+int	parse_operation(t_stacks *stacks, char *op_name)
 {
 	int	ret;
 
 	ret = op_code(op_name, "p", "ab");
 	if (ret >= 0)
-		return (push_ab(a, b, ret));
+		return (push_ab(stacks, ret));
 	ret = op_code(op_name, "s", "abs");
 	if (ret >= 0)
-		return (swap_ab(a, b, ret));
+		return (swap_ab(stacks, ret));
 	ret = op_code(op_name, "r", "abr");
 	if (ret >= 0)
-		return (rotate_ab(a, b, ret));
+		return (rotate_ab(stacks, ret));
 	ret = op_code(op_name, "rr", "abr");
 	if (ret >= 0)
-		return (rotate_reverse_ab(a, b, ret));
+		return (rotate_reverse_ab(stacks, ret));
 	return (-1);
 }

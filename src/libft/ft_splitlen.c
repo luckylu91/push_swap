@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_splitlen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:24:08 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:14:20 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/01 13:48:39 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 13:50:45 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "libft.h"
 
-int	error(void)
+size_t	ft_splitlen(char **splitted)
 {
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	return (-1);
-}
+	size_t i;
 
-int	error_free(t_stacks *stacks)
-{
-	free_stacks(stacks);
-	return (error());
+	if (!splitted)
+		return (0);
+	i = 0;
+	while (splitted[i])
+		i++;
+	return (i);
 }

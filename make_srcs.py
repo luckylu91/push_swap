@@ -32,11 +32,13 @@ def cut_line(line):
 	return (lines_res)
 
 
-def generate_srcs_lines(ignore, suffix):
+def generate_srcs_lines(dirlist, suffix, include=True):
 	srcdirs = os.listdir("src")
 	i = 0
 	for srcdir in srcdirs:
-		if (srcdir in ['libft', ignore]):
+		if include and srcdir not in dirlist:
+			continue
+		if not include and srcdir in dirlist:
 			continue
 		res_line = ("SRCS" + suffix + " =" if i == 0 else "SRCS" + suffix + " +=") + '$(addprefix {}/, '.format(os.path.join('src', srcdir))
 		i += 1
@@ -44,6 +46,8 @@ def generate_srcs_lines(ignore, suffix):
 		files = filter(lambda f: not f.startswith('_'), files)
 		res_line += ' '.join(files) + ')'
 		print(cut_line(res_line))
+	print("OBJS" + suffix + " =$(SRCS" + suffix + ":%.c=%.o)")
 
-generate_srcs_lines('pswap', "_CHK")
-generate_srcs_lines('checker', "_PS")
+generate_srcs_lines(['pswap'], "_CHK")
+generate_srcs_lines(['checker'], "_PS")
+generate_srcs_lines(['pswap', 'checker', 'libft'], "_COM", include=False)

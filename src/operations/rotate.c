@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 17:29:35 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 03:04:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 15:20:11 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-void	swap(t_list **alst)
+void	rotate(t_list **alst)
 {
-	t_list *tmp;
+	t_list *first;
+	t_list *last;
 
 	if (!*alst || !(*alst)->next)
 		return ;
-	tmp = (*alst)->next;
-	(*alst)->next = (*alst)->next->next;
-	tmp->next = *alst;
-	*alst = tmp;
+	first = *alst;
+	last = ft_lstlast(*alst);
+	*alst = first->next;
+	last->next = first;
+	first->next = NULL;
 }
 
-int	swap_ab(t_list **a, t_list **b, int op_code)
+int	rotate_ab(t_stacks *stacks, int op_code)
 {
 	if (op_code == 0)
-		swap(a);
+		rotate(&stacks->a);
 	else if (op_code == 1)
-		swap(b);
+		rotate(&stacks->b);
 	else
 	{
-		swap(a);
-		swap(b);
+		rotate(&stacks->a);
+		rotate(&stacks->b);
 	}
 	return (1);
 }

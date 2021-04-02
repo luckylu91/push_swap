@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   read_execute.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:24:08 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:14:20 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/01 14:03:02 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 15:22:57 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
+#include "get_next_line.h"
 
-int	error(void)
+int	read_execute_cmds(t_stacks *stacks)
 {
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	return (-1);
-}
+	char	*line;
+	int		ret;
 
-int	error_free(t_stacks *stacks)
-{
-	free_stacks(stacks);
-	return (error());
+	ret = 1;
+	while (ret == 1)
+	{
+		ret = get_next_line(STDIN_FILENO, &line);
+		if (parse_operation(stacks, line) == -1)
+			ret = -1;
+		else
+			print_
+		free(line);
+	}
 }
