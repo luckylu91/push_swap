@@ -1,2 +1,6 @@
 .vscode
+*.a
 *.o
+_test_*
+!_test_*.c
+*.dSYM

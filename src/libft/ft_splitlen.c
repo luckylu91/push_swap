@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_any.c                                           :+:      :+:    :+:   */
+/*   ft_splitlen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 11:15:13 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 11:31:09 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/01 13:48:39 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 13:50:45 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_any(void *array, size_t len, size_t size, int (*booleval)(void*))
+size_t	ft_splitlen(char **splitted)
 {
 	size_t i;
 
+	if (!splitted)
+		return (0);
 	i = 0;
-	while (i < len)
-	{
-		if ((*booleval)(array))
-			return (1);
-		array += size;
-	}
-	return (0);
+	while (splitted[i])
+		i++;
+	return (i);
 }

@@ -1,19 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:27:38 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 02:28:58 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 02:24:08 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 15:14:20 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-void	free_stacks(t_list **a, t_list **b)
+int	error(void)
 {
-	ft_lstclear(a, free);
-	ft_lstclear(b, free);
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	return (-1);
+}
+
+int	error_free(t_stacks *stacks)
+{
+	free_stacks(stacks);
+	return (error());
 }

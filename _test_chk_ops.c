@@ -18,12 +18,12 @@ void print_int_lst(t_list *lst)
 	ft_putstr_fd("END\n", STDOUT_FILENO);
 }
 
-void print_ab(t_list *a, t_list *b)
+void print_ab(t_stacks *stacks)
 {
 	printf("a: ");
-	print_int_lst(a);
+	print_int_lst(stacks->a);
 	printf("b: ");
-	print_int_lst(b);
+	print_int_lst(stacks->b);
 	printf("\n");
 }
 
@@ -32,22 +32,23 @@ char to_upper_fun(unsigned int i, char c)
 	return (ft_toupper(c));
 }
 
-int do_op(t_list **a, t_list **b, char *op_name)
+int do_op(t_stacks *stacks, char *op_name)
 {
 	int ret;
 
-	printf("%s\n\n", ft_strmapi(op_name, to_upper_fun));
-	ret = parse_operation(a, b, op_name);
+	printf("\n%s\n", ft_strmapi(op_name, to_upper_fun));
+	ret = parse_operation(stacks, op_name);
 	return (ret);
 }
 
-int print_ab_together(t_list *a, t_list *b)
+int print_ab_together(t_stacks *stacks)
 {
 	printf("(b-end) ");
-	ft_lstreviter_arg(b, " ", print_int);
+	ft_lstreviter_arg(stacks->b, " ", print_int);
 	ft_putstr_fd("(b-head) | (a-head) ", STDOUT_FILENO);
-	ft_lstiter_arg(a, " ", print_int);
+	ft_lstiter_arg(stacks->a, " ", print_int);
 	printf("(a-end)\n");
+	return (0);
 }
 
 int main(int argc, char **argv)
@@ -59,16 +60,18 @@ int main(int argc, char **argv)
 		"pa", "pb", "ra", "rb", "rr", "sa", "sb", "ss", "rra", "rrb", "rrr", NULL
 	};
 	int i = 0;
+	t_stacks stacks;
 
 	setbuf(stdout, NULL);
-	args_to_list(&a, argc, argv);
-	print_ab_together(a, b);
+	if (handle_args(&stacks, argc, argv) == -1)
+		return (-1);
+	print_ab_together(&stacks);
 	i = 0;
 	while (ops[i])
 	{
-		if (do_op(&a, &b, ops[i]) == -1)
+		if (do_op(&stacks, ops[i]) == -1)
 			printf("ERROR\n\n");
-		print_ab_together(a, b);
+		print_stacks_side(&stacks);
 		i++;
 	}
 }
