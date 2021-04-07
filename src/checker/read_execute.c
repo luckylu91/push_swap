@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_execute.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 14:03:02 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:22:57 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 11:18:19 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,18 @@ int	read_execute_cmds(t_stacks *stacks)
 	while (ret == 1)
 	{
 		ret = get_next_line(STDIN_FILENO, &line);
+		if (ret == 0 && ft_strlen(line) == 0)
+		{
+			free(line);
+			break;
+		}
 		if (parse_operation(stacks, line) == -1)
 			ret = -1;
-		else
-			print_
+		else if (stacks->verbose)
+			print_stacks_side(stacks);
 		free(line);
 	}
+	if (ret == -1)
+		return (error_free(stacks));
+	return (check_ok(stacks));
 }

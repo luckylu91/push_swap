@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_stacks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 15:06:52 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/02 12:01:54 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 11:12:37 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,23 @@ static void print_arrays(char **array_a, char **array_b, t_stacks *stacks, size_
 			s = array_a[i - (i_max - stacks->a_size)];
 			put_spaces(max_width[0] - ft_strlen(s));
 			ft_putstr_fd(s, STDOUT_FILENO);
-			ft_putchar_fd(' ', STDOUT_FILENO);
 		}
+		else
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		ft_putchar_fd(' ', STDOUT_FILENO);
 		if (i >= i_max - stacks->b_size)
 		{
 			s = array_b[i - (i_max - stacks->b_size)];
 			put_spaces(max_width[1] - ft_strlen(s));
 			ft_putstr_fd(s, STDOUT_FILENO);
 		}
-			ft_putchar_fd('\n', STDOUT_FILENO);
+		else
+			ft_putchar_fd(' ', STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
 }
 
-#include <stdio.h>
 void	print_stacks_side(t_stacks *stacks)
 {
 	char	**array_a;
@@ -86,8 +89,7 @@ void	print_stacks_side(t_stacks *stacks)
 
 	array_a = NULL;
 	array_b = NULL;
-	printf("a_size = %d, b_size = %d / lstsizes : %d %d\n", stacks->a_size, stacks->b_size, ft_lstsize(stacks->a), ft_lstsize(stacks->b));
-	ft_putendl_fd("- -", STDOUT_FILENO);
+	ft_putendl_fd("\n- -", STDOUT_FILENO);
 	if (lstrev_array(stacks->a, stacks->a_size, &array_a) == 1 &&
 		lstrev_array(stacks->b, stacks->b_size, &array_b) == 1)
 	{

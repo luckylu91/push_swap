@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 01:47:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 14:02:53 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 11:11:10 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,18 @@
 
 int main(int argc, char **argv)
 {
-	t_list	*a;
-	t_list	*b;
-	t_params params;
-	int	ret;
+	t_stacks	stacks;
 
-	a = NULL;
-	b = NULL;
 	if (argc == 1)
 		return (0);
-	if (handle_args(&a, &params, argc, argv) == -1)
-		return (error());
-	if (repeating_numbers(a))
-		return (error_free(&a, NULL));
-	if (read_execute_cmds(&a, &b) == -1)
-		return (error_free(&a, &b));
-	ret = evaluate_final_state(a, b);
-	free_stacks(&a, &b);
-	print_result(ret);
+	if (handle_args(&stacks, argc, argv) == -1)
+		return (-1);
+	if (repeating_numbers(stacks.a))
+		return (error_free(&stacks));
+	if (stacks.verbose)
+		print_stacks_side(&stacks);
+	if (read_execute_cmds(&stacks) == -1)
+		return (-1);
+	free_stacks(&stacks);
 	return (0);
 }

@@ -11,15 +11,15 @@ LFLAGS =	-L$(LIBFT_DIR) -lft
 IFLAGS =	-I$(LIBFT_DIR) -I$(CHK_DIR) -I$(PS_DIR) -I$(COMMON_DIR) -I$(GNL_DIR) -I$(OP_DIR)
 # SRCS =  $(addprefix src/checker/, checker.c operations/_test_ops.c \
 # 		operations/parse_operation.coperations/push.c operations/rotate.c \
-# 		operations/rotate_reverse.coperations/swap.c) 
+# 		operations/rotate_reverse.coperations/swap.c)
 # SRCS += $(addprefix src/common/, args_to_list.c errors.c free.c \
 # 		repeating_numbers.c)
 # SRCS += $(addprefix src/get_next_line/, get_next_line.c get_next_line_bonus.c \
-# 		get_next_line_utils.cget_next_line_utils_bonus.c) 
-# SRCS += $(addprefix src/pswap/, mapping.c orbit.c orbit_str.c) 
-SRCS_CHK =$(addprefix src/pswap/, bubble_sort.c copy_array.c create_permut.c \
+# 		get_next_line_utils.cget_next_line_utils_bonus.c)
+# SRCS += $(addprefix src/pswap/, mapping.c orbit.c orbit_str.c)
+SRCS_PS =$(addprefix src/pswap/, bubble_sort.c copy_array.c create_permut.c \
         destroy_permut.c mapping.c orbit.c orbit_str.c print_orbit.c)
-SRCS_PS =$(addprefix src/checker/, checker.c read_execute.c)
+SRCS_CHK =$(addprefix src/checker/, checker.c read_execute.c check_ok.c)
 SRCS_COM =$(addprefix src/common/, args_to_list.c errors.c free.c is_sorted_lst.c \
         lstrev_array.c print_stacks.c repeating_numbers.c)
 SRCS_COM +=$(addprefix src/get_next_line/, get_next_line.c get_next_line_utils.c)
