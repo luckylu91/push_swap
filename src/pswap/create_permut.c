@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_permut.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 08:24:36 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 17:07:55 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 21:01:31 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_permut	*create_permut(int *array, int n)
 		destroy_permut(permut);
 		return (NULL);
 	}
-	compute_indices(permut);
 	compute_trans(permut);
+	compute_indices(permut);
 	return (permut);
 }

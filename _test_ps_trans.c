@@ -25,4 +25,6 @@ int main()
 	print_array(permut->array_trans, 10);
 	printf("trans indices :\n");
 	print_array(permut->trans_indices, 10);
+	printf("values indices :\n");
+	print_array(permut->val_indices, 10);
 }

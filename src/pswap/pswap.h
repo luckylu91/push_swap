@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pswap.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 12:59:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 17:36:43 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 20:44:53 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	compute_trans(t_permut *permut);
 void	compute_indices(t_permut *permut);
 t_permut	*create_permut(int *array, int n);
 void	destroy_pathinfo(t_pathinfo *pi);
+int	update_path(t_permut* permut, int i);
 
 int	orbit_of(t_permut *permut, int start, t_list **orbit_lst);
 char	*orbit_str(t_list *num_lst);
