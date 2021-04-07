@@ -56,7 +56,8 @@ int main(int argc, char **argv)
 		array[i] = ft_atoi(argv[i + 1]);
 		i++;
 	}
-	permut = map_to_permut(array, n);
+	permut = create_permut(array, n);
+	// permut = map_to_permut(array, n);
 	if (!permut)
 	{
 		ft_putstr_fd("Error\n", STDERR_FILENO);

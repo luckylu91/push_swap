@@ -17,15 +17,18 @@ IFLAGS =	-I$(LIBFT_DIR) -I$(CHK_DIR) -I$(PS_DIR) -I$(COMMON_DIR) -I$(GNL_DIR) -I
 # SRCS += $(addprefix src/get_next_line/, get_next_line.c get_next_line_bonus.c \
 # 		get_next_line_utils.cget_next_line_utils_bonus.c)
 # SRCS += $(addprefix src/pswap/, mapping.c orbit.c orbit_str.c)
-SRCS_PS =$(addprefix src/pswap/, bubble_sort.c copy_array.c create_permut.c \
-        destroy_permut.c mapping.c orbit.c orbit_str.c print_orbit.c)
-SRCS_CHK =$(addprefix src/checker/, checker.c read_execute.c check_ok.c)
+SRCS_PS =$(addprefix src/pswap/, bubble_sort.c compute_bij.c compute_trans.c \
+        copy_array.c create_permut.c destroy_permut.c orbit.c orbit_str.c \
+        print_orbit.c)
+OBJS_PS =$(SRCS_PS:%.c=%.o)
+SRCS_CHK =$(addprefix src/checker/, check_ok.c checker.c read_execute.c)
+OBJS_CHK =$(SRCS_CHK:%.c=%.o)
 SRCS_COM =$(addprefix src/common/, args_to_list.c errors.c free.c is_sorted_lst.c \
         lstrev_array.c print_stacks.c repeating_numbers.c)
 SRCS_COM +=$(addprefix src/get_next_line/, get_next_line.c get_next_line_utils.c)
 SRCS_COM +=$(addprefix src/operations/, parse_operation.c push.c rotate.c \
         rotate_reverse.c swap.c)
-OBJS_COM =	$(SRCS_COM:%.c=%.o)
+OBJS_COM =$(SRCS_COM:%.c=%.o)
 OBJS_CHK =	$(OBJS_COM) $(SRCS_CHK:%.c=%.o)
 OBJS_PS =	$(OBJS_COM) $(SRCS_PS:%.c=%.o)
 

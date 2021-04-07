@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mapping.c                                          :+:      :+:    :+:   */
+/*   compute_bij.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 13:03:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/31 08:47:35 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/07 15:56:14 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,15 @@ static void	map_input_to_perm(int *array, t_permut *permut)
 	}
 }
 
-t_permut *map_to_permut(int *array, int n)
+int	compute_bijection(t_permut *permut, int *array, int n)
 {
-	t_permut *permut;
-
-	permut = create_permut(n);
-	if (!permut)
-		return (NULL);
 	copy_array(array, n, permut->bijection);
 	bubble_sort(permut->bijection, n);
 	if (repetitions_sorted(permut->bijection, n))
 	{
 		destroy_permut(permut);
-		return (NULL);
+		return (-1);
 	}
 	map_input_to_perm(array, permut);
-	return (permut);
+	return (1);
 }
