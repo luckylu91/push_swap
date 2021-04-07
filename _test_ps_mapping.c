@@ -25,6 +25,23 @@ void print_array(int *array, int n, char *sep)
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
+void	rotate_permut(t_permut *permut)
+{
+	int i;
+	int tmp;
+
+	if (permut->n <= 1)
+		return ;
+	tmp = permut->array[0];
+	i = 0;
+	while (i < permut->n - 1)
+	{
+		permut->array[i] = permut->array[i + 1];
+		i++;
+	}
+	permut->array[permut->n - 1] = tmp;
+}
+
 int main(int argc, char **argv)
 {
 	int n = argc - 1;
@@ -32,6 +49,7 @@ int main(int argc, char **argv)
 	int *array = ft_calloc(n, sizeof(int));
 	int i;
 
+	setbuf(stdout, NULL);
 	i = 0;
 	while (i < n)
 	{
@@ -46,7 +64,9 @@ int main(int argc, char **argv)
 	}
 	ft_putstr_fd("array: ", STDOUT_FILENO);
 	print_array(array, n, ", ");
-	ft_putstr_fd("bij.values: ", STDOUT_FILENO);
+	ft_putstr_fd("permut->array: ", STDOUT_FILENO);
+	print_array(permut->array, n, ", ");
+	ft_putstr_fd("permut->bijection: ", STDOUT_FILENO);
 	print_array(permut->bijection, n, ", ");
 
 	t_list *orbit;
@@ -58,5 +78,13 @@ int main(int argc, char **argv)
 	print_orbit(orbit);
 	printf("\n");
 	printf("length of orbit : %d\n", ft_lstsize(orbit));
-	print_orbits(permut);
+	i = 0;
+	while (i < permut->n)
+	{
+		printf("---\ni=%d\n", i);
+		print_orbits(permut);
+		printf("\n");
+		rotate_permut(permut);
+		i++;
+	}
 }
