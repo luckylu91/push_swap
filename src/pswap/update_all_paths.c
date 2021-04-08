@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   update_all_paths.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 01:47:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/08 14:32:36 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/08 14:40:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/08 14:42:18 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "pswap.h"
 
-int main(int argc, char **argv)
+int	update_all_paths(t_permut *permut)
 {
-	t_stacks	stacks;
+	int i;
 
-	if (argc == 1)
-		return (0);
-	if (args_to_stacks(&stacks, argc, argv) == -1)
-		return (-1);
-	if (repeating_numbers(stacks.a))
-		return (error_free(&stacks));
-	if (stacks.verbose)
-		print_stacks_side(&stacks);
-	if (read_execute_cmds(&stacks) == -1)
-		return (-1);
-	free_stacks(&stacks);
-	return (0);
+	i = permut->n - 1;
+	while (i >= 0)
+	{
+		if (update_path(permut, i) == -1)
+			return (-1);
+		i--;
+	}
+	i = permut->n - 1;
+	while (i >= 0)
+	{
+		if (update_path(permut, i) == -1)
+			return (-1);
+		i--;
+	}
+	return (1);
 }

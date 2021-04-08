@@ -3,26 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   update_paths.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 16:19:21 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 20:58:01 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/08 11:58:51 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-int	addback_item(t_pathinfo *pi, int val_path, int val_dist)
+int	valid_addition(t_pathinfo *p1, t_pathinfo *p2, int k)
 {
-	if (ft_lstdupint_back(&pi->path, val_path) == -1
-		|| ft_lstdupint_back(&pi->dists, val_dist) == -1)
-		return (-1);
-	return (1);
-}
+	int		k1;
+	int		k2;
+	int		num_decr;
+	t_list	*p2_path;
+	int		max;
 
-int	dist_cycle(int i, int j, int n)
-{
-	return ((j - i + n) % n);
+	num_decr = 0;
+	k1 = *(int*)p1->path->content;
+	p2_path = p2->path;
+	while (p2_path)
+	{
+		k2 = *(int*)p2_path->content;
+		if (k1 > k2)
+		{
+			if (num_decr == 0)
+				max = *(int*)p1->path->content;
+			num_decr++;
+		}
+		if (num_decr == 1 && k2 > max)
+			return (0);
+		if (num_decr > 1)
+			return (0);
+		if (k2 == k)
+			return (1);
+		k1 = k2;
+		p2_path = p2_path->next;
+	}
+	return (1);
 }
 
 int	increase_pathinfo(t_pathinfo *p1, t_pathinfo *p2, int dist_12, int n)
@@ -38,7 +57,7 @@ int	increase_pathinfo(t_pathinfo *p1, t_pathinfo *p2, int dist_12, int n)
 	{
 		k = *(int*)p2_path_mov->content;
 		dist_k = *(int*)p2_dists_mov->content;
-		if (dist_12 + dist_k >= n)
+		if (dist_12 + dist_k >= n || !valid_addition(p1, p2, k))
 			return (1);
 		if (addback_item(p1, k, dist_12 + dist_k) == -1)
 			return (-1);
@@ -96,12 +115,11 @@ int	update_path(t_permut* permut, int i)
 			free(pi_max);
 			return (-1);
 		}
-		if (ft_lstsize(pi_new->path) > max_len
-			|| (ft_lstsize(pi_new->path) == max_len
-				&& *(int*)ft_lstlast(pi_new->dists)->content < min_tot_dist))
+		if (pi_new->len > max_len
+			|| (pi_new->len == max_len && pi_new->tot_dist < min_tot_dist))
 		{
-			max_len = ft_lstsize(pi_new->path);
-			min_tot_dist = *(int*)ft_lstlast(pi_new->dists)->content;
+			max_len = pi_new->len;
+			min_tot_dist = pi_new->tot_dist;
 			pi_max = pi_new;
 		}
 		else
@@ -113,7 +131,9 @@ int	update_path(t_permut* permut, int i)
 	}
 	destroy_pathinfo(&permut->paths[i]);
 	permut->paths[i].len = pi_max->len;
+	permut->paths[i].tot_dist = pi_max->tot_dist;
 	permut->paths[i].path = pi_max->path;
 	permut->paths[i].dists = pi_max->dists;
 	free(pi_max);
+	return (1);
 }

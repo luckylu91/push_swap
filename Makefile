@@ -18,17 +18,18 @@ DBFLAGS =	-g3 -fsanitize=address
 # SRCS += $(addprefix src/get_next_line/, get_next_line.c get_next_line_bonus.c \
 # 		get_next_line_utils.cget_next_line_utils_bonus.c)
 # SRCS += $(addprefix src/pswap/, mapping.c orbit.c orbit_str.c)
-SRCS_PS =$(addprefix src/pswap/, compute_trans.c create_permut.c destroy_permut.c \
-        copy_array.c compute_bij.c bubble_sort.c destroy_paths.c print_orbit.c \
-        orbit.c compute_indices.c orbit_str.c update_paths.c)
+SRCS_PS =$(addprefix src/pswap/, bubble_sort.c chose_path.c compute_bij.c \
+        compute_indices.c compute_trans.c copy_array.c create_permut.c \
+        destroy_paths.c destroy_permut.c orbit.c orbit_str.c print_orbit.c \
+        select_remaining.c update_paths.c utils.c)
 OBJS_PS =$(SRCS_PS:%.c=%.o)
-SRCS_CHK =$(addprefix src/checker/, checker.c check_ok.c read_execute.c)
+SRCS_CHK =$(addprefix src/checker/, check_ok.c checker.c read_execute.c)
 OBJS_CHK =$(SRCS_CHK:%.c=%.o)
-SRCS_COM =$(addprefix src/get_next_line/, get_next_line_utils.c get_next_line.c)
-SRCS_COM +=$(addprefix src/operations/, rotate_reverse.c push.c rotate.c \
-        parse_operation.c swap.c)
-SRCS_COM +=$(addprefix src/common/, errors.c is_sorted_lst.c lstrev_array.c \
-        args_to_list.c repeating_numbers.c print_stacks.c free.c)
+SRCS_COM =$(addprefix src/common/, args_to_list.c errors.c free.c is_sorted_lst.c \
+        lstrev_array.c print_stacks.c repeating_numbers.c)
+SRCS_COM +=$(addprefix src/get_next_line/, get_next_line.c get_next_line_utils.c)
+SRCS_COM +=$(addprefix src/operations/, parse_operation.c push.c rotate.c \
+        rotate_reverse.c swap.c)
 OBJS_COM =$(SRCS_COM:%.c=%.o)
 OBJS_CHK =	$(OBJS_COM) $(SRCS_CHK:%.c=%.o)
 OBJS_PS =	$(OBJS_COM) $(SRCS_PS:%.c=%.o)

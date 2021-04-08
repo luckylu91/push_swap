@@ -6,18 +6,20 @@ void *char_from_int(void *i)
 	return (ft_itoa(*(int*)i));
 }
 
+void print_int_list(t_list *lst, char *name)
+{
+	t_list *path_str = ft_lstmap(lst, char_from_int, free);
+	char *str = ft_lststrjoin(path_str, ", ", "", "");
+	ft_lstclear(&path_str, free);
+	printf("%s\t: %s\n", name, str);
+	free(str);
+}
+
 void print_pathinfo(t_pathinfo *pi)
 {
-	t_list *path_str = ft_lstmap(pi->path, char_from_int, free);
-	char *str1 = ft_lststrjoin(path_str, ", ", "", "");
-	ft_lstclear(&path_str, free);
-	t_list *dists_str = ft_lstmap(pi->dists, char_from_int, free);
-	char *str2 = ft_lststrjoin(dists_str, ", ", "", "");
-	ft_lstclear(&dists_str, free);
-	printf("path  : %s\n", str1);
-	printf("dists : %s\n", str2);
-	free(str1);
-	free(str2);
+	print_int_list(pi->path, "path");
+	print_int_list(pi->dists, "dists");
+	printf("len : %d\n", pi->len);
 }
 
 void	print_array(int *array, int n)
@@ -34,9 +36,11 @@ void	print_array(int *array, int n)
 
 int main()
 {
-	int array[10] = {5, 0, 1, 3, 2, -4, -9, 6, 8, 7};
+	int array[10] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 	t_permut *permut;
 	int i;
+	t_list *chosen_path;
+	t_list *remaining;
 
 	permut = create_permut(array, 10);
 	printf("permut array :\n");
@@ -65,4 +69,10 @@ int main()
 		printf("\n");
 		i--;
 	}
+	chosen_path = chose_path(permut);
+	print_int_list(chosen_path, "chosen path");
+	select_remaining(permut, chosen_path, &remaining);
+	print_int_list(remaining, "remaining");
+	destroy_permut(permut);
+	ft_lstclear(&chosen_path, free);
 }

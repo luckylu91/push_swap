@@ -6,13 +6,13 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 02:30:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 16:23:01 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/08 14:32:02 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-static int arg_is_valid(char *arg)
+static int	arg_is_valid(char *arg)
 {
 	int offset;
 
@@ -46,7 +46,7 @@ static int	args_to_list(t_stacks *stacks, int n, char **argv_shifted)
 	if (n == 0)
 		return (error());
 	if (n == 1)
-	{
+	{ // ....pas besoin
 		splitted = ft_split(argv_shifted[0], " ");
 		if (!splitted)
 			return (error());
@@ -63,7 +63,8 @@ static int	args_to_list(t_stacks *stacks, int n, char **argv_shifted)
 	return (ret);
 }
 
-int	handle_args(t_stacks *stacks, int argc, char **argv)
+// TODO ne pas gere 1 argument
+int	args_to_stacks(t_stacks *stacks, int argc, char **argv)
 {
 	int i_start;
 

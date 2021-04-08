@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	t_stacks stacks;
 
 	setbuf(stdout, NULL);
-	if (handle_args(&stacks, argc, argv) == -1)
+	if (args_to_stacks(&stacks, argc, argv) == -1)
 		return (-1);
 	print_ab_together(&stacks);
 	i = 0;
