@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 12:59:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 13:58:53 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 15:20:43 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "libft.h"
 #include "common.h"
+#include "operations.h"
+#include "ps_operations.h"
 #include <unistd.h>
 
 typedef struct	s_pathinfo
