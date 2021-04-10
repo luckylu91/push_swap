@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pswap.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/28 12:59:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/08 15:52:10 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 13:58:53 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ typedef struct	s_permut
 	int	*bijection;
 	t_pathinfo	*paths;
 }				t_permut;
+
+typedef int		t_spot[2];
+
+typedef struct	s_pswap
+{
+	t_stacks	stacks;
+	t_stacks	stacks_bij;
+	t_permut	*permut;
+	t_list		*path;
+	t_list		*remaining;
+	t_spot		*spots;
+}				t_pswap;
 
 int	addback_item(t_pathinfo *pi, int val_path, int val_dist);
 int	dist_cycle(int i, int j, int n);
