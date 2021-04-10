@@ -33,20 +33,40 @@ def cut_line(line):
 
 
 def generate_srcs_lines(dirlist, suffix, include=True):
-	srcdirs = os.listdir("src")
 	i = 0
-	for srcdir in srcdirs:
-		if include and srcdir not in dirlist:
+	for root, srcdir, files in os.walk('src'):
+		if (len(root.split('/')) == 1):
 			continue
-		if not include and srcdir in dirlist:
+		if include and root.split('/')[1] not in dirlist:
 			continue
-		res_line = ("SRCS" + suffix + " =" if i == 0 else "SRCS" + suffix + " +=") + '$(addprefix {}/, '.format(os.path.join('src', srcdir))
+		elif not include and root.split('/')[1] in dirlist:
+			continue
+		res_line = "SRCS" + suffix + (" =" if i == 0 else " +=") \
+			+ '$(addprefix {}/, '.format(root)
 		i += 1
-		files = ['/'.join(y.split('/')[2:]) for x in os.walk('src/' + srcdir) for y in glob.glob(os.path.join(x[0], '*.c'))]
-		files = filter(lambda f: not f.startswith('_'), files)
+		files = filter(
+			lambda f: not os.path.split(f)[-1].startswith('_') \
+					and not f.endswith('.h') \
+					and not f.endswith('.txt')
+			, files)
 		res_line += ' '.join(files) + ')'
 		print(cut_line(res_line))
 	print("OBJS" + suffix + " =$(SRCS" + suffix + ":%.c=%.o)")
+
+	# srcdirs = os.listdir("src")
+	# i = 0
+	# for srcdir in srcdirs:
+	# 	if include and srcdir not in dirlist:
+	# 		continue
+	# 	if not include and srcdir in dirlist:
+	# 		continue
+	# 	res_line = ("SRCS" + suffix + " =" if i == 0 else "SRCS" + suffix + " +=") + '$(addprefix {}/, '.format(os.path.join('src', srcdir))
+	# 	i += 1
+	# 	files = ['/'.join(y.split('/')[2:]) for x in os.walk('src/' + srcdir) for y in glob.glob(os.path.join(x[0], '*.c'))]
+	# 	files = filter(lambda f: not f.startswith('_'), files)
+	# 	res_line += ' '.join(files) + ')'
+	# 	print(cut_line(res_line))
+	# print("OBJS" + suffix + " =$(SRCS" + suffix + ":%.c=%.o)")
 
 generate_srcs_lines(['pswap'], "_PS")
 generate_srcs_lines(['checker'], "_CHK")

@@ -1,1 +1,0 @@
-gcc *.c -I../../libft -L../../libft -lft -I..

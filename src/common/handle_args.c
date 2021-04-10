@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   handle_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 01:47:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 13:39:17 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/10 13:36:42 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/10 13:37:58 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "common.h"
 
-int main(int argc, char **argv)
+int	handle_args(t_stacks *stacks, int argc, char **argv)
 {
-	t_stacks	stacks;
-	int			ret_args;
-
-	ret_args = handle_args(&stacks, argc, argv);
-	if (ret_args != 1)
-		return (ret_args);
-	if (read_execute_cmds(&stacks) == -1)
+	if (argc == 1)
+		return (0);
+	if (args_to_stacks(stacks, argc, argv) == -1)
 		return (-1);
-	free_stacks(&stacks);
-	return (0);
+	if (repeating_numbers(stacks->a))
+		return (error_free(stacks));
+	if (stacks->verbose)
+		print_stacks_side(stacks);
+	return (1);
 }

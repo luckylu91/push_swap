@@ -1,0 +1,4432 @@
+The file ft_memccpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:47:09 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 08:17:04 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
+{
+	unsigned char	*dst_uc;
+	unsigned char	*src_uc;
+	unsigned char	c_uc;
+	size_t			i;
+
+	dst_uc = (unsigned char*)dst;
+	src_uc = (unsigned char*)src;
+	c_uc = (unsigned char)c;
+	i = 0;
+	while (i < n)
+	{
+		dst_uc[i] = src_uc[i];
+		if (src_uc[i] == c_uc)
+			return (dst_uc + i + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+The file Makefile contains:
+NAME = libft.a
+
+CC = gcc
+
+CFLAGS = -Wall -Wextra -Werror
+
+SRCS =	ft_all_in.c \
+		ft_calloc.c \
+		ft_split.c \
+		ft_substr.c \
+		ft_atoi.c \
+		ft_array.c \
+		ft_arrayclear.c \
+		ft_bzero.c \
+		ft_isalnum.c \
+		ft_isalpha.c \
+		ft_isascii.c \
+		ft_isdigit.c \
+		ft_isprint.c \
+		ft_itoa.c \
+		ft_memccpy.c \
+		ft_memchr.c \
+		ft_memcmp.c \
+		ft_memcpy.c \
+		ft_memmove.c  \
+		ft_memset.c \
+		ft_putchar_fd.c \
+		ft_putendl_fd.c \
+		ft_putnbr_fd.c \
+		ft_putstr_fd.c \
+		ft_strchr.c \
+		ft_strdup.c \
+		ft_strjoin.c \
+		ft_strlcat.c \
+		ft_strlcpy.c \
+		ft_strlen.c \
+		ft_strmapi.c \
+		ft_strcmp.c \
+		ft_strncmp.c \
+		ft_strnstr.c \
+		ft_strrchr.c \
+		ft_strskip.c \
+		ft_strtrim.c \
+		ft_tolower.c \
+		ft_toupper.c \
+		ft_any.c \
+		ft_strindex.c \
+		ft_intindex.c \
+		ft_splitlen.c \
+		ft_isspace.c \
+		ft_atoi_overflows.c
+
+BONUS = ft_lstadd_front.c \
+		ft_lstadd_back.c \
+		ft_lstcpy.c \
+		ft_lstdelone.c \
+		ft_lstremove.c \
+		ft_lstsize.c \
+		ft_lstfind.c \
+		ft_lstlast.c \
+		ft_lstiter.c \
+		ft_lstiter_arg.c \
+		ft_lstreviter.c \
+		ft_lstreviter_arg.c \
+		ft_lstmap.c \
+		ft_lstnew.c \
+		ft_lstcat.c \
+		ft_lstclear.c \
+		ft_lstany.c \
+		ft_lstany2.c \
+		ft_lststep.c \
+		ft_lstskip.c \
+		ft_lstadd_back_content.c \
+		ft_lstdup_back.c \
+		ft_lstdupint_back.c \
+		ft_lststrjoin.c
+
+OBJS = $(SRCS:.c=.o)
+
+OBJS_BONUS = $(BONUS:.c=.o)
+
+RM = rm -f
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	ar -rcs $@ $^
+
+bonus: $(OBJS) $(OBJS_BONUS)
+	ar -rcs $(NAME) $^
+
+%.o: %.c libft.h
+	$(CC) -c $< $(CFLAGS)
+
+clean:
+	$(RM) $(OBJS) $(OBJS_BONUS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re bonus
+
+The file ft_lststrjoin.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lststrjoin.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/29 16:33:31 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/29 16:54:55 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static int lststr_cat_len(t_list *lst)
+{
+	if (!lst)
+		return (0);
+	return (ft_strlen((char*)lst->content) + lststr_cat_len(lst->next));
+}
+
+static char *strcat_and_move(char *str, char *addition)
+{
+	while (*addition)
+	{
+		*str = *addition;
+		str++;
+		addition++;
+	}
+	return (str);
+}
+
+static void lststr_cat_sep(char *str, t_list *lst, char *sep)
+{
+	if (!lst)
+		return ;
+	str = strcat_and_move(str, (char*)lst->content);
+	if (lst->next)
+		str = strcat_and_move(str, sep);
+	lststr_cat_sep(str, lst->next, sep);
+}
+
+char	*ft_lststrjoin(t_list *lst, char *sep, char *left, char *right)
+{
+	int		n;
+	size_t	left_len;
+	size_t	right_len;
+	size_t	tot_len;
+	char	*res;
+
+	n = ft_lstsize(lst);
+	left_len = ft_strlen(left);
+	right_len = ft_strlen(right);
+	tot_len = lststr_cat_len(lst) + left_len + right_len;
+	if (n > 0)
+		tot_len += (n - 1) * ft_strlen(sep);
+	res = ft_calloc(tot_len + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	if (left)
+		strcat_and_move(res, left);
+	lststr_cat_sep(res + left_len, lst, sep);
+	if (right)
+		strcat_and_move(res + (tot_len - right_len), right);
+	return (res);
+}
+
+The file ft_memset.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:45:48 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 11:59:42 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*s_uchar;
+	unsigned char	c_uchar;
+	size_t			i;
+
+	s_uchar = (unsigned char*)s;
+	c_uchar = (unsigned char)c;
+	i = 0;
+	while (i < n)
+		s_uchar[i++] = c_uchar;
+	return (s);
+}
+
+The file ft_strtrim.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 11:11:21 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:57:27 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static int	in_set(char c, char const *set)
+{
+	while (*set != '\0')
+	{
+		if (c == *set)
+			return (1);
+		set++;
+	}
+	return (0);
+}
+
+char		*ft_strtrim(char const *s1, char const *set)
+{
+	unsigned int	start;
+	size_t			len;
+	size_t			accum;
+
+	if (s1 == NULL || set == NULL)
+		return (NULL);
+	start = 0;
+	len = 0;
+	accum = 0;
+	while (s1[start + accum + len] != '\0')
+	{
+		if (in_set(s1[start + accum + len], set))
+		{
+			start += (len == 0);
+			accum += (len != 0);
+		}
+		else
+		{
+			len += accum + 1;
+			accum = 0;
+		}
+	}
+	return (ft_substr(s1, start, len));
+}
+
+The file ft_strskip.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strskip.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/22 19:11:05 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/22 20:18:45 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strskip(char const *s, char *delim, int skip_sep, size_t *flen)
+{
+	int i;
+
+	if (flen != NULL)
+		*flen = 0;
+	while (*s != '\0')
+	{
+		i = -1;
+		while (delim[++i])
+		{
+			if (*s == delim[i])
+				break ;
+		}
+		if ((skip_sep && !delim[i]) || (!skip_sep && *s == delim[i]))
+			return ((char*)s);
+		if (flen != NULL)
+			(*flen)++;
+		s++;
+	}
+	return ((char*)s);
+}
+
+The file ft_split.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 11:16:45 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 15:00:29 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static char const	*skip(char const *s, char *delim, int skip_sep,
+	size_t *flen)
+{
+	int i;
+
+	if (flen != NULL)
+		*flen = 0;
+	while (*s != '\0')
+	{
+		i = -1;
+		while (delim[++i])
+		{
+			if (*s == delim[i])
+				break ;
+		}
+		if ((skip_sep && !delim[i]) || (!skip_sep && *s == delim[i]))
+			return (s);
+		if (flen != NULL)
+			(*flen)++;
+		s++;
+	}
+	return (s);
+}
+
+static char const	*skip_field(char const *s, char *delim, size_t *flen)
+{
+	s = skip(s, delim, 0, flen);
+	s = skip(s, delim, 1, NULL);
+	return (s);
+}
+
+static void			free_previous(char **array, size_t i)
+{
+	size_t	j;
+
+	j = 0;
+	while (j < i)
+	{
+		free(array[j]);
+		j++;
+	}
+	free(array);
+}
+
+static int			pass(char const *s, char *delim, char **s_array,
+		size_t *n_fields)
+{
+	size_t		flen;
+	size_t		i;
+	char const	*s_prev;
+
+	i = 0;
+	while (*s != '\0')
+	{
+		s_prev = s;
+		s = skip_field(s, delim, &flen);
+		if (s_array != NULL)
+		{
+			s_array[i] = ft_substr(s_prev, 0, flen);
+			if (s_array[i] == NULL)
+			{
+				free_previous(s_array, i);
+				return (-1);
+			}
+		}
+		i++;
+	}
+	if (n_fields != NULL)
+		*n_fields = i;
+	return (0);
+}
+
+char				**ft_split(char const *s, char *delim)
+{
+	size_t	n_fields;
+	char	**s_array;
+
+	if (s == NULL)
+		return (NULL);
+	s = skip(s, delim, 1, NULL);
+	pass(s, delim, NULL, &n_fields);
+	s_array = malloc((n_fields + 1) * sizeof(char*));
+	if (s_array == NULL)
+		return (NULL);
+	if (pass(s, delim, s_array, NULL) == -1)
+		return (NULL);
+	s_array[n_fields] = NULL;
+	return (s_array);
+}
+
+The file ft_lstskip.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstskip.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/25 14:33:29 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/25 14:35:12 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstskip(t_list *lst, int (*skip)(void *content))
+{
+	while (lst)
+	{
+		if (!(*skip)(lst->content))
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+The file ft_lstlast.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:47:52 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:00:45 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
+}
+
+The file ft_lstcpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstcpy.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 13:29:32 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/19 15:53:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstcpy(t_list *src, t_list **adest, size_t content_size)
+{
+	void	*new_content;
+
+	if (!adest)
+		return (0);
+	if (!src)
+		return (1);
+	*adest = NULL;
+	new_content = NULL;
+	if (!(new_content = malloc(content_size))
+			|| !(*adest = ft_lstnew(new_content))
+			|| !ft_lstcpy(src->next, &(*adest)->next, content_size))
+	{
+		free(new_content);
+		free(*adest);
+		return (0);
+	}
+	ft_memcpy(new_content, src->content, content_size);
+	return (1);
+}
+
+The file ft_memmove.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:13:33 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:44:13 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static void	copy(unsigned char *dst, unsigned char *src, size_t n, int inc)
+{
+	size_t	start;
+	size_t	stop;
+	size_t	i;
+
+	if (inc > 0)
+	{
+		start = 0;
+		stop = n;
+		inc = 1;
+	}
+	else
+	{
+		start = n - 1;
+		stop = -1;
+		inc = -1;
+	}
+	i = start;
+	while (i != stop)
+	{
+		dst[i] = src[i];
+		i += inc;
+	}
+}
+
+void		*ft_memmove(void *dst, const void *src, size_t n)
+{
+	unsigned char	*dst_uc;
+	unsigned char	*src_uc;
+
+	dst_uc = (unsigned char*)dst;
+	src_uc = (unsigned char*)src;
+	if (src_uc == dst_uc)
+		return (dst);
+	else if (dst_uc - src_uc < 0)
+		copy(dst_uc, src_uc, n, 1);
+	else
+		copy(dst_uc, src_uc, n, -1);
+	return (dst);
+}
+
+The file ft_atoi_overflows.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi_overflows.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/01 14:16:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:28:53 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include "limits.h"
+
+int			ft_atoi_overflows(const char *str)
+{
+	long	res;
+	long	sgn;
+
+	res = 0;
+	sgn = 1;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+	{
+		sgn = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		res = res * 10 + (*str - '0');
+		if (sgn * res > (long)INT_MAX || sgn * res < (long)INT_MIN)
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+The file ft_lststep.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lststep.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/25 14:27:32 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/25 14:34:49 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lststep(t_list *lst, size_t n_steps)
+{
+	while (lst)
+	{
+		if (n_steps == 0)
+			return (lst);
+		lst = lst->next;
+		n_steps--;
+	}
+	return (NULL);
+}
+The file ft_lstiter.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:12:04 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 14:13:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	while (lst != NULL)
+	{
+		(*f)(lst->content);
+		lst = lst->next;
+	}
+}
+
+The file ft_strrchr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:19:53 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 08:31:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strrchr(const char *s, int c)
+{
+	const char	*s_prev;
+
+	if (c == '\0')
+		return (ft_strchr(s, '\0'));
+	s_prev = NULL;
+	while ((s = ft_strchr(s, c)) != NULL)
+	{
+		s_prev = s;
+		s++;
+	}
+	return ((char*)s_prev);
+}
+
+The file ft_strlcat.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 07:05:08 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 07:13:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlcat(char *dst, const char *src, size_t n)
+{
+	char	*dst_end;
+	size_t	dst_len;
+
+	dst_end = ft_strchr(dst, '\0');
+	dst_len = (size_t)(dst_end - dst);
+	if (dst_len >= n)
+		return (n + ft_strlen(src));
+	n -= dst_len;
+	ft_strlcpy(dst_end, src, n);
+	return (dst_len + ft_strlen(src));
+}
+
+The file ft_splitlen.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_splitlen.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/01 13:48:39 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 13:50:45 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_splitlen(char **splitted)
+{
+	size_t i;
+
+	if (!splitted)
+		return (0);
+	i = 0;
+	while (splitted[i])
+		i++;
+	return (i);
+}
+
+The file ft_tolower.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:13:38 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:30:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c - 'A' + 'a');
+	else
+		return (c);
+}
+
+The file ft_intindex.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_intindex.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 13:31:36 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 13:59:47 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_intindex(const int *array, size_t n, int val)
+{
+	size_t i;
+
+	i = 0;
+	while (i < n)
+	{
+		if (array[i] == val)
+			return ((int)i);
+		i++;
+	}
+	return (-1);
+}
+
+The file ft_lstadd_front.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:54:02 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 13:54:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstadd_front(t_list **alst, t_list *new)
+{
+	if (alst == NULL)
+		return ;
+	new->next = *alst;
+	*alst = new;
+}
+
+The file ft_lstmap.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:14:01 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:48:04 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+	t_list	*new;
+	t_list	*new_mov;
+	t_list	*new_elem;
+
+	if (lst == NULL)
+		return (NULL);
+	if ((new = ft_lstnew((*f)(lst->content))) == NULL)
+		return (NULL);
+	new_mov = new;
+	while ((lst = lst->next) != NULL)
+	{
+		if ((new_elem = ft_lstnew((*f)(lst->content))) == NULL)
+		{
+			ft_lstclear(&new, del);
+			return (NULL);
+		}
+		new_mov->next = new_elem;
+		new_mov = new_mov->next;
+	}
+	return (new);
+}
+
+The file ft_strnstr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 07:15:14 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:28:40 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strnstr(const char *hay, const char *needle, size_t n)
+{
+	size_t	needle_len;
+	size_t	hay_len;
+	size_t	i;
+	size_t	i_max;
+	size_t	j;
+
+	if (needle[0] == '\0')
+		return ((char*)hay);
+	needle_len = ft_strlen(needle);
+	hay_len = ft_strlen(hay);
+	if (needle_len > hay_len || needle_len > n)
+		return (NULL);
+	i_max = hay_len < n ? hay_len - needle_len : n - needle_len;
+	i = 0;
+	while (i <= i_max)
+	{
+		j = 0;
+		while (j < needle_len && hay[i + j] == needle[j])
+			j++;
+		if (j == needle_len)
+			return ((char*)hay + i);
+		i++;
+	}
+	return (NULL);
+}
+
+The file ft_lstfind.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstfind.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 13:09:21 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 15:00:05 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstfind(t_list *lst, void *content, size_t content_size)
+{
+	while (lst)
+	{
+		if (!ft_memcmp(lst->content, content, content_size))
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+The file ft_lstdup_back.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdup_back.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 14:05:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 14:09:12 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstdup_back(t_list **alst, void *aval, size_t size)
+{
+	void *aval_copy;
+
+	aval_copy = malloc(size);
+	if (!aval_copy)
+		return (-1);
+	ft_memcpy(aval_copy, aval, size);
+	if (!ft_lstadd_back_content(alst, aval_copy))
+	{
+		free(aval_copy);
+		return (-1);
+	}
+	return (1);
+}
+
+The file ft_memchr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:46:13 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:49:59 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	unsigned char	*s_uc;
+	unsigned char	c_uc;
+	size_t			i;
+
+	s_uc = (unsigned char*)s;
+	c_uc = (unsigned char)c;
+	i = 0;
+	while (i < n)
+	{
+		if (s_uc[i] == c_uc)
+			return (s_uc + i);
+		i++;
+	}
+	return (NULL);
+}
+
+The file ft_strlen.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:00:53 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/29 16:51:52 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+The file ft_toupper.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:12:03 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 07:26:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_toupper(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (c - 'a' + 'A');
+	else
+		return (c);
+}
+
+The file ft_lstany.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstany.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/24 15:31:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 02:47:15 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int ft_lstany(t_list *lst, int (*booleval)(void *content))
+{
+	while (lst)
+	{
+		if ((*booleval)(lst->content))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
+The file ft_calloc.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 09:43:51 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 14:57:33 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	size_t	total_size;
+	void	*m;
+
+	total_size = count * size;
+	m = malloc(total_size);
+	if (m == NULL)
+		return (NULL);
+	ft_bzero(m, total_size);
+	return (m);
+}
+
+The file ft_lstiter_arg.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstiter_arg.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:12:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 12:39:41 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstiter_arg(t_list *lst, void *arg, void (*f)(void *cont, void *arg))
+{
+	while (lst != NULL)
+	{
+		(*f)(lst->content, arg);
+		lst = lst->next;
+	}
+}
+
+The file ft_strncmp.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:33:32 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:53:08 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && s1[i] != '\0' && s1[i] == s2[i])
+		i++;
+	if (i == n)
+		return (0);
+	return ((int)(unsigned char)s1[i] - (int)(unsigned char)s2[i]);
+}
+
+The file ft_isalpha.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:02:55 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:06:11 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_isalpha(int c)
+{
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+}
+
+The file ft_itoa.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 10:17:12 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:49:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static void	compute_digits(int n, int sgn, int *size, char *digits)
+{
+	int		i;
+
+	if (n == 0)
+	{
+		*size = 1;
+		digits[0] = '0';
+		return ;
+	}
+	i = 0;
+	while (n != 0)
+	{
+		digits[i] = '0' + sgn * (n % 10);
+		n /= 10;
+		i++;
+	}
+	*size = i;
+}
+
+static void	reverse_fill(char *s, char *digits, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		s[i] = digits[size - 1 - i];
+		i++;
+	}
+}
+
+char		*ft_itoa(int n)
+{
+	char	digits[10];
+	int		sgn;
+	int		size;
+	char	*res;
+	char	*res_mov;
+
+	sgn = (n < 0) ? -1 : 1;
+	compute_digits(n, sgn, &size, digits);
+	res = malloc((size + 1 + (sgn == -1)) * sizeof(char));
+	if (res == NULL)
+		return (NULL);
+	res_mov = res;
+	if (sgn == -1)
+		*(res_mov++) = '-';
+	reverse_fill(res_mov, digits, size);
+	res_mov[size] = '\0';
+	return (res);
+}
+
+The file ft_putchar_fd.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:02:01 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:02:24 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+The file ft_any.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_any.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/27 11:15:13 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/02 11:30:13 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_any(void *array, size_t len, size_t size, int (*booleval)(void*))
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		if ((*booleval)(array))
+			return (1);
+		array += size;
+		i += 1;
+	}
+	return (0);
+}
+
+The file libft.h contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:08:26 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:21:50 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef LIBFT_H
+# define LIBFT_H
+
+# include <stdlib.h>
+
+typedef struct		s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
+
+int					ft_all_in(char *str, char *set);
+void				**ft_array(size_t size1, size_t size2, size_t type_size);
+void				ft_arrayclear(void **array, size_t size);
+void				*ft_memset(void *s, int c, size_t n);
+void				ft_bzero(void *s, size_t n);
+void				*ft_memcpy(void *dst, const void *src, size_t n);
+void				*ft_memccpy(void *dst, const void *src, int c, size_t n);
+void				*ft_memmove(void *dst, const void *src, size_t n);
+void				*ft_memchr(const void *s, int c, size_t n);
+int					ft_memcmp(const void *s1, const void *s2, size_t n);
+size_t				ft_strlen(const char *s);
+int					ft_isalpha(int c);
+int					ft_isdigit(int c);
+int					ft_isalnum(int c);
+int					ft_isascii(int c);
+int					ft_isprint(int c);
+int					ft_toupper(int c);
+int					ft_tolower(int c);
+char				*ft_strchr(const char *s, int c);
+char				*ft_strrchr(const char *s, int c);
+int					ft_strcmp(const char *s1, const char *s2);
+int					ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t				ft_strlcpy(char *dst, const char *src, size_t n);
+size_t				ft_strlcat(char *dst, const char *src, size_t n);
+char				*ft_strnstr(const char *hay, const char *needle, size_t n);
+char				*ft_strskip(char const *s, char *delim, int skip_sep,
+						size_t *flen);
+int					ft_atoi(const char *str);
+void				*ft_calloc(size_t count, size_t size);
+char				*ft_strdup(const char *s);
+char				*ft_substr(char const *s, unsigned int start, size_t len);
+char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strtrim(char const *s1, char const *set);
+char				**ft_split(char const *s, char *delim);
+char				*ft_itoa(int n);
+char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+void				ft_putchar_fd(char c, int fd);
+void				ft_putstr_fd(char *s, int fd);
+void				ft_putendl_fd(char *s, int fd);
+void				ft_putnbr_fd(int n, int fd);
+t_list				*ft_lstnew(void *content);
+void				ft_lstadd_front(t_list **alst, t_list *new);
+int					ft_lstsize(t_list *lst);
+t_list				*ft_lstlast(t_list *lst);
+t_list				*ft_lstfind(t_list *lst, void *content,
+						size_t content_size);
+void				ft_lstadd_back(t_list **alst, t_list *new);
+int					ft_lstcpy(t_list *src, t_list **adest,
+						size_t content_size);
+void				ft_lstdelone(t_list *lst, void (*del)(void*));
+t_list				*ft_lstremove(t_list **alst, void *content,
+						size_t content_size);
+void				ft_lstclear(t_list **lst, void (*del)(void*));
+void				ft_lstiter(t_list *lst, void (*f)(void *));
+void				ft_lstiter_arg(t_list *lst, void *arg,
+									void (*f)(void *cont, void *arg));
+void				ft_lstreviter(t_list *lst, void (*f)(void *));
+void				ft_lstreviter_arg(t_list *lst, void *arg,
+										void (*f)(void *cont, void *arg));
+t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
+						void (*del)(void *));
+t_list				*ft_lstcat(t_list *lst1, t_list *lst2);
+int					ft_lstany(t_list *lst, int (*booleval)(void *content));
+int					ft_lstany2(t_list *lst, void *ref,
+								int (*booleval)(void *cont, void *ref));
+t_list				*ft_lststep(t_list *lst, size_t n_steps);
+t_list				*ft_lstskip(t_list *lst, int (*skip)(void *content));
+int					ft_lstadd_back_content(t_list **alst, void *content);
+int					ft_any(void *array, size_t len, size_t size,
+								int (*booleval)(void*));
+int					ft_strindex(const char *s, int c);
+int					ft_intindex(const int *array, size_t n, int val);
+int					ft_lstdup_back(t_list **alst, void *aval, size_t size);
+int					ft_lstdupint_back(t_list **alst, int k);
+char				*ft_lststrjoin(t_list *lst, char *sep, char *left,
+									char *right);
+size_t				ft_splitlen(char **splitted);
+int					ft_isspace(int c);
+int					ft_atoi_overflows(const char *str);
+
+#endif
+
+The file ft_lstremove.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstremove.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 16:01:01 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 15:00:21 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstremove(t_list **alst, void *content, size_t content_size)
+{
+	t_list *lst;
+	t_list *prev;
+
+	prev = NULL;
+	lst = *alst;
+	while (lst)
+	{
+		if (!ft_memcmp(lst->content, content, content_size))
+		{
+			if (prev)
+				prev->next = lst->next;
+			else
+				*alst = lst->next;
+			lst->next = NULL;
+			return (lst);
+		}
+		prev = lst;
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+The file ft_memcmp.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:50:24 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:55:55 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	unsigned char	*s1_uc;
+	unsigned char	*s2_uc;
+	size_t			i;
+
+	s1_uc = (unsigned char*)s1;
+	s2_uc = (unsigned char*)s2;
+	i = 0;
+	while (i < n)
+	{
+		if (s1_uc[i] != s2_uc[i])
+			return ((int)s1_uc[i] - (int)s2_uc[i]);
+		i++;
+	}
+	return (0);
+}
+
+The file ft_isspace.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/01 14:20:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:20:42 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_isspace(int c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v'
+			|| c == '\f' || c == '\r');
+}
+
+The file ft_array.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_array.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/01 15:40:21 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 14:59:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static void	**free_error(void **grid, size_t size1)
+{
+	size_t i;
+
+	i = 0;
+	while (i < size1)
+	{
+		free(grid[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+void		**ft_array(size_t size1, size_t size2, size_t type_size)
+{
+	size_t	i;
+	void	**grid;
+
+	if (!(grid = ft_calloc(size1, sizeof(void*))))
+		return (NULL);
+	i = 0;
+	while (i < size1)
+	{
+		if (!(grid[i] = ft_calloc(size2, type_size)))
+			return (free_error(grid, size1));
+		i++;
+	}
+	return (grid);
+}
+
+The file ft_putendl_fd.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:02:11 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:02:24 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+}
+
+The file ft_lstdupint_back.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdupint_back.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 14:10:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 14:11:24 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstdupint_back(t_list **alst, int k)
+{
+	return ft_lstdup_back(alst, &k, sizeof(int));
+}
+
+The file ft_strdup.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 09:47:46 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 10:11:55 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strdup(const char *s)
+{
+	char	*s_dup;
+	size_t	s_len;
+
+	s_len = ft_strlen(s);
+	if ((s_dup = malloc(s_len + 1)) == NULL)
+		return (NULL);
+	return (ft_memcpy(s_dup, s, s_len + 1));
+}
+
+The file ft_isdigit.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:06:22 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+The file ft_lstsize.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:45:53 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 13:47:26 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_lstsize(t_list *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+
+The file ft_all_in.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_all_in.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/17 14:48:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 16:57:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_all_in(char *str, char *set)
+{
+	int i;
+
+	if (!str)
+		return (1);
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_strchr(set, str[i]))
+			return (0);
+	}
+	return (1);
+}
+
+The file ft_strchr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:16:03 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:26:50 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return ((char*)s);
+		s++;
+	}
+	if (c == '\0')
+		return ((char*)s);
+	return (NULL);
+}
+
+The file ft_strcmp.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/03 14:13:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/03 14:39:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s1[i] == s2[i])
+		i++;
+	return ((int)(unsigned char)s1[i] - (int)(unsigned char)s2[i]);
+}
+
+The file ft_lstadd_back.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:50:09 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:00:15 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstadd_back(t_list **alst, t_list *new)
+{
+	if (alst == NULL)
+		return ;
+	else if (*alst == NULL)
+		*alst = new;
+	else
+		ft_lstlast(*alst)->next = new;
+}
+
+The file ft_lstreviter_arg.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstreviter_arg.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 12:30:43 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 12:46:31 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstreviter_arg(t_list *lst, void *arg,
+	void (*f)(void *cont, void *arg))
+{
+	if (!lst)
+		return ;
+	ft_lstreviter_arg(lst->next, arg, f);
+	(*f)(lst->content, arg);
+}
+
+The file ft_strlcpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:53:18 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 17:01:33 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t n)
+{
+	char	*dst_end;
+
+	if (src == NULL || dst == NULL)
+		return (0);
+	if (n > 0)
+	{
+		dst_end = ft_memccpy(dst, src, '\0', n - 1);
+		if (dst_end == NULL)
+			dst[n - 1] = '\0';
+	}
+	return (ft_strlen(src));
+}
+
+The file ft_lstany2.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstany2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/27 02:45:59 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 02:47:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int ft_lstany2(t_list *lst, void *ref, int (*booleval)(void *cont, void *ref))
+{
+	while (lst)
+	{
+		if ((*booleval)(lst->content, ref))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
+The file ft_lstcat.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstcat.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 10:07:08 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 14:59:59 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstcat(t_list *lst1, t_list *lst2)
+{
+	if (!lst1)
+		return (lst2);
+	if (!lst2)
+		return (lst1);
+	ft_lstlast(lst1)->next = lst2;
+	return (lst1);
+}
+
+The file ft_isprint.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:09:50 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isprint(int c)
+{
+	return (c >= 32 && c <= 126);
+}
+
+The file ft_strindex.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strindex.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/27 15:49:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 15:50:47 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strindex(const char *s, int c)
+{
+	char *strchr_result;
+
+	strchr_result = ft_strchr(s, c);
+	if (!strchr_result)
+		return (-1);
+	return ((int)(strchr_result - s));
+}
+
+The file ft_memcpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:46:10 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 17:13:27 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	unsigned char	*dst_uc;
+	unsigned char	*src_uc;
+	size_t			i;
+
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	dst_uc = (unsigned char*)dst;
+	src_uc = (unsigned char*)src;
+	i = 0;
+	while (i < n)
+	{
+		dst_uc[i] = src_uc[i];
+		i++;
+	}
+	return (dst);
+}
+
+The file ft_strmapi.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:03:13 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:58:26 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
+{
+	char			*s2;
+	size_t			s_len;
+	unsigned int	i;
+
+	if (s == NULL)
+		return (NULL);
+	s_len = ft_strlen(s);
+	s2 = malloc(s_len + 1);
+	if (s2 == NULL)
+		return (NULL);
+	s2[s_len] = '\0';
+	i = 0;
+	while (s[i] != '\0')
+	{
+		s2[i] = (*f)(i, s[i]);
+		i++;
+	}
+	return (s2);
+}
+
+The file ft_lstclear.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:05:49 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/01 16:35:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstclear(t_list **lst, void (*del)(void*))
+{
+	t_list	*lst_mov1;
+	t_list	*lst_mov2;
+
+	if (lst == NULL)
+		return ;
+	lst_mov1 = *lst;
+	while (lst_mov1 != NULL)
+	{
+		lst_mov2 = lst_mov1->next;
+		ft_lstdelone(lst_mov1, del);
+		lst_mov1 = lst_mov2;
+	}
+	*lst = NULL;
+}
+
+The file ft_lstdelone.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:02:51 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:00:31 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	(*del)(lst->content);
+	free(lst);
+}
+
+The file ft_isascii.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:08:20 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isascii(int c)
+{
+	return (c >= 0 && c <= 127);
+}
+
+The file ft_lstadd_back_content.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_back_content.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/25 17:30:52 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/25 17:31:52 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstadd_back_content(t_list **alst, void *content)
+{
+	t_list *new_elem;
+
+	if (!alst)
+		return (0);
+	new_elem = ft_lstnew(content);
+	if (!new_elem)
+		return (0);
+	ft_lstadd_back(alst, new_elem);
+	return (1);
+}
+
+The file ft_substr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 10:17:26 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:55:57 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	s_len;
+	size_t	new_len;
+	char	*s_new;
+
+	if (s == NULL)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		new_len = 0;
+	else
+		new_len = (s_len - start) < len ? s_len - start : len;
+	s_new = malloc(new_len + 1);
+	if (s_new == NULL)
+		return (NULL);
+	s_new[new_len] = '\0';
+	if (start < s_len)
+		ft_memcpy(s_new, s + start, new_len);
+	return (s_new);
+}
+
+The file ft_lstnew.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:09:18 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:09:27 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*l;
+
+	if ((l = malloc(sizeof(t_list))) == NULL)
+		return (NULL);
+	l->content = content;
+	l->next = NULL;
+	return (l);
+}
+
+The file my-directory-list.txt contains:
+The file ft_memccpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:47:09 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 08:17:04 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
+{
+	unsigned char	*dst_uc;
+	unsigned char	*src_uc;
+	unsigned char	c_uc;
+	size_t			i;
+
+	dst_uc = (unsigned char*)dst;
+	src_uc = (unsigned char*)src;
+	c_uc = (unsigned char)c;
+	i = 0;
+	while (i < n)
+	{
+		dst_uc[i] = src_uc[i];
+		if (src_uc[i] == c_uc)
+			return (dst_uc + i + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+The file Makefile contains:
+NAME = libft.a
+
+CC = gcc
+
+CFLAGS = -Wall -Wextra -Werror
+
+SRCS =	ft_all_in.c \
+		ft_calloc.c \
+		ft_split.c \
+		ft_substr.c \
+		ft_atoi.c \
+		ft_array.c \
+		ft_arrayclear.c \
+		ft_bzero.c \
+		ft_isalnum.c \
+		ft_isalpha.c \
+		ft_isascii.c \
+		ft_isdigit.c \
+		ft_isprint.c \
+		ft_itoa.c \
+		ft_memccpy.c \
+		ft_memchr.c \
+		ft_memcmp.c \
+		ft_memcpy.c \
+		ft_memmove.c  \
+		ft_memset.c \
+		ft_putchar_fd.c \
+		ft_putendl_fd.c \
+		ft_putnbr_fd.c \
+		ft_putstr_fd.c \
+		ft_strchr.c \
+		ft_strdup.c \
+		ft_strjoin.c \
+		ft_strlcat.c \
+		ft_strlcpy.c \
+		ft_strlen.c \
+		ft_strmapi.c \
+		ft_strcmp.c \
+		ft_strncmp.c \
+		ft_strnstr.c \
+		ft_strrchr.c \
+		ft_strskip.c \
+		ft_strtrim.c \
+		ft_tolower.c \
+		ft_toupper.c \
+		ft_any.c \
+		ft_strindex.c \
+		ft_intindex.c \
+		ft_splitlen.c \
+		ft_isspace.c \
+		ft_atoi_overflows.c
+
+BONUS = ft_lstadd_front.c \
+		ft_lstadd_back.c \
+		ft_lstcpy.c \
+		ft_lstdelone.c \
+		ft_lstremove.c \
+		ft_lstsize.c \
+		ft_lstfind.c \
+		ft_lstlast.c \
+		ft_lstiter.c \
+		ft_lstiter_arg.c \
+		ft_lstreviter.c \
+		ft_lstreviter_arg.c \
+		ft_lstmap.c \
+		ft_lstnew.c \
+		ft_lstcat.c \
+		ft_lstclear.c \
+		ft_lstany.c \
+		ft_lstany2.c \
+		ft_lststep.c \
+		ft_lstskip.c \
+		ft_lstadd_back_content.c \
+		ft_lstdup_back.c \
+		ft_lstdupint_back.c \
+		ft_lststrjoin.c
+
+OBJS = $(SRCS:.c=.o)
+
+OBJS_BONUS = $(BONUS:.c=.o)
+
+RM = rm -f
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	ar -rcs $@ $^
+
+bonus: $(OBJS) $(OBJS_BONUS)
+	ar -rcs $(NAME) $^
+
+%.o: %.c libft.h
+	$(CC) -c $< $(CFLAGS)
+
+clean:
+	$(RM) $(OBJS) $(OBJS_BONUS)
+
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re bonus
+
+The file ft_lststrjoin.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lststrjoin.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/29 16:33:31 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/29 16:54:55 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static int lststr_cat_len(t_list *lst)
+{
+	if (!lst)
+		return (0);
+	return (ft_strlen((char*)lst->content) + lststr_cat_len(lst->next));
+}
+
+static char *strcat_and_move(char *str, char *addition)
+{
+	while (*addition)
+	{
+		*str = *addition;
+		str++;
+		addition++;
+	}
+	return (str);
+}
+
+static void lststr_cat_sep(char *str, t_list *lst, char *sep)
+{
+	if (!lst)
+		return ;
+	str = strcat_and_move(str, (char*)lst->content);
+	if (lst->next)
+		str = strcat_and_move(str, sep);
+	lststr_cat_sep(str, lst->next, sep);
+}
+
+char	*ft_lststrjoin(t_list *lst, char *sep, char *left, char *right)
+{
+	int		n;
+	size_t	left_len;
+	size_t	right_len;
+	size_t	tot_len;
+	char	*res;
+
+	n = ft_lstsize(lst);
+	left_len = ft_strlen(left);
+	right_len = ft_strlen(right);
+	tot_len = lststr_cat_len(lst) + left_len + right_len;
+	if (n > 0)
+		tot_len += (n - 1) * ft_strlen(sep);
+	res = ft_calloc(tot_len + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	if (left)
+		strcat_and_move(res, left);
+	lststr_cat_sep(res + left_len, lst, sep);
+	if (right)
+		strcat_and_move(res + (tot_len - right_len), right);
+	return (res);
+}
+
+The file ft_memset.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:45:48 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 11:59:42 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*s_uchar;
+	unsigned char	c_uchar;
+	size_t			i;
+
+	s_uchar = (unsigned char*)s;
+	c_uchar = (unsigned char)c;
+	i = 0;
+	while (i < n)
+		s_uchar[i++] = c_uchar;
+	return (s);
+}
+
+The file ft_strtrim.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 11:11:21 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:57:27 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static int	in_set(char c, char const *set)
+{
+	while (*set != '\0')
+	{
+		if (c == *set)
+			return (1);
+		set++;
+	}
+	return (0);
+}
+
+char		*ft_strtrim(char const *s1, char const *set)
+{
+	unsigned int	start;
+	size_t			len;
+	size_t			accum;
+
+	if (s1 == NULL || set == NULL)
+		return (NULL);
+	start = 0;
+	len = 0;
+	accum = 0;
+	while (s1[start + accum + len] != '\0')
+	{
+		if (in_set(s1[start + accum + len], set))
+		{
+			start += (len == 0);
+			accum += (len != 0);
+		}
+		else
+		{
+			len += accum + 1;
+			accum = 0;
+		}
+	}
+	return (ft_substr(s1, start, len));
+}
+
+The file ft_strskip.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strskip.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/22 19:11:05 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/22 20:18:45 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strskip(char const *s, char *delim, int skip_sep, size_t *flen)
+{
+	int i;
+
+	if (flen != NULL)
+		*flen = 0;
+	while (*s != '\0')
+	{
+		i = -1;
+		while (delim[++i])
+		{
+			if (*s == delim[i])
+				break ;
+		}
+		if ((skip_sep && !delim[i]) || (!skip_sep && *s == delim[i]))
+			return ((char*)s);
+		if (flen != NULL)
+			(*flen)++;
+		s++;
+	}
+	return ((char*)s);
+}
+
+The file ft_split.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 11:16:45 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 15:00:29 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static char const	*skip(char const *s, char *delim, int skip_sep,
+	size_t *flen)
+{
+	int i;
+
+	if (flen != NULL)
+		*flen = 0;
+	while (*s != '\0')
+	{
+		i = -1;
+		while (delim[++i])
+		{
+			if (*s == delim[i])
+				break ;
+		}
+		if ((skip_sep && !delim[i]) || (!skip_sep && *s == delim[i]))
+			return (s);
+		if (flen != NULL)
+			(*flen)++;
+		s++;
+	}
+	return (s);
+}
+
+static char const	*skip_field(char const *s, char *delim, size_t *flen)
+{
+	s = skip(s, delim, 0, flen);
+	s = skip(s, delim, 1, NULL);
+	return (s);
+}
+
+static void			free_previous(char **array, size_t i)
+{
+	size_t	j;
+
+	j = 0;
+	while (j < i)
+	{
+		free(array[j]);
+		j++;
+	}
+	free(array);
+}
+
+static int			pass(char const *s, char *delim, char **s_array,
+		size_t *n_fields)
+{
+	size_t		flen;
+	size_t		i;
+	char const	*s_prev;
+
+	i = 0;
+	while (*s != '\0')
+	{
+		s_prev = s;
+		s = skip_field(s, delim, &flen);
+		if (s_array != NULL)
+		{
+			s_array[i] = ft_substr(s_prev, 0, flen);
+			if (s_array[i] == NULL)
+			{
+				free_previous(s_array, i);
+				return (-1);
+			}
+		}
+		i++;
+	}
+	if (n_fields != NULL)
+		*n_fields = i;
+	return (0);
+}
+
+char				**ft_split(char const *s, char *delim)
+{
+	size_t	n_fields;
+	char	**s_array;
+
+	if (s == NULL)
+		return (NULL);
+	s = skip(s, delim, 1, NULL);
+	pass(s, delim, NULL, &n_fields);
+	s_array = malloc((n_fields + 1) * sizeof(char*));
+	if (s_array == NULL)
+		return (NULL);
+	if (pass(s, delim, s_array, NULL) == -1)
+		return (NULL);
+	s_array[n_fields] = NULL;
+	return (s_array);
+}
+
+The file ft_lstskip.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstskip.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/25 14:33:29 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/25 14:35:12 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstskip(t_list *lst, int (*skip)(void *content))
+{
+	while (lst)
+	{
+		if (!(*skip)(lst->content))
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+The file ft_lstlast.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:47:52 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:00:45 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	if (lst == NULL)
+		return (NULL);
+	while (lst->next != NULL)
+		lst = lst->next;
+	return (lst);
+}
+
+The file ft_lstcpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstcpy.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 13:29:32 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/19 15:53:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstcpy(t_list *src, t_list **adest, size_t content_size)
+{
+	void	*new_content;
+
+	if (!adest)
+		return (0);
+	if (!src)
+		return (1);
+	*adest = NULL;
+	new_content = NULL;
+	if (!(new_content = malloc(content_size))
+			|| !(*adest = ft_lstnew(new_content))
+			|| !ft_lstcpy(src->next, &(*adest)->next, content_size))
+	{
+		free(new_content);
+		free(*adest);
+		return (0);
+	}
+	ft_memcpy(new_content, src->content, content_size);
+	return (1);
+}
+
+The file ft_memmove.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:13:33 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:44:13 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static void	copy(unsigned char *dst, unsigned char *src, size_t n, int inc)
+{
+	size_t	start;
+	size_t	stop;
+	size_t	i;
+
+	if (inc > 0)
+	{
+		start = 0;
+		stop = n;
+		inc = 1;
+	}
+	else
+	{
+		start = n - 1;
+		stop = -1;
+		inc = -1;
+	}
+	i = start;
+	while (i != stop)
+	{
+		dst[i] = src[i];
+		i += inc;
+	}
+}
+
+void		*ft_memmove(void *dst, const void *src, size_t n)
+{
+	unsigned char	*dst_uc;
+	unsigned char	*src_uc;
+
+	dst_uc = (unsigned char*)dst;
+	src_uc = (unsigned char*)src;
+	if (src_uc == dst_uc)
+		return (dst);
+	else if (dst_uc - src_uc < 0)
+		copy(dst_uc, src_uc, n, 1);
+	else
+		copy(dst_uc, src_uc, n, -1);
+	return (dst);
+}
+
+The file ft_atoi_overflows.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi_overflows.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/01 14:16:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:28:53 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include "limits.h"
+
+int			ft_atoi_overflows(const char *str)
+{
+	long	res;
+	long	sgn;
+
+	res = 0;
+	sgn = 1;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+	{
+		sgn = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		res = res * 10 + (*str - '0');
+		if (sgn * res > (long)INT_MAX || sgn * res < (long)INT_MIN)
+			return (1);
+		str++;
+	}
+	return (0);
+}
+
+The file ft_lststep.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lststep.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/25 14:27:32 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/25 14:34:49 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lststep(t_list *lst, size_t n_steps)
+{
+	while (lst)
+	{
+		if (n_steps == 0)
+			return (lst);
+		lst = lst->next;
+		n_steps--;
+	}
+	return (NULL);
+}
+The file ft_lstiter.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:12:04 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 14:13:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	while (lst != NULL)
+	{
+		(*f)(lst->content);
+		lst = lst->next;
+	}
+}
+
+The file ft_strrchr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:19:53 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 08:31:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strrchr(const char *s, int c)
+{
+	const char	*s_prev;
+
+	if (c == '\0')
+		return (ft_strchr(s, '\0'));
+	s_prev = NULL;
+	while ((s = ft_strchr(s, c)) != NULL)
+	{
+		s_prev = s;
+		s++;
+	}
+	return ((char*)s_prev);
+}
+
+The file ft_strlcat.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 07:05:08 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 07:13:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlcat(char *dst, const char *src, size_t n)
+{
+	char	*dst_end;
+	size_t	dst_len;
+
+	dst_end = ft_strchr(dst, '\0');
+	dst_len = (size_t)(dst_end - dst);
+	if (dst_len >= n)
+		return (n + ft_strlen(src));
+	n -= dst_len;
+	ft_strlcpy(dst_end, src, n);
+	return (dst_len + ft_strlen(src));
+}
+
+The file ft_splitlen.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_splitlen.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/01 13:48:39 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 13:50:45 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_splitlen(char **splitted)
+{
+	size_t i;
+
+	if (!splitted)
+		return (0);
+	i = 0;
+	while (splitted[i])
+		i++;
+	return (i);
+}
+
+The file ft_tolower.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:13:38 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:30:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_tolower(int c)
+{
+	if (c >= 'A' && c <= 'Z')
+		return (c - 'A' + 'a');
+	else
+		return (c);
+}
+
+The file ft_intindex.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_intindex.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 13:31:36 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 13:59:47 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_intindex(const int *array, size_t n, int val)
+{
+	size_t i;
+
+	i = 0;
+	while (i < n)
+	{
+		if (array[i] == val)
+			return ((int)i);
+		i++;
+	}
+	return (-1);
+}
+
+The file ft_lstadd_front.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:54:02 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 13:54:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstadd_front(t_list **alst, t_list *new)
+{
+	if (alst == NULL)
+		return ;
+	new->next = *alst;
+	*alst = new;
+}
+
+The file ft_lstmap.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:14:01 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:48:04 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+	t_list	*new;
+	t_list	*new_mov;
+	t_list	*new_elem;
+
+	if (lst == NULL)
+		return (NULL);
+	if ((new = ft_lstnew((*f)(lst->content))) == NULL)
+		return (NULL);
+	new_mov = new;
+	while ((lst = lst->next) != NULL)
+	{
+		if ((new_elem = ft_lstnew((*f)(lst->content))) == NULL)
+		{
+			ft_lstclear(&new, del);
+			return (NULL);
+		}
+		new_mov->next = new_elem;
+		new_mov = new_mov->next;
+	}
+	return (new);
+}
+
+The file ft_strnstr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 07:15:14 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:28:40 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strnstr(const char *hay, const char *needle, size_t n)
+{
+	size_t	needle_len;
+	size_t	hay_len;
+	size_t	i;
+	size_t	i_max;
+	size_t	j;
+
+	if (needle[0] == '\0')
+		return ((char*)hay);
+	needle_len = ft_strlen(needle);
+	hay_len = ft_strlen(hay);
+	if (needle_len > hay_len || needle_len > n)
+		return (NULL);
+	i_max = hay_len < n ? hay_len - needle_len : n - needle_len;
+	i = 0;
+	while (i <= i_max)
+	{
+		j = 0;
+		while (j < needle_len && hay[i + j] == needle[j])
+			j++;
+		if (j == needle_len)
+			return ((char*)hay + i);
+		i++;
+	}
+	return (NULL);
+}
+
+The file ft_lstfind.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstfind.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 13:09:21 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 15:00:05 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstfind(t_list *lst, void *content, size_t content_size)
+{
+	while (lst)
+	{
+		if (!ft_memcmp(lst->content, content, content_size))
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+The file ft_lstdup_back.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdup_back.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 14:05:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 14:09:12 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstdup_back(t_list **alst, void *aval, size_t size)
+{
+	void *aval_copy;
+
+	aval_copy = malloc(size);
+	if (!aval_copy)
+		return (-1);
+	ft_memcpy(aval_copy, aval, size);
+	if (!ft_lstadd_back_content(alst, aval_copy))
+	{
+		free(aval_copy);
+		return (-1);
+	}
+	return (1);
+}
+
+The file ft_memchr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:46:13 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:49:59 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	unsigned char	*s_uc;
+	unsigned char	c_uc;
+	size_t			i;
+
+	s_uc = (unsigned char*)s;
+	c_uc = (unsigned char)c;
+	i = 0;
+	while (i < n)
+	{
+		if (s_uc[i] == c_uc)
+			return (s_uc + i);
+		i++;
+	}
+	return (NULL);
+}
+
+The file ft_strlen.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:00:53 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/29 16:51:52 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+The file ft_toupper.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:12:03 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 07:26:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_toupper(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (c - 'a' + 'A');
+	else
+		return (c);
+}
+
+The file ft_lstany.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstany.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/24 15:31:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 02:47:15 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int ft_lstany(t_list *lst, int (*booleval)(void *content))
+{
+	while (lst)
+	{
+		if ((*booleval)(lst->content))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
+The file ft_calloc.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 09:43:51 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 14:57:33 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	size_t	total_size;
+	void	*m;
+
+	total_size = count * size;
+	m = malloc(total_size);
+	if (m == NULL)
+		return (NULL);
+	ft_bzero(m, total_size);
+	return (m);
+}
+
+The file ft_lstiter_arg.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstiter_arg.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:12:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 12:39:41 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstiter_arg(t_list *lst, void *arg, void (*f)(void *cont, void *arg))
+{
+	while (lst != NULL)
+	{
+		(*f)(lst->content, arg);
+		lst = lst->next;
+	}
+}
+
+The file ft_strncmp.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:33:32 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:53:08 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n && s1[i] != '\0' && s1[i] == s2[i])
+		i++;
+	if (i == n)
+		return (0);
+	return ((int)(unsigned char)s1[i] - (int)(unsigned char)s2[i]);
+}
+
+The file ft_isalpha.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:02:55 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:06:11 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_isalpha(int c)
+{
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
+}
+
+The file ft_itoa.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 10:17:12 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:49:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static void	compute_digits(int n, int sgn, int *size, char *digits)
+{
+	int		i;
+
+	if (n == 0)
+	{
+		*size = 1;
+		digits[0] = '0';
+		return ;
+	}
+	i = 0;
+	while (n != 0)
+	{
+		digits[i] = '0' + sgn * (n % 10);
+		n /= 10;
+		i++;
+	}
+	*size = i;
+}
+
+static void	reverse_fill(char *s, char *digits, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		s[i] = digits[size - 1 - i];
+		i++;
+	}
+}
+
+char		*ft_itoa(int n)
+{
+	char	digits[10];
+	int		sgn;
+	int		size;
+	char	*res;
+	char	*res_mov;
+
+	sgn = (n < 0) ? -1 : 1;
+	compute_digits(n, sgn, &size, digits);
+	res = malloc((size + 1 + (sgn == -1)) * sizeof(char));
+	if (res == NULL)
+		return (NULL);
+	res_mov = res;
+	if (sgn == -1)
+		*(res_mov++) = '-';
+	reverse_fill(res_mov, digits, size);
+	res_mov[size] = '\0';
+	return (res);
+}
+
+The file ft_putchar_fd.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:02:01 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:02:24 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+The file ft_any.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_any.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/27 11:15:13 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/02 11:30:13 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_any(void *array, size_t len, size_t size, int (*booleval)(void*))
+{
+	size_t i;
+
+	i = 0;
+	while (i < len)
+	{
+		if ((*booleval)(array))
+			return (1);
+		array += size;
+		i += 1;
+	}
+	return (0);
+}
+
+The file libft.h contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:08:26 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:21:50 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef LIBFT_H
+# define LIBFT_H
+
+# include <stdlib.h>
+
+typedef struct		s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
+
+int					ft_all_in(char *str, char *set);
+void				**ft_array(size_t size1, size_t size2, size_t type_size);
+void				ft_arrayclear(void **array, size_t size);
+void				*ft_memset(void *s, int c, size_t n);
+void				ft_bzero(void *s, size_t n);
+void				*ft_memcpy(void *dst, const void *src, size_t n);
+void				*ft_memccpy(void *dst, const void *src, int c, size_t n);
+void				*ft_memmove(void *dst, const void *src, size_t n);
+void				*ft_memchr(const void *s, int c, size_t n);
+int					ft_memcmp(const void *s1, const void *s2, size_t n);
+size_t				ft_strlen(const char *s);
+int					ft_isalpha(int c);
+int					ft_isdigit(int c);
+int					ft_isalnum(int c);
+int					ft_isascii(int c);
+int					ft_isprint(int c);
+int					ft_toupper(int c);
+int					ft_tolower(int c);
+char				*ft_strchr(const char *s, int c);
+char				*ft_strrchr(const char *s, int c);
+int					ft_strcmp(const char *s1, const char *s2);
+int					ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t				ft_strlcpy(char *dst, const char *src, size_t n);
+size_t				ft_strlcat(char *dst, const char *src, size_t n);
+char				*ft_strnstr(const char *hay, const char *needle, size_t n);
+char				*ft_strskip(char const *s, char *delim, int skip_sep,
+						size_t *flen);
+int					ft_atoi(const char *str);
+void				*ft_calloc(size_t count, size_t size);
+char				*ft_strdup(const char *s);
+char				*ft_substr(char const *s, unsigned int start, size_t len);
+char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strtrim(char const *s1, char const *set);
+char				**ft_split(char const *s, char *delim);
+char				*ft_itoa(int n);
+char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+void				ft_putchar_fd(char c, int fd);
+void				ft_putstr_fd(char *s, int fd);
+void				ft_putendl_fd(char *s, int fd);
+void				ft_putnbr_fd(int n, int fd);
+t_list				*ft_lstnew(void *content);
+void				ft_lstadd_front(t_list **alst, t_list *new);
+int					ft_lstsize(t_list *lst);
+t_list				*ft_lstlast(t_list *lst);
+t_list				*ft_lstfind(t_list *lst, void *content,
+						size_t content_size);
+void				ft_lstadd_back(t_list **alst, t_list *new);
+int					ft_lstcpy(t_list *src, t_list **adest,
+						size_t content_size);
+void				ft_lstdelone(t_list *lst, void (*del)(void*));
+t_list				*ft_lstremove(t_list **alst, void *content,
+						size_t content_size);
+void				ft_lstclear(t_list **lst, void (*del)(void*));
+void				ft_lstiter(t_list *lst, void (*f)(void *));
+void				ft_lstiter_arg(t_list *lst, void *arg,
+									void (*f)(void *cont, void *arg));
+void				ft_lstreviter(t_list *lst, void (*f)(void *));
+void				ft_lstreviter_arg(t_list *lst, void *arg,
+										void (*f)(void *cont, void *arg));
+t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
+						void (*del)(void *));
+t_list				*ft_lstcat(t_list *lst1, t_list *lst2);
+int					ft_lstany(t_list *lst, int (*booleval)(void *content));
+int					ft_lstany2(t_list *lst, void *ref,
+								int (*booleval)(void *cont, void *ref));
+t_list				*ft_lststep(t_list *lst, size_t n_steps);
+t_list				*ft_lstskip(t_list *lst, int (*skip)(void *content));
+int					ft_lstadd_back_content(t_list **alst, void *content);
+int					ft_any(void *array, size_t len, size_t size,
+								int (*booleval)(void*));
+int					ft_strindex(const char *s, int c);
+int					ft_intindex(const int *array, size_t n, int val);
+int					ft_lstdup_back(t_list **alst, void *aval, size_t size);
+int					ft_lstdupint_back(t_list **alst, int k);
+char				*ft_lststrjoin(t_list *lst, char *sep, char *left,
+									char *right);
+size_t				ft_splitlen(char **splitted);
+int					ft_isspace(int c);
+int					ft_atoi_overflows(const char *str);
+
+#endif
+
+The file ft_lstremove.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstremove.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 16:01:01 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 15:00:21 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstremove(t_list **alst, void *content, size_t content_size)
+{
+	t_list *lst;
+	t_list *prev;
+
+	prev = NULL;
+	lst = *alst;
+	while (lst)
+	{
+		if (!ft_memcmp(lst->content, content, content_size))
+		{
+			if (prev)
+				prev->next = lst->next;
+			else
+				*alst = lst->next;
+			lst->next = NULL;
+			return (lst);
+		}
+		prev = lst;
+		lst = lst->next;
+	}
+	return (NULL);
+}
+
+The file ft_memcmp.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 05:50:24 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:55:55 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	unsigned char	*s1_uc;
+	unsigned char	*s2_uc;
+	size_t			i;
+
+	s1_uc = (unsigned char*)s1;
+	s2_uc = (unsigned char*)s2;
+	i = 0;
+	while (i < n)
+	{
+		if (s1_uc[i] != s2_uc[i])
+			return ((int)s1_uc[i] - (int)s2_uc[i]);
+		i++;
+	}
+	return (0);
+}
+
+The file ft_isspace.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/01 14:20:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:20:42 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_isspace(int c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\v'
+			|| c == '\f' || c == '\r');
+}
+
+The file ft_array.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_array.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/01 15:40:21 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 14:59:46 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+static void	**free_error(void **grid, size_t size1)
+{
+	size_t i;
+
+	i = 0;
+	while (i < size1)
+	{
+		free(grid[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+void		**ft_array(size_t size1, size_t size2, size_t type_size)
+{
+	size_t	i;
+	void	**grid;
+
+	if (!(grid = ft_calloc(size1, sizeof(void*))))
+		return (NULL);
+	i = 0;
+	while (i < size1)
+	{
+		if (!(grid[i] = ft_calloc(size2, type_size)))
+			return (free_error(grid, size1));
+		i++;
+	}
+	return (grid);
+}
+
+The file ft_putendl_fd.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:02:11 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:02:24 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	ft_putstr_fd(s, fd);
+	ft_putchar_fd('\n', fd);
+}
+
+The file ft_lstdupint_back.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdupint_back.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 14:10:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 14:11:24 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_lstdupint_back(t_list **alst, int k)
+{
+	return ft_lstdup_back(alst, &k, sizeof(int));
+}
+
+The file ft_strdup.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 09:47:46 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 10:11:55 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strdup(const char *s)
+{
+	char	*s_dup;
+	size_t	s_len;
+
+	s_len = ft_strlen(s);
+	if ((s_dup = malloc(s_len + 1)) == NULL)
+		return (NULL);
+	return (ft_memcpy(s_dup, s, s_len + 1));
+}
+
+The file ft_isdigit.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:06:22 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
+
+The file ft_lstsize.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:45:53 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 13:47:26 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_lstsize(t_list *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
+}
+
+The file ft_all_in.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_all_in.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/17 14:48:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 16:57:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_all_in(char *str, char *set)
+{
+	int i;
+
+	if (!str)
+		return (1);
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_strchr(set, str[i]))
+			return (0);
+	}
+	return (1);
+}
+
+The file ft_strchr.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:16:03 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:26:50 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	while (*s != '\0')
+	{
+		if (*s == c)
+			return ((char*)s);
+		s++;
+	}
+	if (c == '\0')
+		return ((char*)s);
+	return (NULL);
+}
+
+The file ft_strcmp.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/03 14:13:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/03 14:39:07 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s1[i] == s2[i])
+		i++;
+	return ((int)(unsigned char)s1[i] - (int)(unsigned char)s2[i]);
+}
+
+The file ft_lstadd_back.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 13:50:09 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:00:15 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstadd_back(t_list **alst, t_list *new)
+{
+	if (alst == NULL)
+		return ;
+	else if (*alst == NULL)
+		*alst = new;
+	else
+		ft_lstlast(*alst)->next = new;
+}
+
+The file ft_lstreviter_arg.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstreviter_arg.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 12:30:43 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 12:46:31 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstreviter_arg(t_list *lst, void *arg,
+	void (*f)(void *cont, void *arg))
+{
+	if (!lst)
+		return ;
+	ft_lstreviter_arg(lst->next, arg, f);
+	(*f)(lst->content, arg);
+}
+
+The file ft_strlcpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:53:18 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 17:01:33 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t n)
+{
+	char	*dst_end;
+
+	if (src == NULL || dst == NULL)
+		return (0);
+	if (n > 0)
+	{
+		dst_end = ft_memccpy(dst, src, '\0', n - 1);
+		if (dst_end == NULL)
+			dst[n - 1] = '\0';
+	}
+	return (ft_strlen(src));
+}
+
+The file ft_lstany2.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstany2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/27 02:45:59 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 02:47:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int ft_lstany2(t_list *lst, void *ref, int (*booleval)(void *cont, void *ref))
+{
+	while (lst)
+	{
+		if ((*booleval)(lst->content, ref))
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
+}
+
+The file ft_lstcat.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstcat.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/27 10:07:08 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/17 14:59:59 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+t_list	*ft_lstcat(t_list *lst1, t_list *lst2)
+{
+	if (!lst1)
+		return (lst2);
+	if (!lst2)
+		return (lst1);
+	ft_lstlast(lst1)->next = lst2;
+	return (lst1);
+}
+
+The file ft_isprint.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:09:50 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isprint(int c)
+{
+	return (c >= 32 && c <= 126);
+}
+
+The file ft_strindex.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strindex.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/27 15:49:04 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/27 15:50:47 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int	ft_strindex(const char *s, int c)
+{
+	char *strchr_result;
+
+	strchr_result = ft_strchr(s, c);
+	if (!strchr_result)
+		return (-1);
+	return ((int)(strchr_result - s));
+}
+
+The file ft_memcpy.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:46:10 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 17:13:27 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	unsigned char	*dst_uc;
+	unsigned char	*src_uc;
+	size_t			i;
+
+	if (dst == NULL && src == NULL)
+		return (NULL);
+	dst_uc = (unsigned char*)dst;
+	src_uc = (unsigned char*)src;
+	i = 0;
+	while (i < n)
+	{
+		dst_uc[i] = src_uc[i];
+		i++;
+	}
+	return (dst);
+}
+
+The file ft_strmapi.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:03:13 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:58:26 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char))
+{
+	char			*s2;
+	size_t			s_len;
+	unsigned int	i;
+
+	if (s == NULL)
+		return (NULL);
+	s_len = ft_strlen(s);
+	s2 = malloc(s_len + 1);
+	if (s2 == NULL)
+		return (NULL);
+	s2[s_len] = '\0';
+	i = 0;
+	while (s[i] != '\0')
+	{
+		s2[i] = (*f)(i, s[i]);
+		i++;
+	}
+	return (s2);
+}
+
+The file ft_lstclear.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:05:49 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/01 16:35:34 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstclear(t_list **lst, void (*del)(void*))
+{
+	t_list	*lst_mov1;
+	t_list	*lst_mov2;
+
+	if (lst == NULL)
+		return ;
+	lst_mov1 = *lst;
+	while (lst_mov1 != NULL)
+	{
+		lst_mov2 = lst_mov1->next;
+		ft_lstdelone(lst_mov1, del);
+		lst_mov1 = lst_mov2;
+	}
+	*lst = NULL;
+}
+
+The file ft_lstdelone.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 14:02:51 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:00:31 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	(*del)(lst->content);
+	free(lst);
+}
+
+The file ft_isascii.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:08:20 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isascii(int c)
+{
+	return (c >= 0 && c <= 127);
+}
+
+The file ft_lstadd_back_content.c contains:
+
+The file ft_putstr_fd.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:02:06 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:58:54 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	if (s == NULL)
+		return ;
+	write(fd, s, ft_strlen(s));
+}
+
+The file ft_lstreviter.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstreviter.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/28 12:30:43 by lzins             #+#    #+#             */
+/*   Updated: 2021/03/28 12:41:35 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_lstreviter(t_list *lst, void (*f)(void *))
+{
+	if (!lst)
+		return ;
+	ft_lstreviter(lst->next, f);
+	(*f)(lst->content);
+}
+
+The file ft_strjoin.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 10:28:28 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 16:56:29 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+char	*ft_strjoin(const char *s1, const char *s2)
+{
+	size_t	s1_len;
+	size_t	s2_len;
+	char	*s12;
+
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	s12 = malloc(s1_len + s2_len + 1);
+	if (s12 == NULL)
+		return (NULL);
+	s12[s1_len + s2_len] = '\0';
+	ft_memcpy(s12, s1, s1_len);
+	ft_memcpy(s12 + s1_len, s2, s2_len);
+	return (s12);
+}
+
+The file ft_bzero.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 04:46:00 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 05:11:43 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, n);
+}
+
+The file ft_putnbr_fd.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/24 15:02:17 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/24 15:29:40 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include <unistd.h>
+
+void	ft_putnbr_fd(int n, int fd)
+{
+	if (n > 9 || n < -9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		if (n > 0)
+			ft_putnbr_fd(n % 10, fd);
+		else
+			ft_putnbr_fd(-(n % 10), fd);
+	}
+	else if (n >= 0)
+		ft_putchar_fd(n + '0', fd);
+	else
+	{
+		ft_putchar_fd('-', fd);
+		ft_putchar_fd(-n + '0', fd);
+	}
+}
+
+The file ft_atoi.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 07:51:49 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 14:28:49 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int			ft_atoi(const char *str)
+{
+	long	res;
+	long	sgn;
+
+	res = 0;
+	sgn = 1;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+	{
+		sgn = -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		res = res * 10 + (*str - '0');
+		str++;
+	}
+	return (sgn * res);
+}
+
+The file ft_arrayclear.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_arrayclear.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/10 14:25:01 by lzins             #+#    #+#             */
+/*   Updated: 2021/02/10 15:45:44 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+void	ft_arrayclear(void **array, size_t size)
+{
+	size_t i;
+
+	i = 0;
+	if (array)
+	{
+		while (i < size)
+			free(array[i++]);
+		free(array);
+	}
+}
+
+The file ft_isalnum.c contains:
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/23 06:07:17 by lzins             #+#    #+#             */
+/*   Updated: 2020/11/23 06:11:00 by lzins            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isalnum(int c)
+{
+	return (ft_isalpha(c) || ft_isdigit(c));
+}
+
