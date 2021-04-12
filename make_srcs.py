@@ -39,14 +39,16 @@ def generate_srcs_lines(dirlist, suffix, include=True):
 			continue
 		if include and root.split('/')[1] not in dirlist:
 			continue
-		elif not include and root.split('/')[1] in dirlist:
+		elif not include and root.split('/')[1] in dirlist or root.split('/')[1].startswith('_'):
 			continue
 		res_line = "SRCS" + suffix + (" =" if i == 0 else " +=") \
 			+ '$(addprefix {}/, '.format(root)
 		i += 1
 		files = filter(
 			lambda f: not os.path.split(f)[-1].startswith('_') \
+					and not f.endswith('.a') \
 					and not f.endswith('.h') \
+					and not f.endswith('.o') \
 					and not f.endswith('.txt')
 			, files)
 		res_line += ' '.join(files) + ')'

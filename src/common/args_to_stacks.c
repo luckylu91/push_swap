@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 02:30:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 13:43:38 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/12 21:25:06 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	array_to_stacks(t_stacks *stacks, int n, char **array)
 	while (i < n)
 	{
 		if (!arg_is_valid(array[i])
-			|| ft_lstdupint_back(&stacks->a, ft_atoi(array[i])) == -1)
+				|| ft_lstdupint_back(&stacks->a, ft_atoi(array[i])) == -1)
 			return (error_free(stacks));
 		i++;
 	}
@@ -49,12 +49,14 @@ int	args_to_stacks(t_stacks *stacks, int argc, char **argv)
 	stacks->b = NULL;
 	stacks->verbose = 0;
 	if (argc == 1)
-		return (-1);
+		return (0);
 	i_start = 1;
 	if (ft_strcmp(argv[1], "-v") == 0)
 	{
+		if (argc == 2)
+			return (0);
 		i_start = 2;
 		stacks->verbose = 1;
 	}
-	return (array_to_stacks(stacks, argc - (i_start), argv + i_start) == -1);
+	return (array_to_stacks(stacks, argc - i_start, argv + i_start));
 }

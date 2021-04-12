@@ -6,14 +6,18 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 15:18:35 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/12 22:34:07 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-int	ps_push_ab(t_pswap *ps, int op_code)
+void	ps_push_ab(t_stacks *stacks, int op_code)
 {
-	push_ab(&ps->stacks, op_code);
-	push_ab(&ps->stacks_bij, op_code);
+	push_ab(stacks, op_code);
+	ft_putstr_fd("p", STDOUT_FILENO);
+	ft_putchar_fd(op_last_char('p', op_code), STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	//
+	print_stacks_side(stacks);
 }

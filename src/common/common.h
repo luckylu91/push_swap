@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 11:14:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 13:38:08 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/12 20:34:48 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 
 #include "libft.h"
 #include <unistd.h>
-
-// typedef struct	s_params
-// {
-// 	int	verbose;
-// }				t_params;
 
 typedef struct	s_stacks
 {
