@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 10:17:45 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/08 14:45:03 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/12 12:01:52 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_list	*closest_from_start(t_permut *permut, t_list *path)
 	return (closest);
 }
 
-t_list	*chose_path(t_permut *permut)
+int	chose_path(t_permut *permut, int *path_array)
 {
 	t_list		*best_path;
 	t_pathinfo	*pi;
@@ -82,8 +82,46 @@ t_list	*chose_path(t_permut *permut)
 		}
 		i++;
 	}
-	if (ft_lstcpy(best_path, &best_path, sizeof(int)) == -1)
-		return (NULL);
+	list_to_bool_array(best_path, path_array);
+	//
+	printf("path_array: ");
+	print_array(path_array, permut->n);
 	rotate_to(&best_path, closest_from_start(permut, best_path));
 	return (best_path);
 }
+
+// t_list	*chose_path(t_permut *permut)
+// {
+// 	t_list		*best_path;
+// 	t_pathinfo	*pi;
+// 	int			i;
+// 	int			max_len;
+// 	int			min_tot_dist;
+
+// 	if (!permut)
+// 		return (NULL);
+// 	best_path = NULL;
+// 	max_len = -1;
+// 	i = 0;
+// 	while (i < permut->n)
+// 	{
+// 		pi = &permut->paths[i]; 
+// 		if (pi->len > max_len
+// 			|| (pi->len == max_len && pi->tot_dist < min_tot_dist))
+// 		{
+// 			max_len = pi->len;
+// 			best_path = pi->path;
+// 			min_tot_dist = pi->tot_dist;
+// 		}
+// 		i++;
+// 	}
+// 	if (ft_lstcpy(best_path, &best_path, sizeof(int)) == -1)
+// 		return (NULL);
+// 	//
+// 	ft_putstr_fd("best_path = ", STDOUT_FILENO);
+// 	//
+// 	print_list(best_path);
+// 	ft_putchar_fd('\n', STDOUT_FILENO);
+// 	rotate_to(&best_path, closest_from_start(permut, best_path));
+// 	return (best_path);
+// }

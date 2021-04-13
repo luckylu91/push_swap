@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_permut.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 08:24:36 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 21:01:31 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/12 11:33:45 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-t_permut	*create_permut(int *array, int n)
+t_permut	*create_permut(int n)
 {
 	t_permut *permut;
 
@@ -27,13 +27,17 @@ t_permut	*create_permut(int *array, int n)
 	permut->bijection = ft_calloc(n, sizeof(int));
 	permut->paths = ft_calloc(n, sizeof(t_pathinfo));
 	if (!permut->array || !permut->array_trans || !permut->trans_indices
-		|| !permut->bijection || !permut->val_indices || !permut->paths
-		|| compute_bijection(permut, array, n) == -1)
-	{
-		destroy_permut(permut);
-		return (NULL);
-	}
+			|| !permut->bijection || !permut->val_indices || !permut->paths)
+		destroy_permut(&permut);
+	return (permut);
+}
+
+void	init_permut(t_permut *permut, int *array, int n)
+{
+	if (compute_bijection(permut, array, n) == -1)
+		return (-1);
 	compute_trans(permut);
 	compute_indices(permut);
-	return (permut);
+	if (update_all_paths(permut) == -1)
+		return (-1);
 }

@@ -1,39 +1,6 @@
 #include "pswap.h"
 #include <stdio.h>
 
-void *char_from_int(void *i)
-{
-	return (ft_itoa(*(int*)i));
-}
-
-void print_int_list(t_list *lst, char *name)
-{
-	t_list *path_str = ft_lstmap(lst, char_from_int, free);
-	char *str = ft_lststrjoin(path_str, ", ", "", "");
-	ft_lstclear(&path_str, free);
-	printf("%s\t: %s\n", name, str);
-	free(str);
-}
-
-void print_pathinfo(t_pathinfo *pi)
-{
-	print_int_list(pi->path, "path");
-	print_int_list(pi->dists, "dists");
-	printf("len : %d\n", pi->len);
-}
-
-void	print_array(int *array, int n)
-{
-	int i;
-
-	i = -1;
-	while (++i < n)
-	{
-		printf("%d ", array[i]);
-	}
-	printf("\n");
-}
-
 int main()
 {
 	int array[10] = {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};

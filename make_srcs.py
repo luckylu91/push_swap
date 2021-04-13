@@ -47,6 +47,7 @@ def generate_srcs_lines(dirlist, suffix, include=True):
 		files = filter(
 			lambda f: not os.path.split(f)[-1].startswith('_') \
 					and not f.endswith('.h') \
+					and not f.endswith('.o') \
 					and not f.endswith('.txt')
 			, files)
 		res_line += ' '.join(files) + ')'
@@ -70,4 +71,4 @@ def generate_srcs_lines(dirlist, suffix, include=True):
 
 generate_srcs_lines(['pswap'], "_PS")
 generate_srcs_lines(['checker'], "_CHK")
-generate_srcs_lines(['pswap', 'checker', 'libft'], "_COM", include=False)
+generate_srcs_lines(['pswap', 'checker', 'libft', 'orbit'], "_COM", include=False)

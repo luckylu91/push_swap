@@ -1,27 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotate_reverse.c                                   :+:      :+:    :+:   */
+/*   destroy_permut.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 03:09:03 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 16:44:28 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/31 08:23:37 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/12 11:16:52 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	ps_rotate_reverse_ab(t_pswap *ps, int op_code)
+void	destroy_permut(t_permut **permut_ptr)
 {
-	rotate_reverse_ab(&ps->stacks_init, op_code);
-	rotate_reverse_ab(&ps->stacks_bij, op_code);
-	if (op_code == 0)
-		ft_putendl_fd("rra", STDOUT_FILENO);
-	else if (op_code == 1)
-		ft_putendl_fd("rrb", STDOUT_FILENO);
-	else if (op_code == 2)
-		ft_putendl_fd("rrr", STDOUT_FILENO);
-	if (ps->stacks_init.verbose)
-		print_stacks_side(&ps->stacks_init);
+	int			i;
+	t_permut	*permut;
+
+	permut = *permut_ptr;
+	if (!permut)
+		return ;
+	free(permut->array);
+	free(permut->array_trans);
+	free(permut->trans_indices);
+	free(permut->val_indices);
+	free(permut->bijection);
+	if (permut->paths)
+	{
+		i = 0;
+		while (i < permut->n)
+		{
+			destroy_pathinfo(&permut->paths[i]);
+			i++;
+		}
+		free(permut->paths);
+	}
+	free(permut);
+	*permut = NULL;
 }

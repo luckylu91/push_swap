@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rotate_reverse.c                                   :+:      :+:    :+:   */
+/*   nrotate.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 03:09:03 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 16:44:28 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/10 16:40:19 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/10 16:43:33 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	ps_rotate_reverse_ab(t_pswap *ps, int op_code)
+void	ps_nrotate_ab(t_pswap *ps, int n, int op_code)
 {
-	rotate_reverse_ab(&ps->stacks_init, op_code);
-	rotate_reverse_ab(&ps->stacks_bij, op_code);
-	if (op_code == 0)
-		ft_putendl_fd("rra", STDOUT_FILENO);
-	else if (op_code == 1)
-		ft_putendl_fd("rrb", STDOUT_FILENO);
-	else if (op_code == 2)
-		ft_putendl_fd("rrr", STDOUT_FILENO);
-	if (ps->stacks_init.verbose)
-		print_stacks_side(&ps->stacks_init);
+	if (n > 0)
+	{
+		while (n > 0)
+		{
+			ps_rotate_ab(ps, op_code);
+			n--;
+		}
+	}
+	else if (n < 0)
+	{
+		while (n < 0)
+		{
+			ps_rotate_reverse_ab(ps, op_code);
+			n++;
+		}
+	}
 }

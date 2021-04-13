@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:58:52 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/08 12:27:19 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/12 11:40:16 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@ int dist_cycle_values(int v1, int v2, t_permut *permut)
 	i = permut->val_indices[v1];
 	j = permut->val_indices[v2];
 	return (dist_cycle(i, j, permut->n));
+}
+
+int	dist_smallest(int i, int n)
+{
+	int i_inv;
+
+	i_inv = n - i;
+	if (i <= i_inv)
+		return (i);
+	else
+		return (-i_inv);
 }
 
 int	int_at(t_list *lst)

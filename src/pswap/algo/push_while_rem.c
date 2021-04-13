@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ps_operations.h                                    :+:      :+:    :+:   */
+/*   push_while_rem.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 15:13:02 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 15:15:07 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/10 17:43:48 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/10 17:52:12 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PS_OPERATIONS_H
-#define PS_OPERATIONS_H
-
 #include "pswap.h"
 
-int	ps_push_ab(t_pswap *ps, int op_code);
-int	ps_swap_ab(t_pswap *ps, int op_code);
-int	ps_rotate_ab(t_pswap *ps, int op_code);
-int	ps_rotate_reverse_ab(t_pswap *ps, int op_code);
-
-#endif
+void	push_while_rem(t_pswap *ps)
+{
+	while (ps->remaining && ps->stacks_bij.a &&
+			int_at(ps->stacks_bij.a) == int_at(ps->remaining))
+		ps_push_ab(ps, 1);
+}

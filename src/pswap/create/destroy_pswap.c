@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_permut.c                                   :+:      :+:    :+:   */
+/*   destroy_pswap.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/31 08:23:37 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 17:37:26 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/12 11:19:07 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/12 11:36:30 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	destroy_permut(t_permut *permut)
+void	destroy_pswap(t_pswap **pswap_ptr)
 {
-	int i;
+	t_pswap *ps;
 
-	if (!permut)
+	ps;
+	if (!ps)
 		return ;
-	free(permut->array);
-	free(permut->array_trans);
-	free(permut->trans_indices);
-	free(permut->val_indices);
-	free(permut->bijection);
-	i = 0;
-	while (i < permut->n)
-	{
-		destroy_pathinfo(&permut->paths[i]);
-		i++;
-	}
-	free(permut->paths);
-	free(permut);
+	free(ps->stacks_init);
+	free(ps->stacks_bij);
+	destroy_permut(&ps->permut);
+	free(ps->path_array);
+	free(ps->remaining_array);
+	free(ps->spots_left);
+	free(ps->spots_right);
+	free(ps);
+	*pswap_ptr = NULL;
 }

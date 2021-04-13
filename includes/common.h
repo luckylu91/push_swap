@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 11:14:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 13:38:08 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 17:04:38 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ int	lstrev_array(t_list *lst, int n, char ***array);
 void	print_stacks_side(t_stacks *stacks);
 int	args_to_stacks(t_stacks *stacks,int argc, char **argv);
 int	handle_args(t_stacks *stacks, int argc, char **argv);
+void	print_list(t_list *lst_int);
 
 #endif
