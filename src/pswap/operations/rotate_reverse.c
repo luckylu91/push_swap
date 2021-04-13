@@ -6,22 +6,18 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 03:09:03 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 16:44:28 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/13 18:31:14 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	ps_rotate_reverse_ab(t_pswap *ps, int op_code)
+void	ps_rotate_reverse_ab(t_stacks *stacks, int op_code)
 {
-	rotate_reverse_ab(&ps->stacks_init, op_code);
-	rotate_reverse_ab(&ps->stacks_bij, op_code);
-	if (op_code == 0)
-		ft_putendl_fd("rra", STDOUT_FILENO);
-	else if (op_code == 1)
-		ft_putendl_fd("rrb", STDOUT_FILENO);
-	else if (op_code == 2)
-		ft_putendl_fd("rrr", STDOUT_FILENO);
-	if (ps->stacks_init.verbose)
-		print_stacks_side(&ps->stacks_init);
+	rotate_reverse_ab(stacks, op_code);
+	ft_putstr_fd("rr", STDOUT_FILENO);
+	ft_putchar_fd(op_last_char('r', op_code), STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	//
+	print_stacks_side(stacks);
 }

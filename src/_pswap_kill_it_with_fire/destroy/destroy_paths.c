@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   destroy_paths.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/13 18:31:25 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/07 16:13:24 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/07 20:39:58 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	ps_swap_ab(t_stacks *stacks, int op_code)
+void	destroy_pathinfo(t_pathinfo *pi)
 {
-	swap_ab(stacks, op_code);
-	ft_putstr_fd("s", STDOUT_FILENO);
-	ft_putchar_fd(op_last_char('s', op_code), STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	//
-	print_stacks_side(stacks);
+	if (!pi)
+		return ;
+	ft_lstclear(&pi->path, free);
+	ft_lstclear(&pi->dists, free);
 }

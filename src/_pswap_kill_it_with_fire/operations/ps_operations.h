@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   nrotate.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/13 18:31:25 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/10 16:40:19 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/10 16:43:33 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	ps_swap_ab(t_stacks *stacks, int op_code)
+void	ps_nrotate_ab(t_pswap *ps, int n, int op_code)
 {
-	swap_ab(stacks, op_code);
-	ft_putstr_fd("s", STDOUT_FILENO);
-	ft_putchar_fd(op_last_char('s', op_code), STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	//
-	print_stacks_side(stacks);
+	if (n > 0)
+	{
+		while (n > 0)
+		{
+			ps_rotate_ab(ps, op_code);
+			n--;
+		}
+	}
+	else if (n < 0)
+	{
+		while (n < 0)
+		{
+			ps_rotate_reverse_ab(ps, op_code);
+			n++;
+		}
+	}
 }
