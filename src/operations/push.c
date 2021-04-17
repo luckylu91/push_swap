@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/17 13:49:01 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 20:23:44 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	push(t_list **alst1, t_list **alst2)
 {
-	t_list *first1_next;
+	t_list *second1;
 
 	if (!*alst1)
-		return 0;
-	first1_next = (*alst1)->next;
+		return (0);
+	second1 = (*alst1)->next;
 	(*alst1)->next = *alst2;
 	*alst2 = *alst1;
-	*alst1 = first1_next;
+	*alst1 = second1;
 	return (1);
 }
 

@@ -6,13 +6,13 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/17 12:48:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/17 13:22:34 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 20:08:29 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-static int	add_two_ones(t_list **glst, int n)
+static int	add_ones(t_list **glst, int n)
 {
 	int	ret;
 
@@ -31,6 +31,7 @@ static int	add_group_size(t_list **glst, int group_size)
 		return (-1);
 	else if (group_size > 2 && ft_lstdupint_back(glst, group_size) == -1)
 		return (-1);
+	return (1);
 }
 
 static t_list	*lstclear_error(t_list **glst)
@@ -48,6 +49,7 @@ t_list		*grouplist(t_list *lst)
 
 	if (!lst)
 		return (NULL);
+	glst = NULL;
 	group_size = 1;
 	k = int_at(lst);
 	while (lst->next)
@@ -70,7 +72,6 @@ t_list		*grouplist(t_list *lst)
 t_stacks	*groupstacks(t_stacks *stacks)
 {
 	t_stacks	*gstacks;
-	int			ret;
 
 	gstacks = ft_calloc(1, sizeof(t_stacks));
 	if (!gstacks)

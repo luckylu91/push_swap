@@ -87,7 +87,7 @@ def generate_obj_lines(suffix, add_com=True):
 	# 	print(cut_line(res_line))
 	# print("OBJS" + suffix + " =$(SRCS" + suffix + ":%.c=%.o)")
 
-generate_srcs_lines(['pswap', 'checker', 'libft'], "_COM", include=False)
+generate_srcs_lines(['pswap', 'checker', 'libft', 'pswap_old'], "_COM", include=False)
 generate_srcs_lines(['checker'], "_CHK")
 generate_srcs_lines(['pswap'], "_PS")
 generate_obj_lines("_COM", add_com=False)

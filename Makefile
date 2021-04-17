@@ -26,10 +26,6 @@ DBFLAGS =	-g3 -fsanitize=address
 # OBJS_CHK =	$(OBJS_COM) $(SRCS_CHK:%.c=%.o)
 # OBJS_PS =	$(OBJS_COM) $(SRCS_PS:%.c=%.o)
 SRCS_COM =$(addprefix src/get_next_line/, get_next_line_utils.c get_next_line.c)
-SRCS_COM +=$(addprefix src/pswap_old/, merge.c sort.c)
-SRCS_COM +=$(addprefix src/pswap_old/utils/, utils.c)
-SRCS_COM +=$(addprefix src/pswap_old/operations/, rotate_reverse.c push.c rotate.c \
-        swap.c)
 SRCS_COM +=$(addprefix src/operations/, rotate_reverse.c push.c rotate.c \
         parse_operation.c swap.c)
 SRCS_COM +=$(addprefix src/common/, errors.c handle_args.c is_sorted_lst.c \
@@ -58,19 +54,19 @@ libft:
 _test_chk_%:	test/_test_chk_%.c $(OBJS_CHK) libft
 	gcc $< $(SRCS) -o test/$@ $(OBJS_CHK) $(IFLAGS) $(LFLAGS)
 
-_test_ps_%:	test/_test_ps_%.c $(OBJS_PS) libft
+_test_ps_%:	test/_test_ps_%.c $(OBJ_DIRS) $(OBJS_PS) libft
 	gcc $< $(SRCS) -o test/$@ $(OBJS_PS) $(IFLAGS) $(LFLAGS) $(DBFLAGS)
 
-obj/%.o:	obj/%.c
-	gcc -c -o $@ $< $(CFLAGS) $(IFLAGS)
-
-$(OBJS_CHK):	$(OBJ_DIRS) libft
-$(OBJS_PS):		$(OBJ_DIRS) libft
-$(OBJS_COM):	$(OBJ_DIRS) libft
 
 $(OBJ_DIRS):
 	mkdir -p $(OBJ_DIRS)
 
+obj/%.o:	src/%.c $(OBJ_DIRS)
+	gcc -c -o $@ $< $(CFLAGS) $(IFLAGS)
+
+# $(OBJS_CHK):	libft
+# $(OBJS_PS):		libft
+# $(OBJS_COM):	libft
 clean:
 	make -C $(LIBFT_DIR) clean
 	rm -f $(OBJS_CHK)
