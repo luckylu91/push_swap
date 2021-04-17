@@ -53,7 +53,24 @@ def generate_srcs_lines(dirlist, suffix, include=True):
 			, files)
 		res_line += ' '.join(files) + ')'
 		print(cut_line(res_line))
-	print("OBJS" + suffix + " =$(SRCS" + suffix + ":%.c=%.o)")
+
+def generate_dir_list(include_dirlist, exclude_com_dirlist):
+	i = 0
+	res_line = "DIRS = "
+	for root, _, _ in os.walk('src'):
+		if (len(root.split('/')) == 1):
+			continue
+		if root.split('/')[1] not in include_dirlist \
+				and root.split('/')[1] in exclude_com_dirlist:
+			continue
+		if i > 0:
+			res_line += " "
+		res_line += root
+		i += 1
+	print(res_line)
+
+def generate_obj_lines(suffix, add_com=True):
+	print("OBJS" + suffix + " = " + ("$(OBJS_COM) " if add_com else "") + "$(SRCS" + suffix + ":src/%.c=obj/%.o)")
 
 	# srcdirs = os.listdir("src")
 	# i = 0
@@ -70,6 +87,10 @@ def generate_srcs_lines(dirlist, suffix, include=True):
 	# 	print(cut_line(res_line))
 	# print("OBJS" + suffix + " =$(SRCS" + suffix + ":%.c=%.o)")
 
-generate_srcs_lines(['pswap'], "_PS")
-generate_srcs_lines(['checker'], "_CHK")
 generate_srcs_lines(['pswap', 'checker', 'libft'], "_COM", include=False)
+generate_srcs_lines(['checker'], "_CHK")
+generate_srcs_lines(['pswap'], "_PS")
+generate_obj_lines("_COM", add_com=False)
+generate_obj_lines("_CHK")
+generate_obj_lines("_PS")
+generate_dir_list(['pswap', 'checker'], ['libft', '_pswap_kill_it_with_fire', 'pswap_old'])

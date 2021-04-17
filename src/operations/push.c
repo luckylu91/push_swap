@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 16:26:48 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/17 13:49:01 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-static int	push(t_list **alst1, t_list **alst2)
+int	push(t_list **alst1, t_list **alst2)
 {
 	t_list *first1_next;
 
