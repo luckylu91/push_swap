@@ -1,14 +1,8 @@
-# SUBDIRS = $(shell find .. -type d | grep -Ev "(.git|.vscode)")
-# IFLAGS = $(addprefix -I, $(SUBDIRS))
 LIBFT_DIR =	src/libft
 CFLAGS =	-Wall -Wextra # -Werror
 LFLAGS =	-L$(LIBFT_DIR) -lft
 IFLAGS =	-I$(LIBFT_DIR) -Iincludes
 DBFLAGS =	-g3 -fsanitize=address
-# SRCS_PS =$(addprefix src/pswap/, merge.c sort.c)
-# SRCS_PS +=$(addprefix src/pswap/utils/, utils.c)
-# SRCS_PS +=$(addprefix src/pswap/operations/, rotate_reverse.c push.c rotate.c \
-#         swap.c)
 SRCS_PS =$(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c main.c)
 SRCS_PS +=$(addprefix src/pswap_recursion/operations/, push.c rotate.c rotate_reverse.c swap.c)
 OBJS_PS =$(SRCS_PS:%.c=%.o)

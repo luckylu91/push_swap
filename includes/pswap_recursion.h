@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:35:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 16:32:52 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 16:21:07 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 
 #include "common.h"
 #include "operations.h"
+#include "libft.h"
 //
 #include <stdio.h>
 
+// exit
+int		exit_fun_error(void *ctx);
+int		exit_fun_ok(void *ctx);
 // operations
 void	ps_push_ab(t_stacks *stacks, int op_code);
 void	ps_swap_ab(t_stacks *stacks, int op_code);

@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 09:47:46 by lzins             #+#    #+#             */
-/*   Updated: 2020/11/24 10:11:55 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/04 15:56:40 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*ft_strdup(const char *s)
 	size_t	s_len;
 
 	s_len = ft_strlen(s);
-	if ((s_dup = malloc(s_len + 1)) == NULL)
-		return (NULL);
+	s_dup = wrap_malloc(s_len + 1);
 	return (ft_memcpy(s_dup, s, s_len + 1));
 }
