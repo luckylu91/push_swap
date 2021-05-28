@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 05:08:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 14:21:50 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 16:34:06 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_list				*ft_lststep(t_list *lst, size_t n_steps);
 t_list				*ft_lstskip(t_list *lst, int (*skip)(void *content));
 int					ft_lstadd_back_content(t_list **alst, void *content);
 int					ft_any(void *array, size_t len, size_t size,
-								int (*booleval)(void*));
+							int (*booleval)(void*));
 int					ft_strindex(const char *s, int c);
 int					ft_intindex(const int *array, size_t n, int val);
 int					ft_lstdup_back(t_list **alst, void *aval, size_t size);
@@ -100,5 +100,7 @@ char				*ft_lststrjoin(t_list *lst, char *sep, char *left,
 size_t				ft_splitlen(char **splitted);
 int					ft_isspace(int c);
 int					ft_atoi_overflows(const char *str);
+int					ft_lstindex(t_list *lst, void *content,
+									size_t content_size);
 
 #endif

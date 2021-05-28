@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   print_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/08 11:58:52 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/13 18:31:34 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/10 16:59:34 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/10 17:06:53 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pswap.h"
+#include "common.h"
 
-int	int_at(t_list *lst)
+void	*itoa_ptr(void *iptr)
 {
-	return (*(int*)lst->content);
+	if (iptr)
+		return (ft_itoa(*(int*)iptr));
+	else
+		return (NULL);
 }
 
-char	op_last_char(char op_char, int op_code)
+void	print_list(t_list *lst_int)
 {
-	if (op_code == 0)
-		return ('a');
-	else if (op_code == 1)
-		return ('b');
-	else
-		return (op_char);
+	t_list	*lst_str;
+	char	*res_str;
+
+	lst_str = ft_lstmap(lst_int, itoa_ptr, free);
+	if (!lst_str)
+		return ;
+	res_str = ft_lststrjoin(lst_str, ", ", "[", "]");
+	if (res_str)
+	{
+		ft_putstr_fd(res_str, STDOUT_FILENO);
+		free(res_str);
+	}
+	ft_lstclear(&lst_str, free);
 }

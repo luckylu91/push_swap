@@ -2,13 +2,8 @@
 # IFLAGS = $(addprefix -I, $(SUBDIRS))
 LIBFT_DIR =	src/libft
 CFLAGS =	-Wall -Wextra # -Werror
-CHK_DIR =	src/checker
-PS_DIR =	src/pswap
-COMMON_DIR =	src/common
-OP_DIR =	src/operations
-GNL_DIR =	src/get_next_line
 LFLAGS =	-L$(LIBFT_DIR) -lft
-IFLAGS =	-I$(LIBFT_DIR) -I$(CHK_DIR) -I$(PS_DIR) -I$(COMMON_DIR) -I$(GNL_DIR) -I$(OP_DIR)
+IFLAGS =	-I$(LIBFT_DIR) -Iincludes
 DBFLAGS =	-g3 -fsanitize=address
 # SRCS_PS =$(addprefix src/pswap/, merge.c sort.c)
 # SRCS_PS +=$(addprefix src/pswap/utils/, utils.c)
@@ -45,7 +40,7 @@ all:	libft checker
 checker: $(OBJS_CHK)
 	gcc -o $@ $^ $(LFLAGS)
 
-push_swap: $(OBJS_PS)
+push_swap: libft $(OBJS_PS)
 	gcc -o $@ $^ $(LFLAGS)
 
 libft:

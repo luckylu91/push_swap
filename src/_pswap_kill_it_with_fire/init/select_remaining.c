@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 11:52:40 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/08 14:46:05 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/04/10 16:53:05 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	select_remaining(t_permut *permut, t_list *chosen_path, t_list **remaining)
 	int		i;
 
 	if (!permut || !chosen_path)
-		return (NULL);
+		return (-1);
 	*remaining = NULL;
 	chosen_array = ft_calloc(permut->n, sizeof(int));
 	while (chosen_path)

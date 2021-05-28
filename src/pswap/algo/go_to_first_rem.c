@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   go_to_first_rem.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/13 18:31:25 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/10 16:29:15 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/10 16:45:40 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap.h"
 
-void	ps_swap_ab(t_stacks *stacks, int op_code)
+void	go_to_first_rem(t_pswap *ps)
 {
-	swap_ab(stacks, op_code);
-	ft_putstr_fd("s", STDOUT_FILENO);
-	ft_putchar_fd(op_last_char('s', op_code), STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	//
-	print_stacks_side(stacks);
+	int	first_rem;
+	int	first_rem_index;
+
+	first_rem = int_at(ps->remaining);
+	first_rem_index = ft_lstindex(ps->stacks_bij.a, &first_rem, sizeof(int));
+	first_rem_index = dist_smallest(first_rem_index, ps->stacks_bij.n);
+	ps_nrotate_ab(ps, first_rem_index, 0);
 }
