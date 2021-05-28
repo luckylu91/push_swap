@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pswap_recursion.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:35:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 16:21:07 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 23:09:19 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 // exit
 int		exit_fun_error(void *ctx);
 int		exit_fun_ok(void *ctx);
+void	exit_ok(void);
 // operations
 void	ps_push_ab(t_stacks *stacks, int op_code);
 void	ps_swap_ab(t_stacks *stacks, int op_code);

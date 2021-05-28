@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args_to_stacks.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 02:30:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 16:19:12 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 23:14:40 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static void	sort_list(t_list *lst, t_list **lst_sorted)
 int	args_to_stacks(t_stacks *stacks, int argc, char **argv)
 {
 	int	i_start;
-	int	ret;
 
 	stacks->a = NULL;
 	stacks->b = NULL;

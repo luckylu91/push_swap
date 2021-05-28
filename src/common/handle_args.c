@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 13:36:42 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 16:21:49 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 23:09:57 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 void	handle_args(t_stacks *stacks, int argc, char **argv)
 {
 	if (argc == 1)
-		return (0);
+		exit_ok();
 	if (args_to_stacks(stacks, argc, argv))
 		ft_exit();
 	if (repeating_numbers(stacks->a))
 		ft_exit();
 	if (stacks->verbose)
 		print_stacks_side(stacks);
-	ft_get_set_exit_fun(exit_fun_ok);
 }

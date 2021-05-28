@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 02:42:39 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 11:09:11 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 23:14:48 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	repeating_numbers(t_list *lst)
 		return (0);
 	while (lst->next)
 	{
-		if (ft_lstany2(lst->next, lst->content, int_are_equals))
+		if (ft_lstany(lst->next, lst->content, int_are_equals))
 			return (1);
 		lst = lst->next;
 	}
