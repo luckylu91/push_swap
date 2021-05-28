@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 16:20:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 23:09:09 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 23:22:39 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int		exit_fun_error(void *ctx)
 
 int		exit_fun_ok(void *ctx)
 {
+	(void)ctx;
 	return (0);
 }
 

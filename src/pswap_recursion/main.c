@@ -6,15 +6,13 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:39:46 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 23:15:09 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 23:21:26 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap_recursion.h"
 //
 #include <stdio.h>
-
-
 
 int	main(int argc, char **argv)
 {
