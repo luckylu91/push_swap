@@ -6,14 +6,14 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 14:02:51 by lzins             #+#    #+#             */
-/*   Updated: 2020/11/24 15:00:31 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/09 14:33:43 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+void	ft_lstdelone(t_list *lst, t_del_fun del)
 {
 	(*del)(lst->content);
-	free(lst);
+	wrap_free(lst);
 }

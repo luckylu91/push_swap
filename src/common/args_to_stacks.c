@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   args_to_stacks.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/27 02:30:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/12 21:25:06 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/28 16:19:12 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
+//
+#include <stdio.h>
 
 static int	arg_is_valid(char *arg)
 {
@@ -19,7 +21,8 @@ static int	arg_is_valid(char *arg)
 	offset = 0;
 	if (*arg == '+' || *arg == '-')
 		offset++;
-	return (ft_all_in(arg + offset, "0123456789") && !ft_atoi_overflows(arg));
+	return (arg[offset] && ft_all_in(arg + offset, "0123456789")
+		&& !ft_atoi_overflows(arg));
 }
 
 static int	array_to_stacks(t_stacks *stacks, int n, char **array)
@@ -32,21 +35,57 @@ static int	array_to_stacks(t_stacks *stacks, int n, char **array)
 	i = 0;
 	while (i < n)
 	{
-		if (!arg_is_valid(array[i])
-				|| ft_lstdupint_back(&stacks->a, ft_atoi(array[i])) == -1)
-			return (error_free(stacks));
+		if (!arg_is_valid(array[i]))
+			return (1);
+		ft_lstdupint_back(&stacks->a, ft_atoi(array[i]));
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-// TODO ne pas gere 1 argument
+static t_list	*lstinsert_sorted(t_list *lst_sorted, t_list *new_elem)
+{
+	if (!lst_sorted)
+		return (new_elem);
+	if (int_at(lst_sorted) < int_at(new_elem))
+	{
+		lst_sorted->next = lstinsert_sorted(lst_sorted->next, new_elem);
+		return (lst_sorted);
+	}
+	else
+	{
+		new_elem->next = lst_sorted;
+		return (new_elem);
+	}
+}
+
+static void	lstdupint_sorted(t_list **lst_sorted, int k)
+{
+	t_list	*new_elem;
+
+	new_elem = NULL;
+	ft_lstdupint_back(&new_elem, k);
+	*lst_sorted = lstinsert_sorted(*lst_sorted, new_elem);
+}
+
+static void	sort_list(t_list *lst, t_list **lst_sorted)
+{
+	while (lst)
+	{
+		lstdupint_sorted(lst_sorted, int_at(lst));
+		lst = lst->next;
+	}
+}
+
 int	args_to_stacks(t_stacks *stacks, int argc, char **argv)
 {
-	int i_start;
+	int	i_start;
+	int	ret;
 
 	stacks->a = NULL;
 	stacks->b = NULL;
+	stacks->a_sorted = NULL;
+	stacks->b_sorted = NULL;
 	stacks->verbose = 0;
 	if (argc == 1)
 		return (0);
@@ -58,5 +97,8 @@ int	args_to_stacks(t_stacks *stacks, int argc, char **argv)
 		i_start = 2;
 		stacks->verbose = 1;
 	}
-	return (array_to_stacks(stacks, argc - i_start, argv + i_start));
+	if (array_to_stacks(stacks, argc - i_start, argv + i_start))
+		return (1);
+	sort_list(stacks->a, &stacks->a_sorted);
+	return (0);
 }

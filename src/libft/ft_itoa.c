@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 10:17:12 by lzins             #+#    #+#             */
-/*   Updated: 2020/11/24 16:49:07 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/17 13:38:38 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	compute_digits(int n, int sgn, int *size, char *digits)
 {
-	int		i;
+	int	i;
 
 	if (n == 0)
 	{
@@ -44,7 +44,7 @@ static void	reverse_fill(char *s, char *digits, int size)
 	}
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	digits[10];
 	int		sgn;
@@ -52,11 +52,12 @@ char		*ft_itoa(int n)
 	char	*res;
 	char	*res_mov;
 
-	sgn = (n < 0) ? -1 : 1;
+	if (n < 0)
+		sgn = -1;
+	else
+		sgn = 1;
 	compute_digits(n, sgn, &size, digits);
-	res = malloc((size + 1 + (sgn == -1)) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
+	res = wrap_malloc((size + 1 + (sgn == -1)) * sizeof(char));
 	res_mov = res;
 	if (sgn == -1)
 		*(res_mov++) = '-';

@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstindex.c                                      :+:      :+:    :+:   */
+/*   ft_bilstadd_front.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 16:31:58 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/10 16:33:42 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/28 17:10:21 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/29 14:43:38 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_lstindex(t_list *lst, void *content, size_t content_size)
+void	ft_bilstadd_front(t_bilist **alst, t_bilist *new)
 {
-	int i;
+	t_bilist	*first;
 
-	i = 0;
-	while (lst)
-	{
-		if (!ft_memcmp(lst->content, content, content_size))
-			return (i);
-		lst = lst->next;
-		i++;
-	}
-	return (-1);
+	if (alst == NULL)
+		return ;
+	first = ft_bilstfirst(*alst);
+	new->next = first;
+	if (first)
+		first->prev = new;
+	*alst = new;
 }

@@ -6,32 +6,30 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 14:14:01 by lzins             #+#    #+#             */
-/*   Updated: 2020/11/24 15:48:04 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/25 14:49:05 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, t_dup_fun dup, t_del_fun del)
 {
-	t_list	*new;
-	t_list	*new_mov;
-	t_list	*new_elem;
+	void	*new_content;
+	t_list	*new_lst;
 
 	if (lst == NULL)
 		return (NULL);
-	if ((new = ft_lstnew((*f)(lst->content))) == NULL)
-		return (NULL);
-	new_mov = new;
-	while ((lst = lst->next) != NULL)
+	new_lst = NULL;
+	while (lst != NULL)
 	{
-		if ((new_elem = ft_lstnew((*f)(lst->content))) == NULL)
+		new_content = dup(lst->content);
+		if (!new_content)
 		{
-			ft_lstclear(&new, del);
+			ft_lstclear(&new_lst, del);
 			return (NULL);
 		}
-		new_mov->next = new_elem;
-		new_mov = new_mov->next;
+		ft_lstadd_back_content(&new_lst, new_content);
+		lst = lst->next;
 	}
-	return (new);
+	return (new_lst);
 }

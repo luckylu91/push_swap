@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:09:18 by lzins             #+#    #+#             */
-/*   Updated: 2020/11/24 15:09:27 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/04 15:52:33 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ t_list	*ft_lstnew(void *content)
 {
 	t_list	*l;
 
-	if ((l = malloc(sizeof(t_list))) == NULL)
-		return (NULL);
+	l = wrap_malloc(sizeof(t_list));
 	l->content = content;
 	l->next = NULL;
 	return (l);

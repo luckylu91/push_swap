@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstany2.c                                       :+:      :+:    :+:   */
+/*   ft_bilstnew.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:45:59 by lzins             #+#    #+#             */
-/*   Updated: 2021/03/27 02:47:34 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/04/28 17:01:39 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/04 16:30:24 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int ft_lstany2(t_list *lst, void *ref, int (*booleval)(void *cont, void *ref))
+t_bilist	*ft_bilstnew(void *content)
 {
-	while (lst)
-	{
-		if ((*booleval)(lst->content, ref))
-			return (1);
-		lst = lst->next;
-	}
-	return (0);
+	t_bilist	*new_elem;
+
+	new_elem = wrap_malloc(sizeof(t_bilist));
+	new_elem->content = content;
+	new_elem->prev = NULL;
+	new_elem->next = NULL;
+	return (new_elem);
 }
