@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_args.c                                      :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 13:36:42 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 11:58:59 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/18 12:03:59 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
-//
-#include <stdio.h>
+#include "pswap_recursion.h"
 
-int	handle_args(t_stacks *stacks, int argc, char **argv)
+void	ps_push_ab(t_stacks *stacks, int op_code)
 {
-	if (argc == 1)
-		return (0);
-	if (args_to_stacks(stacks, argc, argv) == -1)
-		return (-1);
-	if (repeating_numbers(stacks->a))
-		return (error_free(stacks));
+	push_ab(stacks, op_code);
+	ft_putstr_fd("p", STDOUT_FILENO);
+	ft_putchar_fd(op_last_char('p', op_code), STDOUT_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	if (stacks->verbose)
 		print_stacks_side(stacks);
-	return (1);
 }

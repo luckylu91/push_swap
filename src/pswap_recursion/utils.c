@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_lst.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/12 09:20:39 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 10:02:20 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/18 16:32:21 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pswap.h"
+#include "pswap_recursion.h"
 
 int	*list_to_array(t_list *lst, int n)
 {
@@ -21,13 +21,8 @@ int	*list_to_array(t_list *lst, int n)
 	if (!array)
 		return (NULL);
 	i = 0;
-	while (i < n)
+	while (i < n && lst)
 	{
-		if (!lst)
-		{
-			free(array);
-			return (NULL);
-		}
 		array[i] = int_at(lst);
 		lst = lst->next;
 		i++;
@@ -35,29 +30,36 @@ int	*list_to_array(t_list *lst, int n)
 	return (array);
 }
 
-int	array_to_stacks(t_stacks *stacks, int n, int *array)
+void	swap_int(int *n1, int *n2)
 {
-	int i;
+	int tmp;
 
-	stacks->n = n;
-	stacks->a_size = n;
-	stacks->b_size = 0;
-	i = 0;
-	while (i < n)
-	{
-		if (ft_lstdupint_back(&stacks->a, array[i]) == -1)
-			return (error_free(stacks));
-		i++;
-	}
-	stacks->a_size = n;
-	return (1);
+	tmp = *n1;
+	*n1 = *n2;
+	*n2 = tmp;
 }
 
-void	list_to_bool_array(t_list *lst, int *array)
+void	bubble_sort(int *array, int n)
 {
-	while (lst)
+	int swap_happened;
+	int i;
+	int j;
+
+	j = 0;
+	swap_happened = 1;
+	while (j < n - 1 && swap_happened)
 	{
-		array[int_at(lst)] = 1;
-		lst = lst->next;
+		swap_happened = 0;
+		i = 0;
+		while (i < n - 1 - j)
+		{
+			if (array[i] > array[i + 1])
+			{
+				swap_int(array + i, array + i + 1);
+				swap_happened = 1;
+			}
+			i++;
+		}
+		j++;
 	}
 }

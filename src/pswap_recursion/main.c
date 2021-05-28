@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_args.c                                      :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 13:36:42 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 11:58:59 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/18 10:39:46 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/28 15:35:31 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "pswap_recursion.h"
 //
 #include <stdio.h>
 
-int	handle_args(t_stacks *stacks, int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	if (argc == 1)
-		return (0);
-	if (args_to_stacks(stacks, argc, argv) == -1)
-		return (-1);
-	if (repeating_numbers(stacks->a))
-		return (error_free(stacks));
-	if (stacks->verbose)
-		print_stacks_side(stacks);
-	return (1);
+	t_stacks	stacks;
+	int			ret_args;
+
+	//
+	setbuf(stdout, NULL);
+	ret_args = handle_args(&stacks, argc, argv);
+	if (ret_args != 1)
+		return (ret_args);
+	printf("lalala");
+	sort_rec_a(&stacks, stacks.a_size);
+	free_stacks(&stacks);
+	return (0);
 }
