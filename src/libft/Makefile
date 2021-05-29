@@ -91,7 +91,7 @@ BONUS = ft_lstadd_front.c \
 		ft_bilst_to_lst_dup.c \
 		ft_dupstr_back.c \
 		ft_lstfilter.c \
-		ft_bilstdupint_back
+		ft_bilstdupint_back.c
 
 SRCS +=	wrap_malloc_getset.c wrap_malloc.c wrap_free.c
 
@@ -105,9 +105,6 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(OBJS_BONUS)
 	ar -qcs $@ $?
-
-# bonus: $(OBJS) $(OBJS_BONUS)
-# 	ar -qcs $(NAME) $?
 
 %.o: %.c libft.h
 	$(CC) -c $< $(CFLAGS)

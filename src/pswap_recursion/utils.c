@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 22:41:54 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,6 @@ int	*list_to_array(t_bilist *lst, int n)
 		i++;
 	}
 	return (array);
-}
-
-void	swap_int(int *n1, int *n2)
-{
-	int tmp;
-
-	tmp = *n1;
-	*n1 = *n2;
-	*n2 = tmp;
 }
 
 void	bubble_sort(int *array, int n)

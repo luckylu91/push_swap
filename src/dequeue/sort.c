@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 10:39:19 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 11:36:35 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 22:07:37 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,28 @@ static void	quicksort(t_bilist *lo, t_bilist *hi)
 	quicksort(p->next, hi);
 }
 
-void	sort_queue(t_dequeue *q)
+static t_dequeue	*copy(t_dequeue *q)
 {
-	if (q->size <= 1)
-		return ;
-	quicksort(q->first, q->last);
+	t_dequeue	*q_cpy;
+	t_bilist	*q_blst;
+
+	q_cpy = ft_calloc(1, sizeof(t_dequeue));
+	q_cpy->size = q->size;
+	q_blst = q->first;
+	while (q_blst)
+	{
+		addback_int(q_cpy, int_at(q_blst));
+		q_blst = q_blst->next;
+	}
+	return (q_cpy);
+}
+
+t_dequeue	*sorted_queue(t_dequeue *q)
+{
+	t_dequeue	*q_copy;
+
+	q_copy = copy(q);
+	if (q->size > 1)
+		quicksort(q_copy->first, q_copy->last);
+	return (q_copy);
 }

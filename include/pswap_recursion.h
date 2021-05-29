@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pswap_recursion.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:35:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 13:21:24 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 22:31:11 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	ps_rotate_reverse_ab(t_stacks *stacks, int op_code);
 int		*list_to_array(t_bilist *lst, int n);
 void	bubble_sort(int *array, int n);
 // main
-int		push_half_in_a(t_stacks *s, int n);
-int		push_half_in_b(t_stacks *s, int n);
-void	sort_rec_a(t_stacks *s, int na);
-void	sort_rec_b(t_stacks *s, int nb);
+int		push_half_in_a(t_stacks *s, int start, int n);
+int		push_half_in_b(t_stacks *s, int start, int n);
+void	sort_rec_a(t_stacks *s, int start, int na);
+void	sort_rec_b(t_stacks *s, int start, int nb);
 
 #endif
