@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   create.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 10:29:21 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 10:32:33 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "pswap_recursion.h"
 
-int	is_sorted_lst(t_bilist *lst)
+t_dequeue	*new_dequeue(void)
 {
-	int tmp1;
-	int tmp2;
+	t_dequeue	*q;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
-	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
-	}
-	return (1);
+	q = ft_calloc(sizeof(t_dequeue));
+	q->first = NULL;
+	q->last = NULL;
+	q->size = 0;
+	return (q);
 }

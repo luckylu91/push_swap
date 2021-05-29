@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   dequeue.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 11:19:36 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 11:40:26 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "libft.h"
+#include <unistd.h>
 
-int	is_sorted_lst(t_bilist *lst)
+typedef struct	s_dequeue
 {
-	int tmp1;
-	int tmp2;
+	t_bilist	*first;
+	t_bilist	*last;
+	int			size;
+}	t_dequeue;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
-	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
-	}
-	return (1);
-}
+void		push_top(t_dequeue *q, t_bilist *elem);
+void		push_bottom(t_dequeue *q, t_bilist *elem);
+void		addback_int(t_dequeue *q, int n);
+
+t_bilist	*pop_first(t_dequeue *q);
+t_bilist	*pop_last(t_dequeue *q);
+
+void		sort_queue(t_dequeue *q);

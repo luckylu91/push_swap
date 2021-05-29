@@ -6,13 +6,13 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:41 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 16:17:47 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap_recursion.h"
 
-int	choose_direction_b(t_list *lst, int n, int median, int lst_len)
+int	choose_direction_b(t_bilist *lst, int n, int median, int lst_len)
 {
 	int i;
 	int range[2];

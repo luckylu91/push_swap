@@ -43,12 +43,15 @@ _test_ps_%:	test/_test_ps_%.c $(OBJ_DIRS) $(OBJS_PS)
 $(OBJ_DIRS):
 	mkdir -p $(OBJ_DIRS)
 
-obj/%.o:	src/%.c | $(OBJ_DIRS)
+$(OBJS_COM) :	| $(OBJ_DIRS)
+$(OBJS_PS) :	| $(OBJ_DIRS)
+
+obj/%.o:	src/%.c
 	gcc -c -o $@ $< $(CFLAGS) $(IFLAGS)
 
 clean:
 	make -C $(LIBFT_DIR) clean
-	rm -f $(OBJS_DIRS)
+	rm -rf obj/
 
 fclean:	clean
 	make -C $(LIBFT_DIR) fclean

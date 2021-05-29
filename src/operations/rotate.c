@@ -5,37 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 03:04:25 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:20:11 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 13:15:55 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 13:16:23 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "common.h"
 
-void	rotate(t_list **alst)
+void	rotate(t_dequeue *q)
 {
-	t_list *first;
-	t_list *last;
+	t_bilist	*last;
 
-	if (!*alst || !(*alst)->next)
+	if (q->size <= 1)
 		return ;
-	first = *alst;
-	last = ft_lstlast(*alst);
-	*alst = first->next;
-	last->next = first;
-	first->next = NULL;
+	last = pop_last(q);
+	push_top(q, last);
 }
 
-int	rotate_ab(t_stacks *stacks, int op_code)
+void	rotate_ab(t_stacks *stacks, int op_code)
 {
 	if (op_code == 0)
-		rotate(&stacks->a);
+		rotate(stacks->a);
 	else if (op_code == 1)
-		rotate(&stacks->b);
+		rotate(stacks->b);
 	else
 	{
-		rotate(&stacks->a);
-		rotate(&stacks->b);
+		rotate(stacks->a);
+		rotate(stacks->b);
 	}
-	return (1);
 }

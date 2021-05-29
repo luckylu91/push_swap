@@ -3,39 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/17 20:23:44 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 11:41:13 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 11:46:48 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "common.h"
 
-int	push(t_list **alst1, t_list **alst2)
+void	push(t_dequeue *q1, t_dequeue *q2)
 {
-	t_list *second1;
+	t_bilist	*elem;
 
-	if (!*alst1)
-		return (0);
-	second1 = (*alst1)->next;
-	(*alst1)->next = *alst2;
-	*alst2 = *alst1;
-	*alst1 = second1;
-	return (1);
+	if (q1->size == 0)
+		return ;
+	elem = pop_first(q1);
+	push_top(q2, elem);
 }
 
-int	push_ab(t_stacks *stacks, int op_code)
+void	push_ab(t_stacks *stacks, int op_code)
 {
-	if (op_code == 0 && push(&stacks->b, &stacks->a))
-	{
-		stacks->a_size++;
-		stacks->b_size--;
-	}
-	else if (push(&stacks->a, &stacks->b))
-	{
-		stacks->a_size--;
-		stacks->b_size++;
-	}
-	return (1);
+	if (op_code == 0)
+		push(stacks->b, stacks->a);
+	else
+		push(stacks->a, stacks->b);
 }

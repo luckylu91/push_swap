@@ -5,35 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:20:34 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 13:16:46 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 13:18:28 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "common.h"
 
-void	swap(t_list **alst)
+void	swap(t_dequeue *q)
 {
-	t_list *tmp;
+	t_bilist	*first;
+	t_bilist	*second;
 
-	if (!*alst || !(*alst)->next)
+	if (q->size <= 1)
 		return ;
-	tmp = (*alst)->next;
-	(*alst)->next = (*alst)->next->next;
-	tmp->next = *alst;
-	*alst = tmp;
+	first = pop_first(q);
+	second = pop_first(q);
+	push_top(q, first);
+	push_top(q, second);
 }
 
-int	swap_ab(t_stacks *stacks, int op_code)
+void	swap_ab(t_stacks *stacks, int op_code)
 {
 	if (op_code == 0)
-		swap(&stacks->a);
+		swap(stacks->a);
 	else if (op_code == 1)
-		swap(&stacks->b);
+		swap(stacks->b);
 	else
 	{
-		swap(&stacks->a);
-		swap(&stacks->b);
+		swap(stacks->a);
+		swap(stacks->b);
 	}
-	return (1);
 }

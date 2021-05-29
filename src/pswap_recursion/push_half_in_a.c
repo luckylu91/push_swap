@@ -6,13 +6,13 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:34:15 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 16:19:21 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap_recursion.h"
 
-int	choose_direction_a(t_list *lst, int n, int median, int lst_len)
+int	choose_direction_a(t_bilist *lst, int n, int median, int lst_len)
 {
 	int i;
 	int range[2];
@@ -53,8 +53,6 @@ int	push_half_in_a(t_stacks *s, int n)
 	n_push = n / 2;
 	while (n_push > 0)
 	{
-		// printf("push_half_in_a: n_push = %d\n", n_push);
-		// printf("push_half_in_a: median = %d\n", median);
 		while (int_at(s->b) <= median)
 		{
 			if (direction > 0)

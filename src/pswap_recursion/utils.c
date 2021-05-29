@@ -6,13 +6,13 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 16:32:21 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pswap_recursion.h"
 
-int	*list_to_array(t_list *lst, int n)
+int	*list_to_array(t_bilist *lst, int n)
 {
 	int *array;
 	int i;

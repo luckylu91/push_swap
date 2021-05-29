@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   remove.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 10:40:05 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 10:42:34 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "pswap_recursion.h"
 
-int	is_sorted_lst(t_bilist *lst)
+t_bilist	*pop_first(t_dequeue *q)
 {
-	int tmp1;
-	int tmp2;
+	t_bilist	*res;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
-	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
-	}
-	return (1);
+	if (q->size == 0)
+		return (NULL);
+	res = q->first;
+	q->first = q->first->next;
+	q->first->prev = NULL;
+	res->next = NULL;
+	return (res);
+}
+
+t_bilist	*pop_last(t_dequeue *q)
+{
+	t_bilist	*res;
+
+	if (q->size == 0)
+		return (NULL);
+	res = q->last;
+	q->last = q->last->prev;
+	q->last->next = NULL;
+	res->prev = NULL;
+	return (res);
 }

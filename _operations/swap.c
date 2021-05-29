@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   swap.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 02:59:23 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 15:20:34 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "checker.h"
 
-int	is_sorted_lst(t_bilist *lst)
+void	swap(t_list **alst)
 {
-	int tmp1;
-	int tmp2;
+	t_list *tmp;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
+	if (!*alst || !(*alst)->next)
+		return ;
+	tmp = (*alst)->next;
+	(*alst)->next = (*alst)->next->next;
+	tmp->next = *alst;
+	*alst = tmp;
+}
+
+int	swap_ab(t_stacks *stacks, int op_code)
+{
+	if (op_code == 0)
+		swap(&stacks->a);
+	else if (op_code == 1)
+		swap(&stacks->b);
+	else
 	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
+		swap(&stacks->a);
+		swap(&stacks->b);
 	}
 	return (1);
 }

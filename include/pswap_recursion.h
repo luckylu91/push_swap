@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pswap_recursion.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
+/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:35:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 23:21:46 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 13:21:24 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 # include "common.h"
 # include "operations.h"
 # include "libft.h"
-// //
-// # include <stdio.h>
+# include "dequeue.h"
 
 // exit
 int		exit_fun_error(void *ctx);
@@ -29,7 +28,7 @@ void	ps_swap_ab(t_stacks *stacks, int op_code);
 void	ps_rotate_ab(t_stacks *stacks, int op_code);
 void	ps_rotate_reverse_ab(t_stacks *stacks, int op_code);
 // utils
-int	*list_to_array(t_list *lst, int n);
+int		*list_to_array(t_bilist *lst, int n);
 void	bubble_sort(int *array, int n);
 // main
 int		push_half_in_a(t_stacks *s, int n);

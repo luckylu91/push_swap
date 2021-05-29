@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   copy.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 13:22:39 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 13:27:27 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "dequeue.h"
 
-int	is_sorted_lst(t_bilist *lst)
+t_dequeue	*copy(t_dequeue *q)
 {
-	int tmp1;
-	int tmp2;
+	t_dequeue	*q_cpy;
+	t_bilist	*q_blst;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
+	q_cpy = ft_calloc(1, sizeof(t_dequeue));
+	q_cpy->size = q->size;
+	q_blst = q->first;
+	while (q_blst)
 	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
+		addback_int(q_cpy, int_at(q_blst));
+		q_blst = q_blst->next;
 	}
-	return (1);
+	return (q_cpy);
 }

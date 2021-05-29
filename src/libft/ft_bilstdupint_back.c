@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   ft_bilstdupint_back.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 10:18:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 10:20:23 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "libft.h"
 
-int	is_sorted_lst(t_bilist *lst)
+void	ft_bilstdupint_back(t_bilist **alst, int k)
 {
-	int tmp1;
-	int tmp2;
+	int	*k_ptr;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
-	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
-	}
-	return (1);
+	k_ptr = wrap_malloc(sizeof(int));
+	*k_ptr = k;
+	ft_bilstadd_back_content(alst, k);
 }

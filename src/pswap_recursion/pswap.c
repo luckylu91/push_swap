@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 09:50:47 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/18 15:00:30 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 10:10:17 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,16 @@ void	swap_if_needed(t_stacks *s)
 		ps_swap_ab(s, op_bits - 1);
 }
 
+static int	correct_na(t_stacks *s, int na)
+{
+	
+}
+
 void	sort_rec_a(t_stacks *s, int na)
 {
 	int na_next;
 
+	na = correct_na(s, na);
 	if (na == 1)
 		return ;	
 	if (na == 2)

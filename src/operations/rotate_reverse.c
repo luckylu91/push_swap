@@ -5,51 +5,32 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 03:09:03 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 16:14:15 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/29 13:12:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 13:15:45 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "common.h"
 
-static void last_two(t_list *lst, t_list **alast_prev, t_list **alast)
+void	rotate_reverse(t_dequeue *q)
 {
-	*alast_prev = NULL;
-	*alast = lst;
-	while (lst->next)
-	{
-		*alast_prev = lst;
-		*alast = lst->next;
-		lst = lst->next;
-	}
-}
+	t_bilist	*first;
 
-void	rotate_reverse(t_list **alst)
-{
-	t_list *first;
-	t_list *last_prev;
-	t_list *last;
-
-	if (!*alst || !(*alst)->next)
+	if (q->size <= 1)
 		return ;
-	first = *alst;
-	last_two(first, &last_prev, &last);
-	*alst = last;
-	last->next = first;
-	if (last_prev)
-		last_prev->next = NULL;
+	first = pop_first(q);
+	push_bottom(q, first);
 }
 
-int	rotate_reverse_ab(t_stacks *stacks, int op_code)
+void	rotate_reverse_ab(t_stacks *stacks, int op_code)
 {
 	if (op_code == 0)
-		rotate_reverse(&stacks->a);
+		rotate_reverse(stacks->a);
 	else if (op_code == 1)
-		rotate_reverse(&stacks->b);
+		rotate_reverse(stacks->b);
 	else
 	{
-		rotate_reverse(&stacks->a);
-		rotate_reverse(&stacks->b);
+		rotate_reverse(stacks->a);
+		rotate_reverse(stacks->b);
 	}
-	return (1);
 }

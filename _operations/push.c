@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   repeating_numbers.c                                :+:      :+:    :+:   */
+/*   push.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:42:39 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/29 10:26:15 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-static int	int_are_equals(void *i1_ptr, void *i2_ptr)
+int	push(t_bilist **alst1, t_bilist **alst2)
 {
-	int i1;
-	int i2;
+	t_bilist *second1;
 
-	if (!i1_ptr || !i2_ptr)
-		return (1);
-	i1 = *(int*)i1_ptr;
-	i2 = *(int*)i2_ptr;
-	return (i1 == i2);
+	if (!*alst1)
+		return (0);
+	second1 = (*alst1)->next;
+	(*alst1)->next = *alst2;
+	*alst2 = *alst1;
+	*alst1 = second1;
+	return (1);
 }
 
-int	repeating_numbers(t_bilist *lst)
+int	push_ab(t_stacks *stacks, int op_code)
 {
-	if (!lst)
-		return (0);
-	while (lst->next)
+	if (op_code == 0 && push(&stacks->b, &stacks->a))
 	{
-		if (ft_lstany(lst->next, lst->content, int_are_equals))
-			return (1);
-		lst = lst->next;
+		stacks->a_size++;
+		stacks->b_size--;
 	}
-	return (0);
+	else if (push(&stacks->a, &stacks->b))
+	{
+		stacks->a_size--;
+		stacks->b_size++;
+	}
+	return (1);
 }

@@ -1,32 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_sorted_lst.c                                    :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/01 14:08:14 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 03:04:25 by lzins             #+#    #+#             */
+/*   Updated: 2021/04/01 15:20:11 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "checker.h"
 
-int	is_sorted_lst(t_bilist *lst)
+void	rotate(t_list **alst)
 {
-	int tmp1;
-	int tmp2;
+	t_list *first;
+	t_list *last;
 
-	if (!lst)
-		return (1);
-	tmp1 = *(int*)lst->content;
-	lst = lst->next;
-	while (lst)
+	if (!*alst || !(*alst)->next)
+		return ;
+	first = *alst;
+	last = ft_lstlast(*alst);
+	*alst = first->next;
+	last->next = first;
+	first->next = NULL;
+}
+
+int	rotate_ab(t_stacks *stacks, int op_code)
+{
+	if (op_code == 0)
+		rotate(&stacks->a);
+	else if (op_code == 1)
+		rotate(&stacks->b);
+	else
 	{
-		tmp2 = *(int*)lst->content;
-		if (tmp2 < tmp1)
-			return (0);
-		tmp1 = tmp2;
+		rotate(&stacks->a);
+		rotate(&stacks->b);
 	}
 	return (1);
 }

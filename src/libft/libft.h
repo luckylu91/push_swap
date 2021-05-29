@@ -6,7 +6,7 @@
 /*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 05:08:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/24 11:43:27 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/29 10:20:29 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ t_list				*ft_bilst_to_lst_dup(t_bilist *blst, t_dup_fun dup);
 void				ft_dupstr_back(t_list **alst, char *src);
 void				ft_lstfilter(t_list **alst, void *arg, t_bool_fun to_keep,
 						t_del_fun del);
+void				ft_bilstdupint_back(t_bilist **alst, int k);
 
 t_before_exit_fun	ft_get_set_exit_fun(t_before_exit_fun fun);
 void				*ft_get_set_context(void *new_context);
