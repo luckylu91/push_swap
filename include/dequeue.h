@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 11:19:36 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 10:56:45 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 13:34:27 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ t_dequeue	*sorted_queue(t_dequeue *q);
 
 void		print_queue(t_dequeue *q, char *sep, char *end);
 void		print_queue_rev(t_dequeue *q, char *sep, char *end);
+void		print_stacks(t_stacks *s);
 
 #endif

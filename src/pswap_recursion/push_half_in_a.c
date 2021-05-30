@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:34:15 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 22:32:19 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 13:59:42 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	choose_direction_a(t_dequeue *q, int n, int median)
 	while (blst && i < n)
 	{
 		k = int_at(blst);
-		if (k > median)
+		if (k >= median)
 		{
 			if (range[0] == -1)
 				range[0] = i;
@@ -41,26 +41,65 @@ int	choose_direction_a(t_dequeue *q, int n, int median)
 		return (-1);
 }
 
+// int	push_half_in_a(t_stacks *s, int start, int n)
+// {
+// 	int	median;
+// 	int	direction;
+// 	int	n_push;
+
+// 	median = start - (n - 1 - n / 2);
+// 	direction = choose_direction_a(s->b, n, median);
+// 	n_push = n / 2;
+// 	while (n_push > 0)
+// 	{
+// 		while (int_at(s->b->first) <= median)
+// 		{
+// 			if (direction > 0)
+// 				ps_rotate_ab(s, 1);
+// 			else
+// 				ps_rotate_reverse_ab(s, 1);
+// 		}
+// 		ps_push_ab(s, 0);
+// 		n_push--;
+// 	}
+// 	return (n / 2);
+// }
+
+
 int	push_half_in_a(t_stacks *s, int start, int n)
 {
 	int	median;
-	int	direction;
 	int	n_push;
+	int	direction;
+	// int	n_rot;
+	// int	n_rot_total;
 
-	median = start - (n - 1 - n / 2);
-	direction = choose_direction_a(s->b, n, median);
+	median = start - n / 2 + 1;
 	n_push = n / 2;
+	direction = choose_direction_a(s->b, n, median);
+	// n_rot_total = 0;
 	while (n_push > 0)
 	{
-		while (int_at(s->b->first) <= median)
+		// n_rot = 0;
+		while (int_at(s->b->first) < median)
 		{
+			// if (n_rot >= s->b->size)
+			// {
+			// 	printf("Problem in push_half_in_a");
+			// 	ft_exit();
+			// }
 			if (direction > 0)
 				ps_rotate_ab(s, 1);
 			else
 				ps_rotate_reverse_ab(s, 1);
+			// ps_rotate_reverse_ab(s, 1);
+			// n_rot++;
+			// n_rot_total++;
 		}
 		ps_push_ab(s, 0);
 		n_push--;
 	}
+	// while (n_rot_total-- > 0)
+	// 	ps_rotate_ab(s, 1);
 	return (n / 2);
 }

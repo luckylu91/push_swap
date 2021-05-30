@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 10:54:43 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 10:55:53 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 14:56:16 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,11 @@ typedef struct	s_stacks
 	int			n;
 	int			verbose;
 }				t_stacks;
+
+typedef struct	s_push_movement
+{
+	int	direction;
+	int	size;
+}	t_push_movement;
 
 #endif

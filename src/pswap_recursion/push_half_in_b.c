@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:41 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 22:32:30 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 14:00:10 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	choose_direction_b(t_dequeue *q, int n, int median)
 	while (blst && i < n)
 	{
 		k = int_at(blst);
-		if (k < median)
+		if (k <= median)
 		{
 			if (range[0] == -1)
 				range[0] = i;
@@ -41,26 +41,64 @@ int	choose_direction_b(t_dequeue *q, int n, int median)
 		return (-1);
 }
 
+// int	push_half_in_b(t_stacks *s, int start, int n)
+// {
+// 	int	median;
+// 	int	direction;
+// 	int	n_push;
+
+// 	median = start + (n + 1) / 2;
+// 	direction = choose_direction_b(s->a, n, median);
+// 	n_push = n / 2;
+// 	while (n_push > 0)
+// 	{
+// 		while (int_at(s->a->first) >= median)
+// 		{
+// 			if (direction > 0)
+// 				ps_rotate_ab(s, 0);
+// 			else
+// 				ps_rotate_reverse_ab(s, 0);
+// 		}
+// 		ps_push_ab(s, 1);
+// 		n_push--;
+// 	}
+// 	return ((n + 1) / 2);
+// }
+
 int	push_half_in_b(t_stacks *s, int start, int n)
 {
 	int	median;
-	int	direction;
 	int	n_push;
+	int	direction;
+	// int	n_rot;
+	// int	n_rot_total;
 
-	median = start + (n + 1) / 2;
-	direction = choose_direction_b(s->a, n, median);
+	median = start + n / 2 - 1;
 	n_push = n / 2;
+	// n_rot_total = 0;
+	direction = choose_direction_b(s->a, n, median);
 	while (n_push > 0)
 	{
-		while (int_at(s->a->first) >= median)
+		// n_rot = 0;
+		while (int_at(s->a->first) > median)
 		{
 			if (direction > 0)
 				ps_rotate_ab(s, 0);
 			else
 				ps_rotate_reverse_ab(s, 0);
+			// if (n_rot >= s->a->size)
+			// {
+			// 	printf("Problem in push_half_in_b");
+			// 	ft_exit();
+			// }
+			// ps_rotate_reverse_ab(s, 0);
+			// n_rot_total++;
+			// n_rot++;
 		}
 		ps_push_ab(s, 1);
 		n_push--;
 	}
-	return ((n + 1) / 2);
+	// while (n_rot_total-- > 0)
+	// 	ps_rotate_ab(s, 0);
+	return (n - n / 2);
 }

@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 10:45:51 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 10:49:47 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 13:44:15 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,13 @@ void	print_queue_rev(t_dequeue *q, char *sep, char *end)
 	}
 	if (end)
 		ft_putstr_fd(end, STDOUT_FILENO);
+}
+
+void	print_stacks(t_stacks *s)
+{
+	ft_putstr_fd("b (tail) | ", STDOUT_FILENO);
+	print_queue_rev(s->b, " ", NULL);
+	ft_putstr_fd("|", STDOUT_FILENO);
+	print_queue(s->a, " ", NULL);
+	ft_putstr_fd("| a (tail)\n", STDOUT_FILENO);
 }

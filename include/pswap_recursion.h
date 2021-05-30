@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:35:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 22:31:11 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 14:47:21 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ void	ps_push_ab(t_stacks *stacks, int op_code);
 void	ps_swap_ab(t_stacks *stacks, int op_code);
 void	ps_rotate_ab(t_stacks *stacks, int op_code);
 void	ps_rotate_reverse_ab(t_stacks *stacks, int op_code);
+void	ps_push_n(t_stacks *s, int op_code, int n);
+void	ps_rotate_n(t_stacks *s, int op_code, int n);
+void	ps_rotate_reverse_n(t_stacks *s, int op_code, int n);
 // utils
 int		*list_to_array(t_bilist *lst, int n);
 void	bubble_sort(int *array, int n);

@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 09:50:47 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 11:27:01 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 13:52:26 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	sort_rec_a(t_stacks *s, int start, int na)
 	int na_next;
 	int nb_next;
 
+	printf("sort a: start = %d, na = %d\n", start, na);
 	na = adjust_na(s, start, na);
 	if (na <= 1)
 		return ;
@@ -89,16 +90,18 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 	int	nb_to_push;
 
 	nb_to_sort = adjust_nb(s, start, nb);
-	if (nb_to_sort == 1)
+	printf("sort b: start = %d, nb = %d, bb_to_sort = %d\n", start, nb, nb_to_sort);
+	if (nb_to_sort <= 1)
 	{
-		ps_push_ab(s, 0);
+		while (nb-- > 0)
+			ps_push_ab(s, 0);
 		return ;
 	}
 	if (nb_to_sort == 2)
 	{
 		swap_if_needed(s);
-		ps_push_ab(s, 0);
-		ps_push_ab(s, 0);
+		while (nb-- > 0)
+			ps_push_ab(s, 0);
 		return ;
 	}
 	na_next = push_half_in_a(s, start, nb_to_sort);
