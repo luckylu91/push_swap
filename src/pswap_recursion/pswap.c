@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 09:50:47 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 22:25:36 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 11:27:01 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,27 +85,30 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 {
 	int	na_next;
 	int	nb_next;
+	int	nb_to_sort;
+	int	nb_to_push;
 
-	nb = adjust_nb(s, start, nb);
-	if (nb == 1)
+	nb_to_sort = adjust_nb(s, start, nb);
+	if (nb_to_sort == 1)
 	{
 		ps_push_ab(s, 0);
 		return ;
 	}
-	if (nb == 2)
+	if (nb_to_sort == 2)
 	{
 		swap_if_needed(s);
 		ps_push_ab(s, 0);
 		ps_push_ab(s, 0);
 		return ;
 	}
-	na_next = push_half_in_a(s, start, nb);
-	nb_next = nb - na_next;
+	na_next = push_half_in_a(s, start, nb_to_sort);
+	nb_next = nb_to_sort - na_next;
 	sort_rec_a(s, start - (na_next - 1), na_next);
 	sort_rec_b(s, start - na_next, nb_next);
-	while (nb_next > 0)
+	nb_to_push = nb - na_next;
+	while (nb_to_push > 0)
 	{
 		ps_push_ab(s, 0);
-		nb_next--;
+		nb_to_push--;
 	}
 }

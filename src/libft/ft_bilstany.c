@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   ft_bilstany.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:27:38 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:13:58 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/24 15:31:57 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/30 10:31:10 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "libft.h"
 
-void	free_stacks(t_stacks *stacks)
+int	ft_bilstany(t_bilist *blst, void *arg, t_bool_fun booleval)
 {
-	ft_lstclear(&stacks->a, free);
-	ft_lstclear(&stacks->b, free);
+	while (blst)
+	{
+		if ((*booleval)(blst->content, arg))
+			return (1);
+		blst = blst->next;
+	}
+	return (0);
 }

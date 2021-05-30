@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 13:36:42 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 23:09:57 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 11:09:24 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ void	handle_args(t_stacks *stacks, int argc, char **argv)
 		exit_ok();
 	if (args_to_stacks(stacks, argc, argv))
 		ft_exit();
-	if (repeating_numbers(stacks->a))
+	if (repeating_numbers(stacks->a->first))
 		ft_exit();
-	if (stacks->verbose)
-		print_stacks_side(stacks);
+	replace_with_indexes(stacks);
+	// if (stacks->verbose)
+	// 	print_stacks_side(stacks);
 }

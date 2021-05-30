@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 10:40:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:42:34 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 11:16:44 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ t_bilist	*pop_first(t_dequeue *q)
 		return (NULL);
 	res = q->first;
 	q->first = q->first->next;
-	q->first->prev = NULL;
+	if (q->first)
+		q->first->prev = NULL;
 	res->next = NULL;
+	q->size--;
 	return (res);
 }
 
@@ -35,5 +37,6 @@ t_bilist	*pop_last(t_dequeue *q)
 	q->last = q->last->prev;
 	q->last->next = NULL;
 	res->prev = NULL;
+	q->size--;
 	return (res);
 }

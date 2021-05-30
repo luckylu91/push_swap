@@ -1,23 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   replace_with_indexes.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 10:35:46 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/30 11:02:58 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/30 11:07:50 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pswap_recursion.h"
+#include "common.h"
 
-void	ps_push_ab(t_stacks *stacks, int op_code)
+static int	index_of(t_bilist *blst, int n)
 {
-	push_ab(stacks, op_code);
-	ft_putstr_fd("p", STDOUT_FILENO);
-	ft_putchar_fd(op_last_char('p', op_code), STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	// if (stacks->verbose)
-	// 	print_stacks_side(stacks);
+	int	i;
+
+	i = 0;
+	while (int_at(blst) != n)
+	{
+		i++;
+		blst = blst->next;
+	}
+	return (i);
+}
+
+void	replace_with_indexes(t_stacks *s)
+{
+	t_bilist	*blst;
+
+	blst = s->a->first;
+	while (blst)
+	{
+		*(int *)blst->content = index_of(s->a_sorted->first, int_at(blst));
+		blst = blst->next;
+	}
 }

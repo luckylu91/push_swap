@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lstrev_array.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/02 11:49:49 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:12:47 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 10:30:02 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int is_null(void *s)
 	return (!s);
 }
 
-int	lstrev_array(t_bilist *lst, int n, char ***array)
+int	lstrev_array(t_bilist *blst, int n, char ***array)
 {
 	char **array_mov;
 
@@ -36,7 +36,7 @@ int	lstrev_array(t_bilist *lst, int n, char ***array)
 	if (!*array)
 		return (-1);
 	array_mov = *array;
-	ft_lstiter(lst, &array_mov, fill_array_fun);
+	ft_bilstiter(blst, &array_mov, fill_array_fun);
 	if (ft_any((void*)*array, n, sizeof(char*), is_null))
 	{
 		ft_arrayclear((void**)*array, n);

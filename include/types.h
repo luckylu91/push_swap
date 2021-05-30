@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push.c                                             :+:      :+:    :+:   */
+/*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 16:32:00 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 10:35:46 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/30 10:54:43 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/30 10:55:53 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pswap_recursion.h"
+#ifndef TYPES_H
+# define TYPES_H
 
-void	ps_push_ab(t_stacks *stacks, int op_code)
+# include "libft.h"
+
+typedef struct	s_dequeue
 {
-	push_ab(stacks, op_code);
-	ft_putstr_fd("p", STDOUT_FILENO);
-	ft_putchar_fd(op_last_char('p', op_code), STDOUT_FILENO);
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	// if (stacks->verbose)
-	// 	print_stacks_side(stacks);
-}
+	t_bilist	*first;
+	t_bilist	*last;
+	int			size;
+}	t_dequeue;
+
+typedef struct	s_stacks
+{
+	t_dequeue	*a;
+	t_dequeue	*b;
+	t_dequeue	*a_sorted;
+	t_dequeue	*b_sorted;
+	int			n;
+	int			verbose;
+}				t_stacks;
+
+#endif

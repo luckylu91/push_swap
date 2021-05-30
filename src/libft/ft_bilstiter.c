@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   ft_bilstiter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 02:24:08 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/01 15:14:20 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/30 10:27:33 by lzins             #+#    #+#             */
+/*   Updated: 2021/05/30 10:29:00 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "libft.h"
 
-int	error(void)
+void	ft_bilstiter(t_bilist *lst, void *arg, t_fun f)
 {
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	return (-1);
-}
-
-int	error_free(t_stacks *stacks)
-{
-	free_stacks(stacks);
-	return (error());
+	while (lst != NULL)
+	{
+		(*f)(lst->content, arg);
+		lst = lst->next;
+	}
 }

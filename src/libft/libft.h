@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzins <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 05:08:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 10:20:29 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 10:31:56 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ void				ft_dupstr_back(t_list **alst, char *src);
 void				ft_lstfilter(t_list **alst, void *arg, t_bool_fun to_keep,
 						t_del_fun del);
 void				ft_bilstdupint_back(t_bilist **alst, int k);
+void				ft_bilstiter(t_bilist *lst, void *arg, t_fun f);
+int					ft_bilstany(t_bilist *blst, void *arg, t_bool_fun booleval);
 
 t_before_exit_fun	ft_get_set_exit_fun(t_before_exit_fun fun);
 void				*ft_get_set_context(void *new_context);

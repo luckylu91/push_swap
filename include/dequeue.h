@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/29 11:19:36 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/29 22:36:00 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/30 10:56:45 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,9 @@
 # define DEQUEUE_H
 
 # include "libft.h"
+# include "types.h"
+# include "common.h"
 # include <unistd.h>
-
-typedef struct	s_dequeue
-{
-	t_bilist	*first;
-	t_bilist	*last;
-	int			size;
-}	t_dequeue;
 
 t_dequeue	*new_dequeue(void);
 
@@ -33,5 +28,8 @@ t_bilist	*pop_first(t_dequeue *q);
 t_bilist	*pop_last(t_dequeue *q);
 
 t_dequeue	*sorted_queue(t_dequeue *q);
+
+void		print_queue(t_dequeue *q, char *sep, char *end);
+void		print_queue_rev(t_dequeue *q, char *sep, char *end);
 
 #endif
