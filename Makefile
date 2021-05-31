@@ -14,8 +14,9 @@ SRCS_COM +=$(addprefix src/common/, handle_args.c is_sorted_lst.c \
 		lstrev_array.c args_to_stacks.c repeating_numbers.c \
 		utils.c replace_with_indexes.c)
 SRCS_COM +=$(addprefix src/dequeue/, add.c create.c remove.c sort.c print.c)
-SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c main.c exit_fun.c)
+SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c exit_fun.c)
 SRCS_PS +=$(addprefix src/pswap_recursion/operations/, push.c rotate.c rotate_reverse.c swap.c)
+# SRCS_PS += src/pswap_recursion/main.c 
 OBJS_COM =$(SRCS_COM:src/%.c=obj/%.o)
 OBJS_PS =		$(OBJS_COM) $(SRCS_PS:src/%.c=obj/%.o)
 OBJS_COM_DB =	$(SRCS_COM:src/%.c=obj/%.o_db)
@@ -41,11 +42,14 @@ $(NAME_DB):	$(LIBFT)
 $(LIBFT):
 	make -C $(LIBFT_DIR)
 
-_test_chk_%:	test/_test_chk_%.c $(OBJS_CHK)
-	gcc $< $(SRCS) -o test/$@ $(OBJS_CHK) $(IFLAGS) $(LFLAGS)
+_%:	test/_%.c $(OBJS_PS)
+	gcc $< -o test/$@ $(OBJS_PS) $(IFLAGS) $(LFLAGS)
 
-_test_ps_%:	test/_test_ps_%.c $(OBJ_DIRS) $(OBJS_PS)
-	gcc $< $(SRCS) -o test/$@ $(OBJS_PS) $(IFLAGS) $(LFLAGS) $(DBFLAGS)
+# _test_chk_%:	test/_test_chk_%.c $(OBJS_CHK)
+# 	gcc $< $(SRCS) -o test/$@ $(OBJS_CHK) $(IFLAGS) $(LFLAGS)
+
+# _test_ps_%:	test/_test_ps_%.c $(OBJ_DIRS) $(OBJS_PS)
+# 	gcc $< $(SRCS) -o test/$@ $(OBJS_PS) $(IFLAGS) $(LFLAGS) $(DBFLAGS)
 
 $(OBJ_DIRS):
 	mkdir -p $(OBJ_DIRS)

@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 15:31:33 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/31 02:44:48 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	*list_to_array(t_bilist *lst, int n)
 // 	}
 // }
 
-int	indices_true(t_dequeue *q, int n, t_bool_fun filter, int **res)
+int	indices_true(t_dequeue *q, int n, t_bool_fun_arg filter, int **res)
 {
 	t_bilist	*blst;
 	int			num_indices;
@@ -65,17 +65,18 @@ int	indices_true(t_dequeue *q, int n, t_bool_fun filter, int **res)
 	num_indices = 0;
 	blst = q->first;
 	i = 0;
-	while (blst)
+	while (n > 0)
 	{
-		if (filter(int_at(blst->content)))
+		if (filter.f(int_at(blst->content), filter.arg2))
 			(*res)[num_indices++] = i;
 		i++;
 		blst = blst->next;
+		n--;
 	}
 	return (num_indices);
 }
 
-int	do_push_movement(t_stacks *s, int op_code, t_bool_fun filter,
+int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 	t_push_movement mvt)
 {
 	t_dequeue	*q;
@@ -87,12 +88,12 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun filter,
 	else
 		q = s->b;
 	if (mvt.size == 0)
-		return ;
+		return (0);
 	if (mvt.direction > 0)
 	{
 		while (mvt.size-- > 0)
 		{
-			if (filter(int_at(q->first)))
+			if (filter.f(int_at(q->first), filter.arg2))
 			{
 				ps_push_ab(s, 1 - op_code);
 				n_push++;
@@ -106,7 +107,7 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun filter,
 		while (mvt.size-- > 0)
 		{
 			ps_rotate_ab(s, op_code);
-			if (filter(int_at(q->first)))
+			if (filter.f(int_at(q->first), filter.arg2))
 			{
 				ps_push_ab(s, 1 - op_code);
 				n_push++;
@@ -116,72 +117,121 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun filter,
 	return (n_push);
 }
 
-void	do_push_strategy(t_stacks *s, int op_code, t_bool_fun filter,
-	t_push_movement strat[2])
+void	do_push_strategy(t_stacks *s, int op_code, t_bool_fun_arg filter,
+	t_push_strat strat)
 {
-	int	n_push;
+	int				n_push;
+	t_push_movement	mvts[2];
 
-	n_push = do_push_movement(s, op_code, filter, strat[0]);
-	if (strat[0].direction > 0)
-		ps_rotate_n(s, op_code, strat[0].size - n_push);
+	mvts[0].direction = strat.first_dir;
+	mvts[1].direction = -strat.first_dir;
+	if (strat.first_dir > 0)
+	{
+		mvts[0].size = strat.indices[strat.k - 1] + 1;
+		mvts[1].size = strat.n - strat.indices[strat.k];
+	}
 	else
-		ps_rotate_reverse_n(s, op_code, strat[0].size - n_push);
-	do_push_movement(s, op_code, filter, strat[1]);
+	{
+		mvts[0].size = strat.n - strat.indices[strat.k];
+		mvts[1].size = strat.indices[strat.k - 1] + 1;
+	}
+	n_push = do_push_movement(s, op_code, filter, mvts[0]);
+	if (mvts[0].direction > 0)
+		ps_rotate_n(s, op_code, mvts[0].size - n_push);
+	else
+		ps_rotate_reverse_n(s, op_code, mvts[0].size - n_push);
+	do_push_movement(s, op_code, filter, mvts[1]);
 }
 
-static int	score_strat(int *indices, int n, int n_push, int k, int first_dir)
+static int	score_strat(int *indices, t_push_strat strat)
 {
 	int	nh;
 	int	nt;
 	int	dh;
 	int	dt;
 
-	if (k == 0)
-		return (n - indices[0] + n_push);
-	if (k == n_push)
-		return (indices[n_push - 1]);
-	nh = k;
-	dh = indices[k - 1] + 1;
-	nt = n_push - k;
-	dt = n - indices[k];
-	if (first_dir > 0)
+	if (strat.k == 0)
+		return (strat.n - indices[0] + strat.n_push);
+	if (strat.k == strat.n_push)
+		return (indices[strat.n_push - 1]);
+	nh = strat.k;
+	dh = indices[strat.k - 1] + 1;
+	nt = strat.n_push - strat.k;
+	dt = strat.n - indices[strat.k];
+	if (strat.first_dir > 0)
 		return (2 * dh - nh + dt + nt);
 	else
 		return (2 * dt + dh);
 }
 
 
-t_push_movement	best_push_strategy(t_dequeue *q, int n, t_bool_fun filter)
+t_push_strat	best_push_strategy(int *indices, int n_push, int n)
 {
-	int	n_push;
-	int	*indices;
-	int	k;
 	int				score;
 	int				score_min;
-	t_push_movement	strat_min[2];
+	t_push_strat	strat;
+	t_push_strat	strat_min;
 
 	score_min = -1;
-	n_push = indices_true(q, n, filter, &indices);
-	k = 0;
-	while (k <= n_push)
+	strat.indices = indices;
+	strat.n = n;
+	strat.n_push = n_push;
+	strat.k = 0;
+	while (strat.k <= strat.n_push)
 	{
-		score = score_strat(indices, n, n_push, k, -1);
+		strat.first_dir = -1;
+		score = score_strat(indices, strat);
 		if (score < score_min || score_min == -1)
 		{
 			score_min = score;
-			strat_min[0].direction = -1;
-			strat_min[0].size = n_push - k;
-			strat_min[1].direction = 1;
-			strat_min[1].size = k;
+			strat_min = strat;
 		}
-		score = score_strat(indices, n, n_push, k, 1);
+		strat.first_dir = 1;
+		score = score_strat(indices, strat);
 		if (score < score_min || score_min == -1)
 		{
 			score_min = score;
-			strat_min[0].direction = 1;
-			strat_min[0].size = k;
-			strat_min[1].direction = -1;
-			strat_min[1].size = n_push - k;
+			strat_min = strat;
 		}
+		strat.k++;
 	}
+	return (strat_min);
+}
+
+static int	less_equal(int x, int y)
+{
+	return (x <= y);
+}
+
+static int	great_equal(int x, int y)
+{
+	return (x >= y);
+}
+
+void	push_half(t_stacks *s, int op_code, int start, int n)
+{
+	int	median;
+	int	*indices;
+	int	n_push;
+	t_push_strat strat;
+	t_bool_fun_arg filter;
+
+	if (op_code == 0)
+	{
+		median = start + n / 2 - 1;
+		filter.f = less_equal;
+		filter.arg2 = median;
+		n_push = indices_true(s->a, n, filter, &indices);
+	}
+	if (op_code == 1)
+	{
+		median = start - n / 2 + 1;
+		filter.f = great_equal;
+		filter.arg2 = median;
+		n_push = indices_true(s->b, n, filter, &indices);
+	}
+	// n_push = n / 2
+	strat = best_push_strategy(indices, n_push, n);
+	do_push_strategy(s, op_code, filter, strat);
+	wrap_free(indices);
 }

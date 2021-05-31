@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 10:54:43 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 14:56:16 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/05/31 02:43:57 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,20 @@ typedef struct	s_push_movement
 	int	direction;
 	int	size;
 }	t_push_movement;
+
+typedef	struct s_push_strat
+{
+	int	n;
+	int	n_push;
+	int	k;
+	int	first_dir;
+	int	*indices;
+}	t_push_strat;
+
+typedef struct s_bool_fun_arg
+{
+	t_bool_fun	f;
+	int			arg2;
+}	t_bool_fun_arg;
 
 #endif
