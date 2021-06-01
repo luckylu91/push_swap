@@ -1,7 +1,7 @@
 NAME =		push_swap
 NAME_DB =	push_swap_db
 CFLAGS =	-Wall -Wextra -Werror
-LIBFT_DIR =	src/libft
+LIBFT_DIR =	libft
 LIBFT =		$(LIBFT_DIR)/libft.a
 LFLAGS =	-L$(LIBFT_DIR) -lft
 IFLAGS =	-I$(LIBFT_DIR) -Iinclude
@@ -14,8 +14,9 @@ SRCS_COM +=$(addprefix src/common/, handle_args.c is_sorted_lst.c \
 		lstrev_array.c args_to_stacks.c repeating_numbers.c \
 		utils.c replace_with_indexes.c)
 SRCS_COM +=$(addprefix src/dequeue/, add.c create.c remove.c sort.c print.c)
-SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c exit_fun.c)
+SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c exit_fun.c main.c)
 SRCS_PS +=$(addprefix src/pswap_recursion/operations/, push.c rotate.c rotate_reverse.c swap.c)
+SRCS_PS += src/_trace.c
 # SRCS_PS += src/pswap_recursion/main.c 
 OBJS_COM =$(SRCS_COM:src/%.c=obj/%.o)
 OBJS_PS =		$(OBJS_COM) $(SRCS_PS:src/%.c=obj/%.o)
@@ -32,18 +33,19 @@ db:		$(NAME_DB)
 # 	gcc -o $@ $^ $(LFLAGS)
 
 $(NAME): $(OBJS_PS)
-	gcc -o $@ $^ $(LFLAGS)
+	gcc -o $@ $(OBJS_PS) $(LFLAGS)
 $(NAME_DB): $(OBJS_PS_DB)
-	gcc -o $@ $^ $(LFLAGS) -g3 -fsanitize=address
+	gcc -o $@ $(OBJS_PS_DB) $(LFLAGS) -g3 -fsanitize=address
+$(NAME):	libft
+$(NAME_DB):	libft
 
-$(NAME):	$(LIBFT)
-$(NAME_DB):	$(LIBFT)
-
-$(LIBFT):
+libft:
 	make -C $(LIBFT_DIR)
 
-_%:	test/_%.c $(OBJS_PS)
+_%:	test/_%.c $(OBJS_PS) libft
 	gcc $< -o test/$@ $(OBJS_PS) $(IFLAGS) $(LFLAGS)
+_%_db:	test/_%.c $(OBJS_PS_DB) libft
+	gcc $< -o test/$@ $(OBJS_PS_DB) $(IFLAGS) $(LFLAGS) $(DBFLAGS)
 
 # _test_chk_%:	test/_test_chk_%.c $(OBJS_CHK)
 # 	gcc $< $(SRCS) -o test/$@ $(OBJS_CHK) $(IFLAGS) $(LFLAGS)
@@ -74,4 +76,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY:	all clean fclean re
+.PHONY:	all clean fclean re libft

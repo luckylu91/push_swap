@@ -65,13 +65,12 @@ int	indices_true(t_dequeue *q, int n, t_bool_fun_arg filter, int **res)
 	num_indices = 0;
 	blst = q->first;
 	i = 0;
-	while (n > 0)
+	while (i < n)
 	{
-		if (filter.f(int_at(blst->content), filter.arg2))
+		if (filter.f(int_at(blst), filter.arg2))
 			(*res)[num_indices++] = i;
 		i++;
 		blst = blst->next;
-		n--;
 	}
 	return (num_indices);
 }
@@ -89,10 +88,11 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 		q = s->b;
 	if (mvt.size == 0)
 		return (0);
-	if (mvt.direction > 0)
+	if (mvt.direction < 0)
 	{
 		while (mvt.size-- > 0)
 		{
+			printf("size = %d\n", mvt.size);
 			if (filter.f(int_at(q->first), filter.arg2))
 			{
 				ps_push_ab(s, 1 - op_code);
@@ -106,6 +106,7 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 	{
 		while (mvt.size-- > 0)
 		{
+			printf("size = %d\n", mvt.size);
 			ps_rotate_ab(s, op_code);
 			if (filter.f(int_at(q->first), filter.arg2))
 			{
@@ -125,15 +126,21 @@ void	do_push_strategy(t_stacks *s, int op_code, t_bool_fun_arg filter,
 
 	mvts[0].direction = strat.first_dir;
 	mvts[1].direction = -strat.first_dir;
-	if (strat.first_dir > 0)
+	if (strat.first_dir < 0)
 	{
 		mvts[0].size = strat.indices[strat.k - 1] + 1;
-		mvts[1].size = strat.n - strat.indices[strat.k];
+		if (strat.k < strat.n_push)
+			mvts[1].size = strat.n - strat.indices[strat.k];
+		else
+			mvts[1].size = 0;
 	}
 	else
 	{
 		mvts[0].size = strat.n - strat.indices[strat.k];
-		mvts[1].size = strat.indices[strat.k - 1] + 1;
+		if (strat.k > 0)
+			mvts[1].size = strat.indices[strat.k - 1] + 1;
+		else
+			mvts[1].size = 0;
 	}
 	n_push = do_push_movement(s, op_code, filter, mvts[0]);
 	if (mvts[0].direction > 0)
@@ -158,12 +165,11 @@ static int	score_strat(int *indices, t_push_strat strat)
 	dh = indices[strat.k - 1] + 1;
 	nt = strat.n_push - strat.k;
 	dt = strat.n - indices[strat.k];
-	if (strat.first_dir > 0)
+	if (strat.first_dir < 0)
 		return (2 * dh - nh + dt + nt);
 	else
 		return (2 * dt + dh);
 }
-
 
 t_push_strat	best_push_strategy(int *indices, int n_push, int n)
 {
@@ -208,6 +214,15 @@ static int	great_equal(int x, int y)
 	return (x >= y);
 }
 
+
+// void print_strat(t_push_strat strat)
+// {
+// 	// TO REMOVE
+// 	printf("strat.first_dir = %d\n", strat.first_dir);
+// 	printf("strat.k = %d\n", strat.k);
+// 	printf("strat.n_push = %d\n", strat.n_push);
+// }
+
 void	push_half(t_stacks *s, int op_code, int start, int n)
 {
 	int	median;
@@ -232,6 +247,7 @@ void	push_half(t_stacks *s, int op_code, int start, int n)
 	}
 	// n_push = n / 2
 	strat = best_push_strategy(indices, n_push, n);
+	// print_strat(strat);
 	do_push_strategy(s, op_code, filter, strat);
 	wrap_free(indices);
 }

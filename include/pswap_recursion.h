@@ -17,6 +17,7 @@
 # include "operations.h"
 # include "libft.h"
 # include "dequeue.h"
+# include "_trace.h"
 
 // exit
 int		exit_fun_error(void *ctx);
@@ -34,6 +35,7 @@ void	ps_rotate_reverse_n(t_stacks *s, int op_code, int n);
 int		*list_to_array(t_bilist *lst, int n);
 void	bubble_sort(int *array, int n);
 t_push_strat	best_push_strategy(int *indices, int n_push, int n);
+void	push_half(t_stacks *s, int op_code, int start, int n);
 // main
 int		push_half_in_a(t_stacks *s, int start, int n);
 int		push_half_in_b(t_stacks *s, int start, int n);

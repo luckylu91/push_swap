@@ -43,7 +43,6 @@ static int	adjust_na(t_stacks *s, int start, int na)
 	return (na);
 }
 
-
 static int	adjust_nb(t_stacks *s, int start, int nb)
 {
 	int			min;
@@ -62,6 +61,28 @@ static int	adjust_nb(t_stacks *s, int start, int nb)
 	return (nb);
 }
 
+static void sort_3(t_stacks *s, int start, int op_code)
+{
+	int			last;
+	t_dequeue	*q;
+
+	if (op_code == 0)
+	{
+		last = start + 2;
+		q = s->a;
+	}
+	else
+	{
+		last = start - 2;
+		q = s->b;
+	}
+	if (int_at(q->first) == last)
+		ps_rotate_reverse_ab(s, op_code);
+	else
+		ps_rotate_ab(s, op_code);
+	swap_if_needed(s);
+}
+
 void	sort_rec_a(t_stacks *s, int start, int na)
 {
 	int na_next;
@@ -76,7 +97,21 @@ void	sort_rec_a(t_stacks *s, int start, int na)
 		swap_if_needed(s);
 		return ;
 	}
-	na_next = push_half_in_b(s, start, na);
+	if (na == 3 && s->a->size == 3)
+	{
+		sort_3(s, start, 0);
+		return ;
+	}
+	if (na < s->a->size)
+		na_next = push_half_in_b(s, start, na);
+	else
+	{
+		// printf("start = %d\nna = %d\n", start, na);
+		// printf("s.a = ");
+		// print_queue(s->a, " ", "\n");
+		push_half(s, 0, start, na);
+		na_next = na - na / 2;
+	}
 	nb_next = na - na_next;
 	sort_rec_a(s, start + nb_next, na_next);
 	sort_rec_b(s, start + nb_next - 1, nb_next);
@@ -87,31 +122,27 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 	int	na_next;
 	int	nb_next;
 	int	nb_to_sort;
-	int	nb_to_push;
 
 	nb_to_sort = adjust_nb(s, start, nb);
 	printf("sort b: start = %d, nb = %d, bb_to_sort = %d\n", start, nb, nb_to_sort);
-	if (nb_to_sort <= 1)
-	{
-		while (nb-- > 0)
-			ps_push_ab(s, 0);
-		return ;
-	}
 	if (nb_to_sort == 2)
-	{
 		swap_if_needed(s);
-		while (nb-- > 0)
-			ps_push_ab(s, 0);
-		return ;
-	}
-	na_next = push_half_in_a(s, start, nb_to_sort);
-	nb_next = nb_to_sort - na_next;
-	sort_rec_a(s, start - (na_next - 1), na_next);
-	sort_rec_b(s, start - na_next, nb_next);
-	nb_to_push = nb - na_next;
-	while (nb_to_push > 0)
+	else if (nb_to_sort == 3 && s->b->size == 3)
+		sort_3(s, start, 1);
+	else if (nb_to_sort >= 3) 
 	{
-		ps_push_ab(s, 0);
-		nb_to_push--;
+		if (nb_to_sort < s->b->size)
+			na_next = push_half_in_a(s, start, nb_to_sort);
+		else
+		{
+			push_half(s, 1, start, nb_to_sort);
+			na_next = nb_to_sort / 2;
+		}
+		nb_next = nb_to_sort - na_next;
+		sort_rec_a(s, start - (na_next - 1), na_next);
+		sort_rec_b(s, start - na_next, nb_next);
+		nb -= na_next;
 	}
+	while (nb-- > 0)
+		ps_push_ab(s, 0);
 }

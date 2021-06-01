@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+
 
 from subprocess import Popen, PIPE
 import os
@@ -18,7 +18,7 @@ else:
 	try:
 		n = int(argv[1])
 	except:
-		printf('Argument is not a number, taking default value instead')
+		print('Argument is not a number, taking default value instead')
 		n = n_default
 if n <= 0 or n > 10:
 	print('Value of n is invalid (0 < n <= 10)')
@@ -35,9 +35,12 @@ for args in permutations(basis):
 	out, _ = proc.communicate()
 	out = out.decode("utf-8")
 	results[len(out.split('\n'))] += 1
+	#
+	if (len(out.split('\n')) > 100):
+		print(' '.join([str(i) for i in args]))
 
-k_min = min(results.keys())
-k_max = max(results.keys())
-k_width = max(int(log10(k)) for k in results.keys())
-for k in range(k_min, k_max + 1):
-	print(f'Nombre de cas ou la sortie vaut {k: ={k_width}} : {results[k]}')
+# k_min = min(results.keys())
+# k_max = max(results.keys())
+# k_width = max(int(log10(k)) for k in results.keys())
+# for k in range(k_min, k_max + 1):
+# 	print(f'Nombre de cas ou la sortie vaut {k: ={k_width}} : {results[k]}')
