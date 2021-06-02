@@ -66,40 +66,68 @@ int	choose_direction_a(t_dequeue *q, int n, int median)
 // }
 
 
+// int	push_half_in_a(t_stacks *s, int start, int n)
+// {
+// 	int	median;
+// 	int	n_push;
+// 	int	direction;
+// 	// int	n_rot;
+// 	// int	n_rot_total;
+
+// 	median = start - n / 2 + 1;
+// 	n_push = n / 2;
+// 	direction = choose_direction_a(s->b, n, median);
+// 	// n_rot_total = 0;
+// 	while (n_push > 0)
+// 	{
+// 		// n_rot = 0;
+// 		while (int_at(s->b->first) < median)
+// 		{
+// 			// if (n_rot >= s->b->size)
+// 			// {
+// 			// 	printf("Problem in push_half_in_a");
+// 			// 	ft_exit();
+// 			// }
+// 			if (direction > 0)
+// 				ps_rotate_ab(s, 1);
+// 			else
+// 				ps_rotate_reverse_ab(s, 1);
+// 			// ps_rotate_reverse_ab(s, 1);
+// 			// n_rot++;
+// 			// n_rot_total++;
+// 		}
+// 		ps_push_ab(s, 0);
+// 		n_push--;
+// 	}
+// 	// while (n_rot_total-- > 0)
+// 	// 	ps_rotate_ab(s, 1);
+// 	return (n / 2);
+// }
+
 int	push_half_in_a(t_stacks *s, int start, int n)
 {
-	int	median;
 	int	n_push;
-	int	direction;
-	// int	n_rot;
-	// int	n_rot_total;
+	int	n_rot;
+	int	median;
 
-	median = start - n / 2 + 1;
 	n_push = n / 2;
-	direction = choose_direction_a(s->b, n, median);
-	// n_rot_total = 0;
+	n_rot = 0;
+	median = start - n / 2 + 1;
 	while (n_push > 0)
 	{
-		// n_rot = 0;
-		while (int_at(s->b->first) < median)
+		// printf("size = %d\n", mvt.size);
+		if (int_at(s->a->first) >= median)
 		{
-			// if (n_rot >= s->b->size)
-			// {
-			// 	printf("Problem in push_half_in_a");
-			// 	ft_exit();
-			// }
-			if (direction > 0)
-				ps_rotate_ab(s, 1);
-			else
-				ps_rotate_reverse_ab(s, 1);
-			// ps_rotate_reverse_ab(s, 1);
-			// n_rot++;
-			// n_rot_total++;
+			ps_push_ab(s, 0);
+			n_push--;
 		}
-		ps_push_ab(s, 0);
-		n_push--;
+		else
+		{
+			ps_rotate_reverse_ab(s, 1);
+			n_rot++;
+		}
 	}
-	// while (n_rot_total-- > 0)
-	// 	ps_rotate_ab(s, 1);
+	if (need_rot)
+		ps_rotate_n(s, 1, n_rot);
 	return (n / 2);
 }

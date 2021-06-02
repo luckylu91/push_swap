@@ -12,85 +12,120 @@
 
 #include "pswap_recursion.h"
 
-static void	swap(t_bilist *x, t_bilist *y)
+// algorithm quicksort(A, lo, hi) is
+//     if lo < hi then
+//         p := partition(A, lo, hi)
+//         quicksort(A, lo, p)
+//         quicksort(A, p + 1, hi)
+
+// algorithm partition(A, lo, hi) is
+//     pivot := A[ floor((hi + lo) / 2) ]
+//     i := lo - 1
+//     j := hi + 1
+//     loop forever
+//         do
+//             i := i + 1
+//         while A[i] < pivot
+//         do
+//             j := j - 1
+//         while A[j] > pivot
+//         if i ≥ j then
+//             return j
+//         swap A[i] with A[j]
+
+static int	partition(int *array, int lo, int hi)
 {
-	// printf("swaping %d and %d\n", *(int*)x->content, *(int*)y->content);
-	swap_int(x->content, y->content);
-}
+	int	pivot;
+	int	i;
+	int	j;
 
-static int get_pivot(t_bilist *lo, t_bilist *hi)
-{
-	int	par;
-
-	par = 0;
-	while (lo != hi)
-	{
-		if (par % 2 == 0)
-			hi = hi->prev;
-		else
-			lo = lo->next;
-		par++;
-	}
-	return (int_at(lo));
-}
-
-static t_bilist	*partition(t_bilist *lo, t_bilist *hi)
-{
-	int			pivot;
-	t_bilist	*i;
-	t_bilist	*j;
-
-	pivot = get_pivot(lo, hi);
+	pivot = array[(lo + hi) / 2];
 	// printf("pivot = %d\n", pivot);
 	i = lo;
 	j = hi;
 	while (1)
 	{
-		while (int_at(i) < pivot)
-			i = i->next;
-		while (int_at(j) > pivot)
-			j = j->prev;
-		if (int_at(i) >= int_at(j))
+		while (array[i] < pivot)
+			i++;
+		while (array[j] > pivot)
+			j--;
+		if (i >= j)
 			return (j);
-		swap(i, j);
+		swap_int(array + i, array + j);
 	}
-	return (NULL);
+	return (-1);
 }
 
-static void	quicksort(t_bilist *lo, t_bilist *hi)
+static void	quicksort(int *array, int lo, int hi)
 {
-	t_bilist	*p;
+	int	p;
 
-	if (lo == hi)
+	if (lo >= hi)
 		return ;
-	p = partition(lo, hi);
-	if (p != lo && p->prev != lo)
-		quicksort(lo, p->prev);
-	if (p != hi && p->next != hi)
-		quicksort(p->next, hi);
+	p = partition(array, lo, hi);
+	quicksort(array, lo, p - 1);
+	quicksort(array, p + 1, hi);
 }
 
-static t_dequeue	*copy(t_dequeue *q)
-{
-	t_dequeue	*q_cpy;
-	t_bilist	*q_blst;
+// static t_dequeue	*copy(t_dequeue *q)
+// {
+// 	t_dequeue	*q_cpy;
+// 	t_bilist	*q_blst;
 
-	q_cpy = ft_calloc(1, sizeof(t_dequeue));
-	q_blst = q->first;
-	while (q_blst)
+// 	q_cpy = ft_calloc(1, sizeof(t_dequeue));
+// 	q_blst = q->first;
+// 	while (q_blst)
+// 	{
+// 		addback_int(q_cpy, int_at(q_blst));
+// 		q_blst = q_blst->next;
+// 	}
+// 	return (q_cpy);
+// }
+
+static int	*to_array(t_dequeue *q)
+{
+	int			i;
+	int			*array;
+	t_bilist	*blst;
+
+	array = wrap_malloc(q->size * sizeof(int));
+	blst = q->first;
+	i = -1;
+	while (++i < q->size)
 	{
-		addback_int(q_cpy, int_at(q_blst));
-		q_blst = q_blst->next;
+		array[i] = int_at(blst);
+		blst = blst->next;
 	}
-	return (q_cpy);
+	return (array);
+}
+
+static t_dequeue	*to_queue(int *array, int size)
+{
+	t_dequeue	*q;
+	int			i;
+	int			*n;
+	t_bilist	*new_elem;
+
+	q = new_dequeue();
+	i = -1;
+	while (++i < size)
+	{
+		n = wrap_malloc(sizeof(int));
+		*n = array[i];
+		new_elem = ft_bilstnew(n);
+		push_bottom(q, new_elem);
+	}
+	return (q);
 }
 
 t_dequeue	*sorted_queue(t_dequeue *q)
 {
-	t_dequeue	*q_copy;
+	int			*array;
+	t_dequeue	*q_sorted;
 
-	q_copy = copy(q);
-	if (q->size > 1)
-		quicksort(q_copy->first, q_copy->last);
-	return (q_copy);
+	array = to_array(q);
+	quicksort(array, 0, q->size - 1);
+	q_sorted = to_queue(array, q->size);
+	wrap_free(array);
+	return (q_sorted);
 }

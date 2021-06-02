@@ -66,6 +66,8 @@ int	args_to_stacks(t_stacks *stacks, int argc, char **argv)
 	if (ft_any(argv + i_start, argc - i_start, sizeof(char*), (t_bool_fun)arg_is_invalid))
 		return (1);
 	array_to_stacks(stacks, argc - i_start, argv + i_start);
+	if (repeating_numbers(stacks->a->first))
+		return (1);
 	stacks->a_sorted = sorted_queue(stacks->a);
 	// printf("a_sorted : ");
 	// print_queue(stacks->a_sorted, " ", "\n");

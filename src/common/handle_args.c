@@ -21,8 +21,6 @@ void	handle_args(t_stacks *stacks, int argc, char **argv)
 		exit_ok();
 	if (args_to_stacks(stacks, argc, argv))
 		ft_exit();
-	if (repeating_numbers(stacks->a->first))
-		ft_exit();
 	// if (stacks->verbose)
 	// 	print_stacks(stacks);
 	// printf("a_sorted : ");

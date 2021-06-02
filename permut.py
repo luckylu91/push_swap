@@ -35,11 +35,12 @@ for args in permutations(basis):
 	out, _ = proc.communicate()
 	out = out.decode("utf-8")
 	out = list(filter(lambda l: len(l) > 0, out.split('\n')))
+	print(' '.join(args) + ': ' + ' '.join(out))
 	results[len(out)] += 1
 
 
 k_min = min(results.keys())
 k_max = max(results.keys())
-k_width = max(int(log10(k)) for k in results.keys())
+k_width = max(int(log10(k) if k > 0 else 1) for k in results.keys())
 for k in range(k_min, k_max + 1):
 	print(f'Nombre de cas ou la sortie vaut {k: ={k_width}} : {results[k]}')

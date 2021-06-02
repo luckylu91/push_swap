@@ -17,9 +17,12 @@ def get_score(start, stop, n):
 	out = out.decode("utf-8")
 	return len(out.split('\n')) - 1, result, out
 
+
 scores_in_out = []
 for i in range(n_runs):
 	scores_in_out.append(get_score(range_min, range_max, n_nums))
+	print(scores_in_out[-1][0])
+
 scores_in_out = list(sorted(scores_in_out, key = lambda x: x[0]))
 
 dir_name = 'results'
