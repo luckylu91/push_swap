@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/10 13:36:42 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 13:35:04 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/02 03:30:17 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	handle_args(t_stacks *stacks, int argc, char **argv)
 		ft_exit();
 	if (repeating_numbers(stacks->a->first))
 		ft_exit();
+	// if (stacks->verbose)
+	// 	print_stacks(stacks);
+	// printf("a_sorted : ");
+	// print_queue(stacks->a_sorted, " ", "\n");
 	replace_with_indexes(stacks);
 	if (stacks->verbose)
 		print_stacks(stacks);

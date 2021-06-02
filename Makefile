@@ -1,6 +1,6 @@
 NAME =		push_swap
 NAME_DB =	push_swap_db
-CFLAGS =	-Wall -Wextra -Werror
+CFLAGS =	-Wall -Wextra #-Werror
 LIBFT_DIR =	libft
 LIBFT =		$(LIBFT_DIR)/libft.a
 LFLAGS =	-L$(LIBFT_DIR) -lft
@@ -17,7 +17,7 @@ SRCS_COM +=$(addprefix src/dequeue/, add.c create.c remove.c sort.c print.c)
 SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c exit_fun.c main.c)
 SRCS_PS +=$(addprefix src/pswap_recursion/operations/, push.c rotate.c rotate_reverse.c swap.c)
 SRCS_PS += src/_trace.c
-# SRCS_PS += src/pswap_recursion/main.c 
+# SRCS_PS += src/pswap_recursion/main.c
 OBJS_COM =$(SRCS_COM:src/%.c=obj/%.o)
 OBJS_PS =		$(OBJS_COM) $(SRCS_PS:src/%.c=obj/%.o)
 OBJS_COM_DB =	$(SRCS_COM:src/%.c=obj/%.o_db)

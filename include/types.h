@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 10:54:43 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/31 02:43:57 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/02 02:40:04 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct	s_stacks
 	t_dequeue	*a;
 	t_dequeue	*b;
 	t_dequeue	*a_sorted;
-	t_dequeue	*b_sorted;
 	int			n;
 	int			verbose;
 }				t_stacks;

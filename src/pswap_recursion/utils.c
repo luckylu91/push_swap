@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/31 02:44:48 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/02 03:11:46 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 		q = s->b;
 	if (mvt.size == 0)
 		return (0);
-	if (mvt.direction < 0)
+	if (mvt.direction > 0)
 	{
 		while (mvt.size-- > 0)
 		{
-			printf("size = %d\n", mvt.size);
+			// printf("size = %d\n", mvt.size);
 			if (filter.f(int_at(q->first), filter.arg2))
 			{
 				ps_push_ab(s, 1 - op_code);
@@ -106,7 +106,7 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 	{
 		while (mvt.size-- > 0)
 		{
-			printf("size = %d\n", mvt.size);
+			// printf("size = %d\n", mvt.size);
 			ps_rotate_ab(s, op_code);
 			if (filter.f(int_at(q->first), filter.arg2))
 			{
@@ -121,12 +121,12 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 void	do_push_strategy(t_stacks *s, int op_code, t_bool_fun_arg filter,
 	t_push_strat strat)
 {
-	int				n_push;
+	int				n_push_mvt0;
 	t_push_movement	mvts[2];
 
 	mvts[0].direction = strat.first_dir;
 	mvts[1].direction = -strat.first_dir;
-	if (strat.first_dir < 0)
+	if (strat.first_dir > 0)
 	{
 		mvts[0].size = strat.indices[strat.k - 1] + 1;
 		if (strat.k < strat.n_push)
@@ -142,11 +142,11 @@ void	do_push_strategy(t_stacks *s, int op_code, t_bool_fun_arg filter,
 		else
 			mvts[1].size = 0;
 	}
-	n_push = do_push_movement(s, op_code, filter, mvts[0]);
+	n_push_mvt0 = do_push_movement(s, op_code, filter, mvts[0]);
 	if (mvts[0].direction > 0)
-		ps_rotate_n(s, op_code, mvts[0].size - n_push);
+		ps_rotate_n(s, op_code, mvts[0].size - n_push_mvt0);
 	else
-		ps_rotate_reverse_n(s, op_code, mvts[0].size - n_push);
+		ps_rotate_reverse_n(s, op_code, mvts[0].size - n_push_mvt0);
 	do_push_movement(s, op_code, filter, mvts[1]);
 }
 
@@ -157,15 +157,17 @@ static int	score_strat(int *indices, t_push_strat strat)
 	int	dh;
 	int	dt;
 
-	if (strat.k == 0)
+	if (strat.k == 0 && strat.first_dir < 0)
 		return (strat.n - indices[0] + strat.n_push);
-	if (strat.k == strat.n_push)
+	else if (strat.k == strat.n_push && strat.first_dir > 0)
 		return (indices[strat.n_push - 1]);
+	else if (strat.k == 0 || strat.k == strat.n_push)
+		return (-1);
 	nh = strat.k;
 	dh = indices[strat.k - 1] + 1;
 	nt = strat.n_push - strat.k;
 	dt = strat.n - indices[strat.k];
-	if (strat.first_dir < 0)
+	if (strat.first_dir > 0)
 		return (2 * dh - nh + dt + nt);
 	else
 		return (2 * dt + dh);
@@ -187,14 +189,14 @@ t_push_strat	best_push_strategy(int *indices, int n_push, int n)
 	{
 		strat.first_dir = -1;
 		score = score_strat(indices, strat);
-		if (score < score_min || score_min == -1)
+		if (score > 0 && (score < score_min || score_min == -1))
 		{
 			score_min = score;
 			strat_min = strat;
 		}
 		strat.first_dir = 1;
 		score = score_strat(indices, strat);
-		if (score < score_min || score_min == -1)
+		if (score > 0 && (score < score_min || score_min == -1))
 		{
 			score_min = score;
 			strat_min = strat;

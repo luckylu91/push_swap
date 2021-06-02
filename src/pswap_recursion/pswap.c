@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 09:50:47 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 13:52:26 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/02 03:11:06 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,41 +25,41 @@ void	swap_if_needed(t_stacks *s)
 		ps_swap_ab(s, op_bits - 1);
 }
 
-static int	adjust_na(t_stacks *s, int start, int na)
-{
-	int			max;
-	t_bilist	*blst;
+// static int	adjust_na(t_stacks *s, int start, int na)
+// {
+// 	int			max;
+// 	t_bilist	*blst;
 
-	if (na == 1)
-		return (na);
-	max = start + na - 1;
-	blst = ft_bilststep(s->a->first, na - 1);
-	while (na > 0 && int_at(blst) == max)
-	{
-		blst = blst->prev;
-		max--;
-		na--;
-	}
-	return (na);
-}
+// 	if (na == 1)
+// 		return (na);
+// 	max = start + na - 1;
+// 	blst = ft_bilststep(s->a->first, na - 1);
+// 	while (na > 0 && int_at(blst) == max)
+// 	{
+// 		blst = blst->prev;
+// 		max--;
+// 		na--;
+// 	}
+// 	return (na);
+// }
 
-static int	adjust_nb(t_stacks *s, int start, int nb)
-{
-	int			min;
-	t_bilist	*blst;
+// static int	adjust_nb(t_stacks *s, int start, int nb)
+// {
+// 	int			min;
+// 	t_bilist	*blst;
 
-	if (nb == 1)
-		return (nb);
-	min = start - (nb - 1);
-	blst = ft_bilststep(s->b->first, nb - 1);
-	while (nb > 0 && int_at(blst) == min)
-	{
-		blst = blst->prev;
-		min++;
-		nb--;
-	}
-	return (nb);
-}
+// 	if (nb == 1)
+// 		return (nb);
+// 	min = start - (nb - 1);
+// 	blst = ft_bilststep(s->b->first, nb - 1);
+// 	while (nb > 0 && int_at(blst) == min)
+// 	{
+// 		blst = blst->prev;
+// 		min++;
+// 		nb--;
+// 	}
+// 	return (nb);
+// }
 
 static void sort_3(t_stacks *s, int start, int op_code)
 {
@@ -88,8 +88,9 @@ void	sort_rec_a(t_stacks *s, int start, int na)
 	int na_next;
 	int nb_next;
 
-	printf("sort a: start = %d, na = %d\n", start, na);
-	na = adjust_na(s, start, na);
+	// printf("sort a: start = %d, na = %d\n", start, na);
+	// na = adjust_na(s, start, na);
+	// printf("na = %d\n", na);
 	if (na <= 1)
 		return ;
 	if (na == 2)
@@ -123,13 +124,14 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 	int	nb_next;
 	int	nb_to_sort;
 
-	nb_to_sort = adjust_nb(s, start, nb);
-	printf("sort b: start = %d, nb = %d, bb_to_sort = %d\n", start, nb, nb_to_sort);
+	// nb_to_sort = adjust_nb(s, start, nb);
+	nb_to_sort = nb;
+	// printf("sort b: start = %d, nb = %d, bb_to_sort = %d\n", start, nb, nb_to_sort);
 	if (nb_to_sort == 2)
 		swap_if_needed(s);
 	else if (nb_to_sort == 3 && s->b->size == 3)
 		sort_3(s, start, 1);
-	else if (nb_to_sort >= 3) 
+	else if (nb_to_sort >= 3)
 	{
 		if (nb_to_sort < s->b->size)
 			na_next = push_half_in_a(s, start, nb_to_sort);
