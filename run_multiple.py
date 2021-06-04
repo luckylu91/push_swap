@@ -1,22 +1,30 @@
 import random as r
-import subprocess
+from processes import launch_pswap, launch_checker
 import statistics
 import os
 import shutil
 
 n_runs = 10
-n_nums = 100
+n_nums = 500
 range_min = 0
 range_max = 500
+check_error = True
+use_checker = True
+checker = './checker'
+if use_checker and not os.path.isfile(checker):
+	print('invalid chercker param')
+	exit(1)
+if use_checker:
+	if not checker.startswith('./'):
+		checker = './' + checker
 
 def get_score(start, stop, n):
-	result = r.sample(list(range(start, stop)), n)
-	result = [str(n) for n in result]
-	proc = subprocess.Popen(['./push_swap'] + result, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	out, err = proc.communicate()
-	out = out.decode("utf-8")
-	return len(out.split('\n')) - 1, result, out
-
+	args = r.sample(list(range(start, stop)), n)
+	args = [str(n) for n in args]
+	out = launch_pswap(args, check_error)
+	if use_checker:
+		launch_checker(args, out, check_error)
+	return len(out), args, out
 
 scores_in_out = []
 for i in range(n_runs):
@@ -35,7 +43,7 @@ for i, (score, algo_in, algo_out) in enumerate(scores_in_out):
 	fin.write(str(algo_in))
 	fin.close()
 	fout = open(os.path.join(dir_name, str(i) + '_out_score_' + str(score)), 'w')
-	fout.write(algo_out)
+	fout.write('\n'.join(algo_out))
 	fout.close()
 f = open(os.path.join(dir_name,'stats'), 'w')
 

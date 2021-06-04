@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 09:50:47 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/04 11:03:28 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 21:16:31 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,10 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 	int na;
 	t_push_data d;
 
+	// printf("nb = %d\n", nb);
+	// printf("b size = %d\n", s->b->size);
 	nb_to_sort = adjust_nb(s, start, nb);
+	// printf("nb_to_s = %d\n", nb_to_sort);
 	// nb_to_sort = nb;
 	// printf("sort b: start = %d, nb = %d, nb_to_sort = %d\n", start, nb, nb_to_sort);
 	if (nb_to_sort <= 1)
@@ -168,10 +171,11 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 		// nb_next = nb_to_sort - na_next;
 		sort_rec_a(s, start - na + 1, na);
 		sort_rec_b(s, start - na, nb_to_sort);
-		if (nb_to_sort < nb)
-			ps_push_n(s, 0, nb - nb_to_sort);
+		if (nb_to_sort + na < nb)
+			ps_push_n(s, 0, nb - na - nb_to_sort);
 		// nb -= na_next;
 	}
+	// printf("end b\n");
 	// print_trace();
 	// printf("b will push %d\n", nb);
 }
