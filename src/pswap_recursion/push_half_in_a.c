@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:34:15 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 13:59:42 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 10:58:23 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,30 +104,30 @@ int	choose_direction_a(t_dequeue *q, int n, int median)
 // 	return (n / 2);
 // }
 
-int	push_half_in_a(t_stacks *s, int start, int n)
-{
-	int	n_push;
-	int	n_rot;
-	int	median;
+// int	push_half_in_a(t_stacks *s, int start, int n)
+// {
+// 	int	n_push;
+// 	int	n_rot;
+// 	int	median;
 
-	n_push = n / 2;
-	n_rot = 0;
-	median = start - n / 2 + 1;
-	while (n_push > 0)
-	{
-		// printf("size = %d\n", mvt.size);
-		if (int_at(s->a->first) >= median)
-		{
-			ps_push_ab(s, 0);
-			n_push--;
-		}
-		else
-		{
-			ps_rotate_reverse_ab(s, 1);
-			n_rot++;
-		}
-	}
-	if (need_rot)
-		ps_rotate_n(s, 1, n_rot);
-	return (n / 2);
-}
+// 	n_push = n / 2;
+// 	n_rot = 0;
+// 	median = start - n / 2 + 1;
+// 	while (n_push > 0)
+// 	{
+// 		// printf("size = %d\n", mvt.size);
+// 		if (int_at(s->a->first) >= median)
+// 		{
+// 			ps_push_ab(s, 0);
+// 			n_push--;
+// 		}
+// 		else
+// 		{
+// 			ps_rotate_reverse_ab(s, 1);
+// 			n_rot++;
+// 		}
+// 	}
+// 	if (need_rot)
+// 		ps_rotate_n(s, 1, n_rot);
+// 	return (n / 2);
+// }

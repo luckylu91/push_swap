@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   exit_fun.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/27 01:47:26 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/12 21:26:19 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/05/28 16:20:06 by lzins             #+#    #+#             */
+/*   Updated: 2021/06/04 11:08:32 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "common.h"
 
-int main(int argc, char **argv)
+int		exit_fun_error(void *ctx)
 {
-	t_stacks	stacks;
-	int			ret_args;
+	(void)ctx;
+	ft_putstr_fd("Error\n", STDERR_FILENO);
+	return (-1);
+}
 
-	ret_args = handle_args(&stacks, argc, argv);
-	if (ret_args != 1)
-		return (ret_args);
-	if (read_execute_cmds(&stacks) == -1)
-		return (-1);
-	free_stacks(&stacks);
+int		exit_fun_ok(void *ctx)
+{
+	(void)ctx;
 	return (0);
+}
+
+void	exit_ok(void)
+{
+	ft_get_set_exit_fun(exit_fun_ok);
+	ft_exit();
 }

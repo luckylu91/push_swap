@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_fun.c                                         :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/28 16:20:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/28 23:22:39 by lzins            ###   ########lyon.fr   */
+/*   Created: 2021/03/27 01:47:26 by lzins             #+#    #+#             */
+/*   Updated: 2021/06/04 11:14:14 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pswap_recursion.h"
+#include "checker.h"
 
-int		exit_fun_error(void *ctx)
+int main(int argc, char **argv)
 {
-	(void)ctx;
-	ft_putstr_fd("Error\n", STDERR_FILENO);
-	return (-1);
-}
+	t_stacks	stacks;
 
-int		exit_fun_ok(void *ctx)
-{
-	(void)ctx;
+	ft_get_set_exit_fun(exit_fun_error);
+	handle_args(&stacks, argc, argv);
+	read_execute_cmds(&stacks);
+	exit_ok();
 	return (0);
-}
-
-void	exit_ok(void)
-{
-	ft_get_set_exit_fun(exit_fun_ok);
-	ft_exit();
 }

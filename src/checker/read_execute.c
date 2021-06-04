@@ -6,14 +6,14 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 14:03:02 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 11:18:19 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 11:13:29 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 #include "get_next_line.h"
 
-int	read_execute_cmds(t_stacks *stacks)
+void	read_execute_cmds(t_stacks *stacks)
 {
 	char	*line;
 	int		ret;
@@ -30,10 +30,9 @@ int	read_execute_cmds(t_stacks *stacks)
 		if (parse_operation(stacks, line) == -1)
 			ret = -1;
 		else if (stacks->verbose)
-			print_stacks_side(stacks);
+			print_stacks(stacks);
 		free(line);
 	}
-	if (ret == -1)
-		return (error_free(stacks));
-	return (check_ok(stacks));
+	if (ret == -1 || check_ok(stacks))
+		ft_exit();
 }

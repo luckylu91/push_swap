@@ -6,15 +6,15 @@ LIBFT =		$(LIBFT_DIR)/libft.a
 LFLAGS =	-L$(LIBFT_DIR) -lft
 IFLAGS =	-I$(LIBFT_DIR) -Iinclude
 DBFLAGS =	-g3 -fsanitize=address
-OBJ_DIRS =	obj/ $(addprefix obj/, common pswap_recursion get_next_line operations pswap_recursion/operations dequeue)
+OBJ_DIRS =	obj/ $(addprefix obj/, common pswap_recursion get_next_line operations pswap_recursion/operations dequeue checker)
 SRCS_COM =$(addprefix src/get_next_line/, get_next_line_utils.c get_next_line.c)
 SRCS_COM +=$(addprefix src/operations/, rotate_reverse.c push.c rotate.c \
 		parse_operation.c swap.c)
 SRCS_COM +=$(addprefix src/common/, handle_args.c is_sorted_lst.c \
 		lstrev_array.c args_to_stacks.c repeating_numbers.c \
-		utils.c replace_with_indexes.c)
+		utils.c replace_with_indexes.c exit_fun.c)
 SRCS_COM +=$(addprefix src/dequeue/, add.c create.c remove.c sort.c print.c)
-SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c exit_fun.c main.c)
+SRCS_PS = $(addprefix src/pswap_recursion/, pswap.c push_half_in_a.c push_half_in_b.c utils.c main.c push_half.c)
 SRCS_PS +=$(addprefix src/pswap_recursion/operations/, push.c rotate.c rotate_reverse.c swap.c)
 SRCS_PS += src/_trace.c
 # SRCS_PS += src/pswap_recursion/main.c
@@ -22,15 +22,15 @@ OBJS_COM =$(SRCS_COM:src/%.c=obj/%.o)
 OBJS_PS =		$(OBJS_COM) $(SRCS_PS:src/%.c=obj/%.o)
 OBJS_COM_DB =	$(SRCS_COM:src/%.c=obj/%.o_db)
 OBJS_PS_DB =	$(OBJS_COM_DB) $(SRCS_PS:src/%.c=obj/%.o_db)
-# SRCS_CHK =$(addprefix src/checker/, checker.c check_ok.c read_execute.c)
-# OBJS_CHK =	$(OBJS_COM) $(SRCS_CHK:%.c=%.o)
+SRCS_CHK = $(addprefix src/checker/, checker.c check_ok.c read_execute.c)
+OBJS_CHK =	$(OBJS_COM) $(SRCS_CHK:src/%.c=obj/%.o)
 
 all:	$(NAME)
 db:		$(NAME_DB)
 # $(OBJS_CHK): $(LIBFT)
 
-# checker: $(OBJS_CHK)
-# 	gcc -o $@ $^ $(LFLAGS)
+checker: $(OBJS_CHK)
+	gcc -o $@ $^ $(LFLAGS) $(IFLAGS)
 
 $(NAME): $(OBJS_PS)
 	gcc -o $@ $(OBJS_PS) $(LFLAGS)

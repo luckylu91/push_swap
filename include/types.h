@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/30 10:54:43 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/02 02:40:04 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 10:37:53 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,14 @@ typedef struct s_bool_fun_arg
 	t_bool_fun	f;
 	int			arg2;
 }	t_bool_fun_arg;
+
+typedef struct s_push_data
+{
+	t_dequeue	*q;
+	t_bool_fun	test_keep;
+	int			ref;
+	int			n_tot;
+	int			n_remaining;
+}	t_push_data;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/02 03:11:46 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 09:58:46 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,17 @@ int	*list_to_array(t_bilist *lst, int n)
 		i++;
 	}
 	return (array);
+}
+
+
+int	less_equal(int x, int y)
+{
+	return (x <= y);
+}
+
+int	great_equal(int x, int y)
+{
+	return (x >= y);
 }
 
 // void	bubble_sort(int *array, int n)
@@ -204,16 +215,6 @@ t_push_strat	best_push_strategy(int *indices, int n_push, int n)
 		strat.k++;
 	}
 	return (strat_min);
-}
-
-static int	less_equal(int x, int y)
-{
-	return (x <= y);
-}
-
-static int	great_equal(int x, int y)
-{
-	return (x >= y);
 }
 
 

@@ -9,6 +9,11 @@ from math import factorial, log10
 import sys
 
 n_default = 3
+use_checker = True
+checker = './checker'
+if use_checker and not os.path.isfile(checker):
+	print('invalid chercker param')
+	exit(1)
 
 argv = sys.argv
 argc = len(argv)
@@ -37,6 +42,7 @@ for args in permutations(basis):
 	out = list(filter(lambda l: len(l) > 0, out.split('\n')))
 	print(' '.join(args) + ': ' + ' '.join(out))
 	results[len(out)] += 1
+	os.path.isfile()
 
 
 k_min = min(results.keys())

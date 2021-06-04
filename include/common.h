@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 11:14:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/05/30 11:09:08 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 11:08:25 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,10 @@ char	op_last_char(char op_char, int op_code);
 void	swap_int(int *n, int *p);
 
 void	replace_with_indexes(t_stacks *s);
+// exit
+int		exit_fun_error(void *ctx);
+int		exit_fun_ok(void *ctx);
+void	exit_ok(void);
+
 
 #endif

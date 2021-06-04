@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:43 by lzins             #+#    #+#             */
-/*   Updated: 2021/04/07 11:14:47 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 11:20:46 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,35 @@
 static int	ok_message(void)
 {
 	ft_putendl_fd("OK", STDOUT_FILENO);
-	return (1);
+	return (0);
 }
 
 static int	ko_message(void)
 {
 	ft_putendl_fd("KO", STDOUT_FILENO);
-	return (0);
+	return (1);
 }
 
 int	check_ok(t_stacks *stacks)
 {
-	int		k1;
-	int		k2;
-	t_list	*a;
+	int			k1;
+	int			k2;
+	t_bilist	*a;
 
-	if (ft_lstsize(stacks->b) != 0)
+	if (stacks->b->size != 0)
 		return (ko_message());
-	if (!stacks->a)
+	if (stacks->a->size <= 1)
 		return (ok_message());
-	k1 = *(int*)stacks->a->content;
-	a = stacks->a->next;
+	k1 = int_at(stacks->a->first);
+	a = stacks->a->first->next;
 	while (a)
 	{
-		k2 = *(int*)a->content;
+		k2 = int_at(a);
 		if (k1 >= k2)
+		{
+
 			return (ko_message());
+		}
 		k1 = k2;
 		a = a->next;
 	}

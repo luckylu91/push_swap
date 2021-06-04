@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 09:50:47 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/02 03:11:06 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 11:03:28 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	adjust_na(t_stacks *s, int start, int na)
 	int			max;
 	t_bilist	*blst;
 
-	if (na == 1)
+	if (na <= 1)
 		return (0);
 	max = start + na - 1;
 	blst = ft_bilststep(s->a->first, na - 1);
@@ -48,7 +48,7 @@ static int	adjust_nb(t_stacks *s, int start, int nb)
 	int			min;
 	t_bilist	*blst;
 
-	if (nb == 1)
+	if (nb <= 1)
 		return (0);
 	min = start - (nb - 1);
 	blst = ft_bilststep(s->b->first, nb - 1);
@@ -85,8 +85,10 @@ static void sort_3(t_stacks *s, int start, int op_code)
 
 void	sort_rec_a(t_stacks *s, int start, int na)
 {
-	int na_next;
-	int nb_next;
+	// int na_next;
+	// int nb_next;
+	t_push_data d;
+	int nb;
 
 	// printf("sort a: start = %d, na = %d\n", start, na);
 	na = adjust_na(s, start, na);
@@ -103,8 +105,15 @@ void	sort_rec_a(t_stacks *s, int start, int na)
 		sort_3(s, start, 0);
 		return ;
 	}
+	ft_bzero(&d, sizeof(t_push_data));
+	d.n_tot = na;
+	set_push_data(s, 0, start, &d);
+	nb = d.n_remaining;
+	na -= nb;
+	push_half_part(s, 0, &d);
+
 	// if (na < s->a->size)
-		na_next = push_half_in_b(s, start, na);
+		// na_next = push_half_in_b(s, start, na);
 	// else
 	// {
 	// 	// printf("start = %d\nna = %d\n", start, na);
@@ -113,16 +122,18 @@ void	sort_rec_a(t_stacks *s, int start, int na)
 	// 	push_half(s, 0, start, na);
 	// 	na_next = na - na / 2;
 	// }
-	nb_next = na - na_next;
-	sort_rec_a(s, start + nb_next, na_next);
-	sort_rec_b(s, start + nb_next - 1, nb_next);
+	// nb_next = na - na_next;
+	sort_rec_a(s, start + nb, na);
+	sort_rec_b(s, start + nb - 1, nb);
 }
 
 void	sort_rec_b(t_stacks *s, int start, int nb)
 {
-	int	na_next;
-	int	nb_next;
+	// int	na_next;
+	// int	nb_next;
 	int	nb_to_sort;
+	int na;
+	t_push_data d;
 
 	nb_to_sort = adjust_nb(s, start, nb);
 	// nb_to_sort = nb;
@@ -139,22 +150,27 @@ void	sort_rec_b(t_stacks *s, int start, int nb)
 		sort_3(s, start, 1);
 		ps_push_n(s, 0, nb);
 	}
-	else if (nb_to_sort >= 3)
+	else
 	{
+		ft_bzero(&d, sizeof(t_push_data));
+		d.n_tot = nb_to_sort;
+		set_push_data(s, 1, start, &d);
+		na = d.n_remaining;
+		nb_to_sort -= na;
+		push_half_part(s, 1, &d);
 		// if (nb_to_sort < s->b->size)
-			na_next = push_half_in_a(s, start, nb_to_sort);
+			// na_next = push_half_in_a(s, start, nb_to_sort);
 		// else
 		// {
 		// 	push_half(s, 1, start, nb_to_sort);
 		// 	na_next = nb_to_sort / 2;
 		// }
-		nb_next = nb_to_sort - na_next;
-		sort_rec_a(s, start - (na_next - 1), na_next);
-		sort_rec_b(s, start - na_next, nb_next);
+		// nb_next = nb_to_sort - na_next;
+		sort_rec_a(s, start - na + 1, na);
+		sort_rec_b(s, start - na, nb_to_sort);
 		if (nb_to_sort < nb)
 			ps_push_n(s, 0, nb - nb_to_sort);
 		// nb -= na_next;
-		return ;
 	}
 	// print_trace();
 	// printf("b will push %d\n", nb);
