@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 14:03:02 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/04 11:13:29 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/04 18:19:11 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	read_execute_cmds(t_stacks *stacks)
 			print_stacks(stacks);
 		free(line);
 	}
-	if (ret == -1 || check_ok(stacks))
+	if (ret == -1)
 		ft_exit();
+	check_ok(stacks);
 }

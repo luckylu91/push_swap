@@ -7,13 +7,18 @@ from itertools import permutations
 from collections import defaultdict
 from math import factorial, log10
 import sys
+from processes import launch_checker, launch_pswap
 
 n_default = 3
+check_error = True
 use_checker = True
 checker = './checker'
 if use_checker and not os.path.isfile(checker):
 	print('invalid chercker param')
 	exit(1)
+if use_checker:
+	if not checker.startswith('./'):
+		checker = './' + checker
 
 argv = sys.argv
 argc = len(argv)
@@ -36,13 +41,15 @@ results = defaultdict(int)
 basis = list(range(1, n + 1))
 for args in permutations(basis):
 	args = [str(i) for i in args]
-	proc = Popen(['./push_swap'] + args, stdout=PIPE, stderr=PIPE)
-	out, _ = proc.communicate()
-	out = out.decode("utf-8")
-	out = list(filter(lambda l: len(l) > 0, out.split('\n')))
-	print(' '.join(args) + ': ' + ' '.join(out))
+	out = launch_pswap(args, check_error)
+	# proc = Popen(['./push_swap'] + args, stdout=PIPE, stderr=PIPE)
+	# out, _ = proc.communicate()
+	# out = out.decode("utf-8")
+	# out = list(filter(lambda l: len(l) > 0, out.split('\n')))
+	# print(' '.join(args) + ': ' + ' '.join(out))
 	results[len(out)] += 1
-	os.path.isfile()
+	if use_checker:
+		launch_checker(args, out, check_error)
 
 
 k_min = min(results.keys())
