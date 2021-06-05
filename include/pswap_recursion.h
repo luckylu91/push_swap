@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:35:05 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/04 11:08:13 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/05 09:34:35 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ void	sort_rec_a(t_stacks *s, int start, int na);
 void	sort_rec_b(t_stacks *s, int start, int nb);
 // push_half
 void	set_push_data(t_stacks *s, int op_code, int start, t_push_data *d);
-void	push_half_part(t_stacks *s, int op_code, t_push_data *d);
+void	push_half_part(t_stacks *s, int op_code, t_push_data *d, int do_reverse);
 
 #endif

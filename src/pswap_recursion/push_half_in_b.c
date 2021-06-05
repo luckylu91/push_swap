@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:41 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/04 10:58:38 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/05 09:10:52 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@
 // 		while (int_at(s->a->first) >= median)
 // 		{
 // 			if (direction > 0)
-// 				ps_rotate_ab(s, 0);
-// 			else
 // 				ps_rotate_reverse_ab(s, 0);
+// 			else
+// 				ps_rotate_ab(s, 0);
 // 		}
 // 		ps_push_ab(s, 1);
 // 		n_push--;
@@ -83,15 +83,15 @@
 // 		while (int_at(s->a->first) > median)
 // 		{
 // 			if (direction > 0)
-// 				ps_rotate_ab(s, 0);
-// 			else
 // 				ps_rotate_reverse_ab(s, 0);
+// 			else
+// 				ps_rotate_ab(s, 0);
 // 			// if (n_rot >= s->a->size)
 // 			// {
 // 			// 	printf("Problem in push_half_in_b");
 // 			// 	ft_exit();
 // 			// }
-// 			// ps_rotate_reverse_ab(s, 0);
+// 			// ps_rotate_ab(s, 0);
 // 			// n_rot_total++;
 // 			// n_rot++;
 // 		}
@@ -99,7 +99,7 @@
 // 		n_push--;
 // 	}
 // 	// while (n_rot_total-- > 0)
-// 	// 	ps_rotate_ab(s, 0);
+// 	// 	ps_rotate_reverse_ab(s, 0);
 // 	return (n - n / 2);
 // }
 
@@ -122,10 +122,10 @@
 // 		}
 // 		else
 // 		{
-// 			ps_rotate_reverse_ab(s, 0);
+// 			ps_rotate_ab(s, 0);
 // 			n_rot++;
 // 		}
 // 	}
-// 	ps_rotate_n(s, 0, n_rot);
+// 	ps_rotate_reverse_n(s, 0, n_rot);
 // 	return (n - n / 2);
 // }

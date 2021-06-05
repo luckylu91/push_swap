@@ -4,8 +4,8 @@ import statistics
 import os
 import shutil
 
-n_runs = 10
-n_nums = 500
+n_runs = 100
+n_nums = 100
 range_min = 0
 range_max = 500
 check_error = True
@@ -23,13 +23,12 @@ def get_score(start, stop, n):
 	args = [str(n) for n in args]
 	out = launch_pswap(args, check_error)
 	if use_checker:
-		launch_checker(args, out, check_error)
+		launch_checker(checker, args, out, check_error)
 	return len(out), args, out
 
 scores_in_out = []
 for i in range(n_runs):
 	scores_in_out.append(get_score(range_min, range_max, n_nums))
-	print(scores_in_out[-1][0])
 
 scores_in_out = list(sorted(scores_in_out, key = lambda x: x[0]))
 
@@ -40,7 +39,7 @@ os.mkdir(dir_name)
 
 for i, (score, algo_in, algo_out) in enumerate(scores_in_out):
 	fin = open(os.path.join(dir_name, str(i) + '_in_score_' + str(score)), 'w')
-	fin.write(str(algo_in))
+	fin.write(' '.join(str(n) for n in algo_in))
 	fin.close()
 	fout = open(os.path.join(dir_name, str(i) + '_out_score_' + str(score)), 'w')
 	fout.write('\n'.join(algo_out))

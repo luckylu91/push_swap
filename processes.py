@@ -48,9 +48,9 @@ def launch_pswap(args, check_error):
 				raise InvalidOut(line, l)
 	return (out)
 
-def launch_checker(args, ps_out, check_error):
-	proc = Popen(['./checker'] + args, stdout=PIPE, stderr=PIPE, stdin=PIPE)
-	line = ' '.join(['./checker'] + args)
+def launch_checker(checker, args, ps_out, check_error):
+	proc = Popen([checker] + args, stdout=PIPE, stderr=PIPE, stdin=PIPE)
+	line = ' '.join([checker] + args)
 	proc.stdin.write('\n'.join(ps_out).encode('utf-8'))
 	out, err = proc.communicate()
 	proc.stdin.close()

@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/18 10:33:06 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/04 09:58:46 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/05 09:11:37 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 				n_push++;
 			}
 			else
-				ps_rotate_reverse_ab(s, op_code);
+				ps_rotate_ab(s, op_code);
 		}
 	}
 	else
@@ -118,7 +118,7 @@ int	do_push_movement(t_stacks *s, int op_code, t_bool_fun_arg filter,
 		while (mvt.size-- > 0)
 		{
 			// printf("size = %d\n", mvt.size);
-			ps_rotate_ab(s, op_code);
+			ps_rotate_reverse_ab(s, op_code);
 			if (filter.f(int_at(q->first), filter.arg2))
 			{
 				ps_push_ab(s, 1 - op_code);
@@ -155,9 +155,9 @@ void	do_push_strategy(t_stacks *s, int op_code, t_bool_fun_arg filter,
 	}
 	n_push_mvt0 = do_push_movement(s, op_code, filter, mvts[0]);
 	if (mvts[0].direction > 0)
-		ps_rotate_n(s, op_code, mvts[0].size - n_push_mvt0);
-	else
 		ps_rotate_reverse_n(s, op_code, mvts[0].size - n_push_mvt0);
+	else
+		ps_rotate_n(s, op_code, mvts[0].size - n_push_mvt0);
 	do_push_movement(s, op_code, filter, mvts[1]);
 }
 

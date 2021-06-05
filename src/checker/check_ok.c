@@ -6,7 +6,7 @@
 /*   By: lzins <lzins@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:48:43 by lzins             #+#    #+#             */
-/*   Updated: 2021/06/04 11:20:46 by lzins            ###   ########lyon.fr   */
+/*   Updated: 2021/06/05 09:33:09 by lzins            ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,7 @@ int	check_ok(t_stacks *stacks)
 	{
 		k2 = int_at(a);
 		if (k1 >= k2)
-		{
-
 			return (ko_message());
-		}
 		k1 = k2;
 		a = a->next;
 	}

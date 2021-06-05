@@ -49,7 +49,7 @@ for args in permutations(basis):
 	# print(' '.join(args) + ': ' + ' '.join(out))
 	results[len(out)] += 1
 	if use_checker:
-		launch_checker(args, out, check_error)
+		launch_checker(checker, args, out, check_error)
 
 
 k_min = min(results.keys())
